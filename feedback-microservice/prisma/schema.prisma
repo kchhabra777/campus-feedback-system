@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Review {
+  reviewId    Int      @id @default(autoincrement())
+  reviewerId  String
+  revieweeId  String
+  rating      Int
+  reviewText  String
+  context     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isFlagged   Boolean  @default(false)
+
+  votes ReviewVote[]
+  flags ReviewFlag[]
+}
+
+model ReviewVote {
+  voteId    Int      @id @default(autoincrement())
+  reviewId  Int
+  userId    String
+  voteType  VoteType
+  createdAt DateTime @default(now())
+
+  review Review @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
+
+  @@unique([reviewId, userId])
+}
+
+model ReviewFlag {
+  flagId     Int      @id @default(autoincrement())
+  reviewId   Int
+  reporterId String
+  reason     String
+  status     FlagStatus @default(PENDING)
+  createdAt  DateTime @default(now())
+
+  review Review @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
+}
+
+model ProfileRating {
+  ratingId       Int      @id @default(autoincrement())
+  userId         String   @unique
+  overallRating  Float
+  recentRating   Float
+  totalReviews   Int
+  calculatedAt   DateTime @default(now())
+}
+
+enum VoteType {
+  UP
+  DOWN
+}
+
+enum FlagStatus {
+  PENDING
+  REVIEWED
+  DISMISSED
+  REMOVED
+}
