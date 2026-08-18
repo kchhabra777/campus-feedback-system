@@ -87,6 +87,9 @@ feedback-microservice/
 
 The feedback system uses a relational database to maintain users, courses, reviews, ratings, votes, flags, and faculty-course relationships.
 
+<img width="1064" height="818" alt="image" src="https://github.com/user-attachments/assets/fca847ba-3b93-4078-ae00-ec04c8cfa669" />
+
+
 ### Main Tables
 
 #### `users`
