@@ -22,68 +22,56 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Proxy /api/auth -> auth-service /auth
+// Proxy /api/auth/* -> http://localhost:5001/auth/*
 app.use(
   "/api/auth",
   createProxyMiddleware({
-    target: AUTH_SERVICE_URL,
-    changeOrigin: true,
-    pathRewrite: {
-      "^/api/auth": "/auth"
-    }
+    target: `${AUTH_SERVICE_URL}/auth`,
+    changeOrigin: true
   })
 );
 
-// Proxy /api/profiles -> auth-service /profiles
+// Proxy /api/profiles/* -> http://localhost:5001/profiles/*
 app.use(
   "/api/profiles",
   createProxyMiddleware({
-    target: AUTH_SERVICE_URL,
-    changeOrigin: true,
-    pathRewrite: {
-      "^/api/profiles": "/profiles"
-    }
+    target: `${AUTH_SERVICE_URL}/profiles`,
+    changeOrigin: true
   })
 );
 
-// Proxy /api/courses -> auth-service /courses
+// Proxy /api/courses/* -> http://localhost:5001/courses/*
 app.use(
   "/api/courses",
   createProxyMiddleware({
-    target: AUTH_SERVICE_URL,
-    changeOrigin: true,
-    pathRewrite: {
-      "^/api/courses": "/courses"
-    }
+    target: `${AUTH_SERVICE_URL}/courses`,
+    changeOrigin: true
   })
 );
 
-// Proxy /api/reviews -> feedback-microservice /reviews
+// Proxy /api/reviews/* -> http://localhost:5000/reviews/*
 app.use(
   "/api/reviews",
   createProxyMiddleware({
-    target: FEEDBACK_SERVICE_URL,
-    changeOrigin: true,
-    pathRewrite: {
-      "^/api/reviews": "/reviews"
-    }
+    target: `${FEEDBACK_SERVICE_URL}/reviews`,
+    changeOrigin: true
   })
 );
 
-// Proxy /api/ratings -> feedback-microservice /ratings
+// Proxy /api/ratings/* -> http://localhost:5000/ratings/*
 app.use(
   "/api/ratings",
   createProxyMiddleware({
-    target: FEEDBACK_SERVICE_URL,
-    changeOrigin: true,
-    pathRewrite: {
-      "^/api/ratings": "/ratings"
-    }
+    target: `${FEEDBACK_SERVICE_URL}/ratings`,
+    changeOrigin: true
   })
 );
 
 app.listen(PORT, () => {
   console.log(`🌐 API Gateway listening on port ${PORT}`);
-  console.log(`   Auth routes -> ${AUTH_SERVICE_URL}`);
-  console.log(`   Feedback routes -> ${FEEDBACK_SERVICE_URL}`);
+  console.log(`   Auth routes -> ${AUTH_SERVICE_URL}/auth`);
+  console.log(`   Profiles routes -> ${AUTH_SERVICE_URL}/profiles`);
+  console.log(`   Courses routes -> ${AUTH_SERVICE_URL}/courses`);
+  console.log(`   Reviews routes -> ${FEEDBACK_SERVICE_URL}/reviews`);
+  console.log(`   Ratings routes -> ${FEEDBACK_SERVICE_URL}/ratings`);
 });
