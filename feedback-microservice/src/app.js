@@ -4,6 +4,7 @@ import cors from "cors";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import voteRoutes from "./routes/voteRoutes.js";
 import flagRoutes from "./routes/flagRoutes.js";
+import replyRoutes from "./routes/replyRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 
 const app = express();
@@ -19,11 +20,9 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/reviews", reviewRoutes);
-
 app.use("/reviews", voteRoutes);
-
 app.use("/reviews", flagRoutes);
-
+app.use("/reviews", replyRoutes);
 app.use("/ratings", ratingRoutes);
 
 export default app;

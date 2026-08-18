@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -13,51 +8,9 @@ datasource db {
   provider = "postgresql"
 }
 
-model Review {
-  reviewId    Int      @id @default(autoincrement())
-  reviewerId  String
-  revieweeId  String
-  rating      Int
-  reviewText  String
-  context     String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  isFlagged   Boolean  @default(false)
-
-  votes ReviewVote[]
-  flags ReviewFlag[]
-}
-
-model ReviewVote {
-  voteId    Int      @id @default(autoincrement())
-  reviewId  Int
-  userId    String
-  voteType  VoteType
-  createdAt DateTime @default(now())
-
-  review Review @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
-
-  @@unique([reviewId, userId])
-}
-
-model ReviewFlag {
-  flagId     Int      @id @default(autoincrement())
-  reviewId   Int
-  reporterId String
-  reason     String
-  status     FlagStatus @default(PENDING)
-  createdAt  DateTime @default(now())
-
-  review Review @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
-}
-
-model ProfileRating {
-  ratingId       Int      @id @default(autoincrement())
-  userId         String   @unique
-  overallRating  Float
-  recentRating   Float
-  totalReviews   Int
-  calculatedAt   DateTime @default(now())
+enum Role {
+  STUDENT
+  TEACHER
 }
 
 enum VoteType {
@@ -70,4 +23,135 @@ enum FlagStatus {
   REVIEWED
   DISMISSED
   REMOVED
+}
+
+model User {
+  id                String          @id @default(uuid())
+  email             String          @unique
+  passwordHash      String
+  role              Role
+  detectedBatch     String?
+  isEmailVerified   Boolean         @default(false)
+  isProfileComplete Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  studentProfile    StudentProfile?
+  teacherProfile    TeacherProfile?
+}
+
+model OtpVerification {
+  id        String   @id @default(uuid())
+  email     String
+  otp       String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+model StudentProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  rollNumber  String   @unique
+  branch      String
+  batch       String
+  yearOfStudy Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TeacherProfile {
+  id          String            @id @default(uuid())
+  userId      String            @unique
+  fullName    String
+  department  String
+  designation String
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  offerings   CourseOffering[]
+}
+
+model CourseOffering {
+  id           String         @id @default(uuid())
+  teacherId    String
+  courseCode   String
+  courseName   String
+  batchTaught  String
+  branchTaught String
+  academicYear String
+  createdAt    DateTime       @default(now())
+
+  teacher      TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  reviewId        Int          @id @default(autoincrement())
+  reviewerId      String
+  reviewerRollNo  String?
+  reviewerBatch   String?
+  reviewerBranch  String?
+  revieweeId      String
+  courseCode      String?
+  courseName      String?
+  rating          Int
+  reviewText      String
+  context         String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  isFlagged       Boolean      @default(false)
+
+  votes           ReviewVote[]
+  flags           ReviewFlag[]
+  replies         ReviewReply[]
+}
+
+model ReviewVote {
+  voteId    Int      @id @default(autoincrement())
+  reviewId  Int
+  userId    String
+  voteType  VoteType
+  createdAt DateTime @default(now())
+
+  review    Review   @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
+
+  @@unique([reviewId, userId])
+}
+
+model ReviewFlag {
+  flagId     Int        @id @default(autoincrement())
+  reviewId   Int
+  reporterId String
+  reason     String
+  status     FlagStatus @default(PENDING)
+  createdAt  DateTime   @default(now())
+
+  review     Review     @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
+}
+
+model ReviewReply {
+  replyId        Int      @id @default(autoincrement())
+  reviewId       Int
+  authorId       String
+  authorRole     Role
+  authorName     String
+  authorBadge    String?
+  replyText      String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  review         Review   @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
+}
+
+model ProfileRating {
+  ratingId       Int      @id @default(autoincrement())
+  userId         String   @unique
+  overallRating  Float
+  recentRating   Float
+  totalReviews   Int
+  calculatedAt   DateTime @default(now())
 }
