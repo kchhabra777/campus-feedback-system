@@ -203,8 +203,8 @@ export const TeacherDashboard = () => {
           <h3 style={{ fontSize: '18px', fontWeight: 700 }}>
             Student Feedback & Reviews ({reviews.length})
           </h3>
-          <span className="badge badge-neutral" style={{ fontSize: '12px' }}>
-            Read-Only Faculty View
+          <span className="badge badge-teacher" style={{ fontSize: '12px' }}>
+            Faculty Response Enabled
           </span>
         </div>
 

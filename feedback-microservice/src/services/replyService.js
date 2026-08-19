@@ -8,14 +8,26 @@ export const createReply = async ({
     authorBadge,
     replyText
 }) => {
-    // Teachers are strictly restricted from replying/commenting
-    if (authorRole !== "STUDENT") {
-        throw new Error("Only students are permitted to post replies or comments.");
+    if (!["STUDENT", "TEACHER"].includes(authorRole)) {
+        throw new Error("Invalid author role for reply.");
+    }
+
+    if (authorRole === "TEACHER") {
+        // Faculty members can reply to reviews written for them to seek constructive feedback or clarify
+        const review = await prisma.review.findUnique({
+            where: { reviewId: Number(reviewId) }
+        });
+        if (!review) {
+            throw new Error("Review not found.");
+        }
+        if (review.revieweeId !== authorId) {
+            throw new Error("Faculty members can only reply to reviews submitted for their own courses/profile.");
+        }
     }
 
     return await prisma.reviewReply.create({
         data: {
-            reviewId,
+            reviewId: Number(reviewId),
             authorId,
             authorRole,
             authorName,

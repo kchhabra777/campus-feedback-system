@@ -20,8 +20,8 @@ export const createReply = async (req, res) => {
             return res.status(400).json({ error: "Author ID is required" });
         }
 
-        if (authorRole !== "STUDENT") {
-            return res.status(403).json({ error: "Only students are permitted to post replies or comments." });
+        if (!["STUDENT", "TEACHER"].includes(authorRole)) {
+            return res.status(403).json({ error: "Only registered students and faculty can post in discussion threads." });
         }
 
         if (!replyText || replyText.trim() === "") {
@@ -31,9 +31,9 @@ export const createReply = async (req, res) => {
         const reply = await createReplyService({
             reviewId: Number(id),
             authorId,
-            authorRole: "STUDENT",
-            authorName: authorName || "Student",
-            authorBadge: authorBadge || "Student",
+            authorRole,
+            authorName: authorName || (authorRole === "TEACHER" ? "Faculty Member" : "Student"),
+            authorBadge: authorBadge || (authorRole === "TEACHER" ? "Faculty" : "Student"),
             replyText: replyText.trim()
         });
 

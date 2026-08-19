@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StarRating } from './StarRating';
-import { ThumbsUp, ThumbsDown, MessageSquare, Flag, Send, User, Mail } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, MessageSquare, Flag, Send, User, Mail, Award } from 'lucide-react';
 import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
@@ -88,22 +88,28 @@ export const ReviewCard = ({ review, onUpdate }) => {
   const handleAddReply = async (e) => {
     e.preventDefault();
     if (!newReply.trim() || !user) return;
-    if (user.role !== 'STUDENT') {
-      alert("Only students are permitted to post replies or comments.");
-      return;
-    }
 
     setIsSubmittingReply(true);
     try {
-      const authorName = user.studentProfile?.fullName
-        ? `${user.studentProfile.fullName} (${user.studentProfile.rollNumber || 'Student'})`
-        : (user.studentProfile?.rollNumber || `Student (${user.studentProfile?.batch || 'BE'})`);
+      let authorName = "Student";
+      let authorBadge = "Student";
+      let authorRole = user.role;
 
-      const authorBadge = `${user.studentProfile?.batch || 'BE'} Student`;
+      if (user.role === 'TEACHER') {
+        authorName = user.teacherProfile?.fullName ? `${user.teacherProfile.fullName}` : 'Faculty Member';
+        authorBadge = `${user.teacherProfile?.designation || 'Faculty'} (${user.teacherProfile?.department || 'Department'})`;
+        authorRole = "TEACHER";
+      } else {
+        authorName = user.studentProfile?.fullName
+          ? `${user.studentProfile.fullName} (${user.studentProfile.rollNumber || 'Student'})`
+          : (user.studentProfile?.rollNumber || `Student (${user.studentProfile?.batch || 'BE'})`);
+        authorBadge = `${user.studentProfile?.batch || 'BE'} Student`;
+        authorRole = "STUDENT";
+      }
 
       const res = await api.addReply(review.reviewId, {
         authorId: user.id,
-        authorRole: "STUDENT",
+        authorRole,
         authorName,
         authorBadge,
         replyText: newReply.trim()
@@ -111,6 +117,7 @@ export const ReviewCard = ({ review, onUpdate }) => {
 
       setReplies((prev) => [...prev, { ...res.reply, upvotes: 0, downvotes: 0 }]);
       setNewReply('');
+      if (onUpdate) onUpdate();
     } catch (err) {
       alert(err.message || "Failed to post reply");
     } finally {
@@ -253,98 +260,117 @@ export const ReviewCard = ({ review, onUpdate }) => {
       {showReplies && (
         <div className="review-replies-container">
           <h4 style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '10px' }}>
-            Student Discussion & Differing Perspectives ({replies.length})
+            Transparent Discussion & Faculty Feedback ({replies.length})
           </h4>
 
           {replies.length === 0 ? (
             <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '12px', fontStyle: 'italic' }}>
-              No student replies yet. If you have a different perspective on this course/teacher, share it below.
+              No replies yet. Use this discussion thread to ask for constructive suggestions, share counter-opinions, or clarify questions.
             </p>
           ) : (
-            replies.map((reply, idx) => (
-              <div key={reply.replyId || idx} className="reply-item">
-                <div className="reply-meta">
-                  <span>{reply.authorName}</span>
-                  {reply.authorBadge && (
-                    <span className="badge badge-student" style={{ fontSize: '11px', padding: '2px 6px' }}>
-                      {reply.authorBadge}
+            replies.map((reply, idx) => {
+              const isTeacherReply = reply.authorRole === 'TEACHER';
+              return (
+                <div
+                  key={reply.replyId || idx}
+                  className="reply-item"
+                  style={isTeacherReply ? {
+                    borderLeft: '3px solid var(--primary)',
+                    background: 'linear-gradient(135deg, #fff7ed 0%, #ffffff 100%)',
+                    borderRadius: 'var(--radius-sm)'
+                  } : {}}
+                >
+                  <div className="reply-meta">
+                    <span style={isTeacherReply ? { fontWeight: 700, color: 'var(--primary)' } : { fontWeight: 600 }}>
+                      {reply.authorName}
                     </span>
-                  )}
-                  <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400, marginLeft: 'auto' }}>
-                    {formatDate(reply.createdAt)}
-                  </span>
-                </div>
-                <div style={{ color: 'var(--text-primary)', marginBottom: '6px' }}>
-                  {reply.replyText}
-                </div>
-
-                {/* Reply Upvote/Downvote Actions for Students */}
-                {user?.role === 'STUDENT' && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
-                    <button
-                      type="button"
-                      onClick={() => handleVoteReply(reply.replyId, 'UP')}
-                      disabled={isVotingReply[reply.replyId] || replyVoteState[reply.replyId] === 'UP'}
-                      className="btn btn-subtle btn-sm"
-                      style={{
-                        padding: '2px 8px',
-                        fontSize: '11px',
-                        color: replyVoteState[reply.replyId] === 'UP' ? 'var(--badge-verified-text)' : 'var(--text-secondary)',
-                        fontWeight: replyVoteState[reply.replyId] === 'UP' ? 700 : 500,
-                        cursor: replyVoteState[reply.replyId] === 'UP' ? 'default' : 'pointer'
-                      }}
-                    >
-                      <ThumbsUp size={11} />
-                      <span>{reply.upvotes || 0}</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => handleVoteReply(reply.replyId, 'DOWN')}
-                      disabled={isVotingReply[reply.replyId] || replyVoteState[reply.replyId] === 'DOWN'}
-                      className="btn btn-subtle btn-sm"
-                      style={{
-                        padding: '2px 8px',
-                        fontSize: '11px',
-                        color: replyVoteState[reply.replyId] === 'DOWN' ? 'var(--primary)' : 'var(--text-secondary)',
-                        fontWeight: replyVoteState[reply.replyId] === 'DOWN' ? 700 : 500,
-                        cursor: replyVoteState[reply.replyId] === 'DOWN' ? 'default' : 'pointer'
-                      }}
-                    >
-                      <ThumbsDown size={11} />
-                      <span>{reply.downvotes || 0}</span>
-                    </button>
+                    {reply.authorBadge && (
+                      <span
+                        className={`badge ${isTeacherReply ? 'badge-teacher' : 'badge-student'}`}
+                        style={{ fontSize: '11px', padding: '2px 8px' }}
+                      >
+                        {isTeacherReply && <Award size={11} />}
+                        {reply.authorBadge}
+                      </span>
+                    )}
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400, marginLeft: 'auto' }}>
+                      {formatDate(reply.createdAt)}
+                    </span>
                   </div>
-                )}
-              </div>
-            ))
+                  <div style={{ color: 'var(--text-primary)', marginBottom: '6px', fontSize: '13.5px', lineHeight: 1.5 }}>
+                    {reply.replyText}
+                  </div>
+
+                  {/* Reply Upvote/Downvote Actions for Students */}
+                  {user?.role === 'STUDENT' && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
+                      <button
+                        type="button"
+                        onClick={() => handleVoteReply(reply.replyId, 'UP')}
+                        disabled={isVotingReply[reply.replyId] || replyVoteState[reply.replyId] === 'UP'}
+                        className="btn btn-subtle btn-sm"
+                        style={{
+                          padding: '2px 8px',
+                          fontSize: '11px',
+                          color: replyVoteState[reply.replyId] === 'UP' ? 'var(--badge-verified-text)' : 'var(--text-secondary)',
+                          fontWeight: replyVoteState[reply.replyId] === 'UP' ? 700 : 500,
+                          cursor: replyVoteState[reply.replyId] === 'UP' ? 'default' : 'pointer'
+                        }}
+                      >
+                        <ThumbsUp size={11} />
+                        <span>{reply.upvotes || 0}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleVoteReply(reply.replyId, 'DOWN')}
+                        disabled={isVotingReply[reply.replyId] || replyVoteState[reply.replyId] === 'DOWN'}
+                        className="btn btn-subtle btn-sm"
+                        style={{
+                          padding: '2px 8px',
+                          fontSize: '11px',
+                          color: replyVoteState[reply.replyId] === 'DOWN' ? 'var(--primary)' : 'var(--text-secondary)',
+                          fontWeight: replyVoteState[reply.replyId] === 'DOWN' ? 700 : 500,
+                          cursor: replyVoteState[reply.replyId] === 'DOWN' ? 'default' : 'pointer'
+                        }}
+                      >
+                        <ThumbsDown size={11} />
+                        <span>{reply.downvotes || 0}</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })
           )}
 
-          {/* Add Reply Form (Students Only) */}
-          {user?.role === 'STUDENT' ? (
+          {/* Add Reply Form (Students and Teachers) */}
+          {user ? (
             <form onSubmit={handleAddReply} style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
               <input
                 type="text"
                 className="form-input"
-                placeholder="Share your perspective or counter-opinion..."
+                placeholder={
+                  user.role === 'TEACHER'
+                    ? "Reply to student (e.g. ask how you can improve lectures, clarify course pacing)..."
+                    : "Share your perspective or counter-opinion..."
+                }
                 value={newReply}
                 onChange={(e) => setNewReply(e.target.value)}
                 style={{ fontSize: '13px', padding: '8px 12px' }}
+                required
               />
               <button
                 type="submit"
                 disabled={isSubmittingReply || !newReply.trim()}
                 className="btn btn-primary btn-sm"
+                style={{ minWidth: user.role === 'TEACHER' ? '140px' : '80px' }}
               >
                 <Send size={13} />
-                <span>Reply</span>
+                <span>{user.role === 'TEACHER' ? 'Reply as Faculty' : 'Reply'}</span>
               </button>
             </form>
-          ) : (
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontStyle: 'italic', marginTop: '8px' }}>
-              Faculty members can view discussion threads in read-only mode.
-            </div>
-          )}
+          ) : null}
         </div>
       )}
     </div>
