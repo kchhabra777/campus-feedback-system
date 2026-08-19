@@ -17,53 +17,54 @@ export const createReview = async ({
     reviewText,
     context
 }) => {
-    // 1. Enforce 21-Day Cooldown Period
     const cooldownThreshold = new Date(Date.now() - COOLDOWN_DAYS * 24 * 60 * 60 * 1000);
 
-    const lastReview = await prisma.review.findFirst({
-        where: {
-            reviewerId,
-            revieweeId,
-            createdAt: {
-                gte: cooldownThreshold
-            }
-        },
-        orderBy: {
-            createdAt: "desc"
-        }
-    });
-
-    if (lastReview) {
-        const ageInMs = Date.now() - new Date(lastReview.createdAt).getTime();
-        const ageInDays = ageInMs / (1000 * 60 * 60 * 24);
-        const remainingDays = Math.max(1, Math.ceil(COOLDOWN_DAYS - ageInDays));
-        throw new Error(`21-day cooldown active. You have already reviewed this faculty member. You can submit another rating in ${remainingDays} day(s).`);
-    }
-
-    // 2. Create the Review
-    const review = await prisma.review.create({
-        data: {
-            reviewerId,
-            reviewerName: reviewerName || null,
-            reviewerEmail: reviewerEmail || null,
-            reviewerRollNo: reviewerRollNo || null,
-            reviewerBatch: reviewerBatch || null,
-            reviewerBranch: reviewerBranch || null,
-            revieweeId,
-            courseCode: courseCode || null,
-            courseName: courseName || null,
-            rating,
-            reviewText,
-            context: context || (reviewerBatch ? `Batch ${reviewerBatch}` : null)
-        },
-        include: {
-            replies: {
-                include: {
-                    votes: true
+    // Atomic transaction enforcing serialized cooldown check + creation
+    const review = await prisma.$transaction(async (tx) => {
+        const lastReview = await tx.review.findFirst({
+            where: {
+                reviewerId,
+                revieweeId,
+                createdAt: {
+                    gte: cooldownThreshold
                 }
             },
-            votes: true
+            orderBy: {
+                createdAt: "desc"
+            }
+        });
+
+        if (lastReview) {
+            const ageInMs = Date.now() - new Date(lastReview.createdAt).getTime();
+            const ageInDays = ageInMs / (1000 * 60 * 60 * 24);
+            const remainingDays = Math.max(1, Math.ceil(COOLDOWN_DAYS - ageInDays));
+            throw new Error(`21-day cooldown active. You have already reviewed this faculty member. You can submit another rating in ${remainingDays} day(s).`);
         }
+
+        return await tx.review.create({
+            data: {
+                reviewerId,
+                reviewerName: reviewerName || null,
+                reviewerEmail: reviewerEmail || null,
+                reviewerRollNo: reviewerRollNo || null,
+                reviewerBatch: reviewerBatch || null,
+                reviewerBranch: reviewerBranch || null,
+                revieweeId,
+                courseCode: courseCode || null,
+                courseName: courseName || null,
+                rating,
+                reviewText,
+                context: context || (reviewerBatch ? `Batch ${reviewerBatch}` : null)
+            },
+            include: {
+                replies: {
+                    include: {
+                        votes: true
+                    }
+                },
+                votes: true
+            }
+        });
     });
 
     // Automatically recalculate time-weighted ratings for the teacher
