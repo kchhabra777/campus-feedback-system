@@ -1,0 +1,111 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% -----------------------------------------------------
+% bvraghav-tiet-ucs503p-article.sty
+% -----------------------------------------------------
+
+% Variable: Lab Instructor
+\makeatletter \newcommand{\BvrSetLabInstructor}[1]{%
+  \gdef\Bvr@LabInstructor{#1}}
+% default
+\newcommand{\Bvr@LabInstructor}{Dr. Raghav %
+  B. Venkataramaiyer}
+% public accessor
+\newcommand{\BvrLabInstructorValue}{\Bvr@LabInstructor}
+\makeatother
+
+% Add subtitle
+\usepackage{titling}
+% -- Set title bold
+\pretitle{\begin{center}\bfseries\fontsize{18bp}{18bp}\selectfont}
+\makeatletter
+\newcommand{\BvrSubtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip 0.5em}%
+}
+\makeatother
+
+% Hints in the section title(s)
+\newcommand{\BvrHint}[1]{%
+  {\normalfont\normalsize\itshape\hfill #1}}
+
+% -----------------------------------------------------
+
+\title{Transparent Campus Feedback and Pedagogical Dialogue System}
+
+\BvrSetLabInstructor{Dr. Raghav B. Venkataramaiyer}
+
+\BvrSubtitle{%
+  Project Proposal for UCS503P (Batch 3Q1A - Team TechNova)  \\
+  Submitted to: \BvrLabInstructorValue \\ \bfseries
+  Thapar Institute of Engineering and Technology% 
+}
+
+\author{
+  Krishna Chhabra, CSED%
+  \thanks{Roll No: \texttt{1024170001}, %
+    Email: \texttt{kchhabra\_be24\@thapar.edu}}
+  \and 
+  Robin Singla, CSED%
+  \thanks{Roll No: \texttt{1024170017}, %
+    Email: \texttt{rsingla\_be24\@thapar.edu}}
+  \and 
+  Haritika, CSED%
+  \thanks{Roll No: \texttt{1024170015}, %
+    Email: \texttt{haritika\_be24\@thapar.edu}}
+}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Higher-order goal%
+  \BvrHint{\ldots secondary framing}}
+This project aims to enhance academic governance and pedagogical quality across university ecosystems by transforming student evaluations from untraceable, toxic rants into structured, transparent, and accountable feedback loops. The engineering objective is to translate \emph{continuous pedagogical improvement} into a measurable, secure, and distributed software system.
+
+\section{Time-to-value %
+\BvrHint{\ldots primary heuristic}}
+\begin{itemize}[leftmargin=0.7cm]
+    \item Rapid end-to-end prototyping of core student verification and review posting within the first sprint.
+    \item Continuous integration and automated deployment with live verification URLs on Render and Vercel.
+    \item Mathematical rating formulation rewarding active teaching enhancements using time-decay weighting algorithms.
+\end{itemize}
+
+\section{Problem Statement}
+Existing student evaluation systems at higher education institutions suffer from fundamental deficiencies:
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{Anonymity Abuse:} Untraceable reviews encourage emotional vitriol rather than constructive feedback.
+    \item \textbf{Review Bombing:} Lack of rate limiting allows single actors to skew cumulative averages.
+    \item \textbf{Static Scoring:} Traditional linear averages penalize faculty for historical courses without reflecting recent improvements.
+    \item \textbf{One-Way Isolation:} Faculty members have zero channels to respond, clarify concepts, or seek suggestions.
+\end{itemize}
+
+\section{Proposed Solution %
+\BvrHint{\ldots Software Proposition}}
+\subsection{Overview}
+A microservices-based distributed platform featuring:
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{Domain Verification:} Cryptographic 6-digit OTP verification enforcing strict \texttt{\@thapar.edu} domain ownership.
+    \item \textbf{Transparent Identity:} Reviews visibly display student name, roll number, and enrolled batch.
+    \item \textbf{Course-Offering Mapping:} Students only review faculty who actively taught their branch and batch group.
+    \item \textbf{Atomic Anti-Spam Cooldown:} 21-day rate limit per teacher enforced inside database transactions.
+    \item \textbf{Dual Time-Decay Ratings:} Overall score with $w_i = \frac{1}{1 + \text{age}/30}$ alongside a 180-day current rating.
+    \item \textbf{Two-Way Faculty Dialogue:} Verified faculty response threads enabling constructive academic discourse.
+\end{itemize}
+
+\section{Measurable Metrics / Success Criteria}
+\begin{itemize}[leftmargin=0.7cm]
+    \item Zero duplicate submissions under concurrent load (100\% transaction serialization).
+    \item Sub-second API gateway routing latency ($< 100\text{ms}$).
+    \item 100\% vote idempotency enforced via composite database constraints.
+\end{itemize}
+
+\end{document}

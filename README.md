@@ -1,95 +1,71 @@
-# Campus Honest & Transparent Feedback System (Thapar University)
+# Campus Feedback System
 
-A modern, role-enforced campus review and feedback portal built with a microservices architecture.
+![TIET Logo](assets/tiet-logo.svg){ width=120px }
 
----
-
-## 🏛️ Microservices Architecture (Option B)
-
-| Service | Port | Description | Tech Stack |
-| :--- | :--- | :--- | :--- |
-| **`auth-service`** | `5001` | Auth, Email OTP, BE23–BE30 Role Engine, Student & Faculty Profiles, Dynamic Course Offerings | Node.js, Express, Prisma, JWT, Bcrypt, Nodemailer |
-| **`feedback-microservice`** | `5000` | Reviews, 2-Tier Time-Weighted Ratings, Votes (UP/DOWN), Flags, Threaded Replies | Node.js, Express, Prisma (Neon Postgres) |
-| **`gateway`** | `8000` | Unified API Gateway routing `/api/auth`, `/api/profiles`, `/api/courses`, `/api/reviews`, `/api/ratings` | Node.js, Express, `http-proxy-middleware` |
-| **`frontend`** | `5173` | Responsive web client with live role detection, OTP verification, ratings breakdown & review threads | React 19, Vite, Lucide Icons, Custom CSS Design System |
+**UCS503 : Software Engineering Project (2026-27 ODD)**  
+**Thapar Institute of Engineering and Technology (TIET), Patiala**  
+**Group / Batch**: 3Q1A / **Team TechNova**
 
 ---
 
-## 🔑 Core Features & Logic
+## 👥 Team Members
 
-### 1. Automatic Role Determination (Strict `@thapar.edu` & `BE` Rule)
-- Requires an email ending with `@thapar.edu`.
-- Local email part is scanned for `be23`, `be24`, `be25`, `be26`, `be27`, `be28`, `be29`, `be30`.
-  - Matching email (e.g. `kchhabra_be24@thapar.edu`) &rarr; **`STUDENT`** (Batch locked to `BE24`).
-  - Non-matching `@thapar.edu` (e.g. `bv.raghav@thapar.edu`) &rarr; **`TEACHER`**.
-- User **cannot** choose or change their role.
-
-### 2. Email OTP Verification
-- 6-digit cryptographic verification code sent to the `@thapar.edu` email before account activation.
-- Code expires in 10 minutes.
-
-### 3. Student & Faculty Onboarding
-- **Student Profile**: 10-digit Roll Number (strictly validated), Engineering Branch (e.g. `COE`), Batch (`BE24`), Year of Study (1–4).
-- **Faculty Profile**: Full Name & Title, Department, Designation, and Dynamic Course Offerings (e.g. `UCS405 - Discrete Mathematics`, Batches taught `BE24`, Branch `COE`).
-
-### 4. Dynamic Teacher-Student Batch Matching (No Prior Dataset)
-- Because there is no pre-existing dataset, teachers dynamically register the courses and batches they teach.
-- Students can only review teachers who are registered as having taught their batch and branch.
-
-### 5. Two-Tier Time-Weighted Ratings
-- **Overall Rating**: Decays older reviews using $1 / (1 + \text{ageInDays} / 30)$.
-- **Current Rating**: Time-weighted decay calculated strictly over recent reviews within the last 180 days (6 months).
-
-### 6. Transparency & Campus Discussion
-- **Visible Roll Number**: Student roll number, batch, and branch are visibly attached to reviews for transparent campus accountability.
-- **Review Replies (`ReviewReply`)**: Public threaded discussions where faculty and peers can post responses and counter-perspectives.
-- **Voting & Moderation**: Upvote/downvote helpful reviews and flag inappropriate content.
+| Name | Roll Number | Email | Contribution Area |
+| :--- | :---: | :--- | :--- |
+| **Krishna Chhabra** | `1024170001` | `kchhabra_be24@thapar.edu` | Backend Microservices, DB Architecture & Concurrency |
+| **Robin Singla** | `1024170017` | `rsingla_be24@thapar.edu` | Auth Microservice, Role Detection & Voting Idempotency |
+| **Haritika** | `1024170015` | `haritika_be24@thapar.edu` | Frontend UI/UX, Review Systems & Faculty Dialogue |
 
 ---
 
-## 🚀 Running the Platform
+## 🌐 Live Production Deployments
 
-### Single Command (All Services):
-```bash
-npm run dev
+- **Frontend Web Application (Vercel)**: [https://campus-feedback-system.vercel.app](https://campus-feedback-system.vercel.app)
+- **API Gateway (Render)**: [https://campus-feedback-system.onrender.com](https://campus-feedback-system.onrender.com)
+- **Documentation (GitHub Pages)**: [https://kchhabra777.github.io/campus-feedback-system](https://kchhabra777.github.io/campus-feedback-system)
+- **Database**: Serverless PostgreSQL Cluster on Neon Cloud
+
+---
+
+## 📁 Repository Structure
+
+```text
+├── .github/workflows/          # GitHub Actions for automated MkDocs deployment & CI
+├── assets/                     # Logos, stylesheets, and theme overrides
+├── auth-service/               # Authentication & User Profile microservice
+├── feedback-microservice/      # Review, Voting, Reply & Rating microservice
+├── gateway/                    # API Gateway (Port 8000) reverse proxy
+├── frontend/                   # React 19 + Vite single-page web client
+├── docs/                       # MkDocs documentation files
+├── journals/                   # Weekly student work logs
+│   ├── 1024170001-krishna-chhabra/
+│   ├── 1024170017-robin-singla/
+│   └── 1024170015-haritika/
+├── project-proposal/           # LaTeX Project Proposal (main.tex)
+├── project-report-prototype-stage/ # LaTeX Prototype Report (main.tex)
+├── Makefile                    # Standard make targets (make dev, make test, make docs)
+├── mkdocs.yml                  # Material for MkDocs theme configuration
+└── pyproject.toml              # Python docs dependencies
 ```
 
-### Or Run Individual Services Separately:
-
-1. **Auth Service**:
-   ```bash
-   cd auth-service
-   npm run dev
-   ```
-
-2. **Feedback Service**:
-   ```bash
-   cd feedback-microservice
-   npm run dev
-   ```
-
-3. **API Gateway**:
-   ```bash
-   cd gateway
-   npm run dev
-   ```
-
-4. **Frontend**:
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-   Open `http://localhost:5173` in your browser.
-
 ---
 
-## 🧪 Testing
+## ⚡ Quickstart & Verifiable Testing
 
-Run automated tests:
-```bash
-# Test Role Detector Unit Tests
-node auth-service/test-roles.js
+### 1. Run Automated Concurrency Benchmark
+```shell
+make test
+# OR: node auth-service/test-concurrency.js
+```
 
-# Test Full End-to-End Microservice Integration
-node auth-service/test-e2e.js
+### 2. Start Full-Stack Dev Environment
+```shell
+make dev
+# Launches Gateway (:8000), Auth (:5001), Feedback (:5000), and Frontend (:5173) concurrently
+```
+
+### 3. Local Documentation Server
+```shell
+make docs
+# Serves interactive documentation at http://localhost:8000
 ```

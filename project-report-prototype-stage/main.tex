@@ -1,0 +1,36 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\title{Campus Feedback System: Prototype Stage Report}
+\author{
+  Krishna Chhabra (1024170001) \and 
+  Robin Singla (1024170017) \and 
+  Haritika (1024170015)
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Prototype Overview}
+The working prototype implements the end-to-end feedback lifecycle connecting React 19 frontend, Express.js microservices, and Neon PostgreSQL database.
+
+\section{Verified Architectural Milestones}
+\begin{enumerate}
+    \item \textbf{Authentication Microservice}: Email OTP generation, university domain validation, and non-tamperable role assignment.
+    \item \textbf{Feedback Microservice}: Review submissions, 21-day atomic cooldown enforcement, and dual time-decay rating calculations ($w_i = \frac{1}{1 + \text{age}/30}$).
+    \item \textbf{API Gateway}: Centralized reverse proxy at Port 8000.
+    \item \textbf{Concurrency Benchmarks}: Multi-threaded stress testing confirming zero deadlocks and 100\% transaction serialization.
+\end{enumerate}
+
+\section{Live Deployments}
+\begin{itemize}
+    \item Frontend: \url{https://campus-feedback-system.vercel.app}
+    \item API Gateway: \url{https://campus-feedback-system.onrender.com}
+\end{itemize}
+
+\end{document}
