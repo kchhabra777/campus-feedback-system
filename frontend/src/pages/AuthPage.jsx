@@ -95,45 +95,91 @@ export const AuthPage = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', background: 'linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)' }}>
-      <div style={{ maxWidth: '440px', width: '100%' }}>
-        {/* Header Branding */}
-        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <img
-            src="/tiet-logo-full.png"
-            alt="Thapar Institute of Engineering & Technology"
-            style={{
-              height: '90px',
-              maxWidth: '100%',
-              objectFit: 'contain',
-              marginBottom: '16px',
-              display: 'inline-block'
-            }}
-          />
-          <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      background: 'linear-gradient(180deg, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%)',
+      position: 'relative',
+      paddingBottom: '40px'
+    }}>
+      {/* Top Panoramic Campus Illustration */}
+      <div style={{
+        width: '100%',
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '20px 20px 0 20px',
+        textAlign: 'center'
+      }}>
+        <img
+          src="/thapar-campus-banner.png"
+          alt="Thapar Institute Campus Architectural Illustration"
+          style={{
+            width: '100%',
+            maxHeight: '260px',
+            objectFit: 'contain',
+            display: 'block',
+            margin: '0 auto'
+          }}
+        />
+      </div>
+
+      {/* Main Content & Form Card */}
+      <div style={{
+        maxWidth: '460px',
+        width: '100%',
+        padding: '0 20px',
+        marginTop: '10px',
+        textAlign: 'center'
+      }}>
+        {/* Title & Subtitle */}
+        <div style={{ marginBottom: '24px' }}>
+          <h1 style={{
+            fontSize: '28px',
+            fontWeight: 800,
+            color: '#0f172a',
+            letterSpacing: '-0.02em',
+            margin: '0 0 6px 0',
+            fontFamily: 'var(--font-heading, "Plus Jakarta Sans", sans-serif)'
+          }}>
             Faculty Feedback System
           </h1>
-          <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+          <p style={{
+            fontSize: '15px',
+            color: '#64748b',
+            margin: 0,
+            fontWeight: 400
+          }}>
             Transparent & Honest Campus Reviews for Thapar University
           </p>
         </div>
 
-        {/* Card */}
-        <div className="card" style={{ padding: '30px', boxShadow: 'var(--shadow-lg)', borderRadius: 'var(--radius-lg)' }}>
-          <div style={{ display: 'flex', borderBottom: '1px solid var(--border-light)', marginBottom: '24px' }}>
+        {/* Auth Card */}
+        <div className="card" style={{
+          padding: '28px 32px',
+          background: '#ffffff',
+          borderRadius: '16px',
+          boxShadow: '0 20px 35px -10px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04)',
+          border: '1px solid #e2e8f0',
+          textAlign: 'left'
+        }}>
+          {/* Tabs */}
+          <div style={{ display: 'flex', borderBottom: '1px solid #e2e8f0', marginBottom: '24px' }}>
             <button
               onClick={() => { setIsSignup(true); setError(''); setSuccessMsg(''); }}
               style={{
                 flex: 1,
-                padding: '10px',
+                padding: '12px 10px',
                 border: 'none',
                 background: 'none',
-                fontFamily: 'var(--font-heading)',
+                fontFamily: 'var(--font-heading, "Plus Jakarta Sans", sans-serif)',
                 fontSize: '15px',
                 fontWeight: 700,
-                color: isSignup ? 'var(--primary)' : 'var(--text-muted)',
-                borderBottom: isSignup ? '2px solid var(--primary)' : '2px solid transparent',
-                cursor: 'pointer'
+                color: isSignup ? '#c81e1e' : '#64748b',
+                borderBottom: isSignup ? '2.5px solid #c81e1e' : '2.5px solid transparent',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
               }}
             >
               Sign Up
@@ -142,15 +188,16 @@ export const AuthPage = () => {
               onClick={() => { setIsSignup(false); setError(''); setSuccessMsg(''); setOtpSent(false); }}
               style={{
                 flex: 1,
-                padding: '10px',
+                padding: '12px 10px',
                 border: 'none',
                 background: 'none',
-                fontFamily: 'var(--font-heading)',
+                fontFamily: 'var(--font-heading, "Plus Jakarta Sans", sans-serif)',
                 fontSize: '15px',
                 fontWeight: 700,
-                color: !isSignup ? 'var(--primary)' : 'var(--text-muted)',
-                borderBottom: !isSignup ? '2px solid var(--primary)' : '2px solid transparent',
-                cursor: 'pointer'
+                color: !isSignup ? '#c81e1e' : '#64748b',
+                borderBottom: !isSignup ? '2.5px solid #c81e1e' : '2.5px solid transparent',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
               }}
             >
               Log In
@@ -158,14 +205,14 @@ export const AuthPage = () => {
           </div>
 
           {error && (
-            <div className="alert alert-error">
+            <div className="alert alert-error" style={{ marginBottom: '16px' }}>
               <AlertCircle size={16} />
               <span>{error}</span>
             </div>
           )}
 
           {successMsg && (
-            <div className="alert alert-success">
+            <div className="alert alert-success" style={{ marginBottom: '16px' }}>
               <CheckCircle size={16} />
               <span>{successMsg}</span>
             </div>
@@ -173,8 +220,10 @@ export const AuthPage = () => {
 
           <form onSubmit={handleAuthSubmit}>
             {/* Email Input */}
-            <div className="form-group">
-              <label className="form-label">Thapar Email Address</label>
+            <div className="form-group" style={{ marginBottom: '18px' }}>
+              <label className="form-label" style={{ fontSize: '14px', fontWeight: 600, color: '#1e293b', marginBottom: '6px' }}>
+                Thapar Email Address
+              </label>
               <div style={{ position: 'relative' }}>
                 <input
                   type="email"
@@ -184,6 +233,12 @@ export const AuthPage = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={isSignup && otpSent}
+                  style={{
+                    padding: '11px 14px',
+                    borderRadius: '10px',
+                    border: '1px solid #cbd5e1',
+                    fontSize: '14px'
+                  }}
                 />
               </div>
 
@@ -202,13 +257,13 @@ export const AuthPage = () => {
                     </span>
                   )}
                   <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                    (Role automatically assigned by backend)
+                    (Auto-assigned)
                   </span>
                 </div>
               )}
 
               {emailStatus && (
-                <div style={{ fontSize: '12px', color: 'var(--primary)', marginTop: '4px' }}>
+                <div style={{ fontSize: '12px', color: '#c81e1e', marginTop: '5px' }}>
                   {emailStatus}
                 </div>
               )}
@@ -221,7 +276,20 @@ export const AuthPage = () => {
                 onClick={handleSendOtp}
                 disabled={loading || !detectedRole}
                 className="btn btn-primary"
-                style={{ width: '100%', marginTop: '8px' }}
+                style={{
+                  width: '100%',
+                  marginTop: '8px',
+                  backgroundColor: '#c81e1e',
+                  borderColor: '#c81e1e',
+                  borderRadius: '10px',
+                  padding: '12px',
+                  fontWeight: 600,
+                  fontSize: '15px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
               >
                 <KeyRound size={16} />
                 <span>{loading ? "Sending Code..." : "Send Verification OTP"}</span>
@@ -230,13 +298,15 @@ export const AuthPage = () => {
               <>
                 {/* OTP Input for Signup */}
                 {isSignup && otpSent && (
-                  <div className="form-group">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <label className="form-label">6-Digit Verification Code</label>
+                  <div className="form-group" style={{ marginBottom: '18px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                      <label className="form-label" style={{ fontSize: '14px', fontWeight: 600, color: '#1e293b' }}>
+                        6-Digit Verification Code
+                      </label>
                       <button
                         type="button"
                         onClick={handleSendOtp}
-                        style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', cursor: 'pointer', fontWeight: 600 }}
+                        style={{ background: 'none', border: 'none', color: '#c81e1e', fontSize: '12px', cursor: 'pointer', fontWeight: 600 }}
                       >
                         Resend OTP
                       </button>
@@ -245,18 +315,20 @@ export const AuthPage = () => {
                       type="text"
                       maxLength={6}
                       className="form-input"
-                      placeholder="Enter 6-digit code sent to your email"
+                      placeholder="Enter 6-digit code"
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
                       required
-                      style={{ letterSpacing: '4px', fontWeight: 700, fontSize: '16px' }}
+                      style={{ letterSpacing: '4px', fontWeight: 700, fontSize: '16px', borderRadius: '10px', padding: '11px 14px' }}
                     />
                   </div>
                 )}
 
                 {/* Password Input */}
-                <div className="form-group">
-                  <label className="form-label">{isSignup ? "Create Password" : "Password"}</label>
+                <div className="form-group" style={{ marginBottom: '18px' }}>
+                  <label className="form-label" style={{ fontSize: '14px', fontWeight: 600, color: '#1e293b', marginBottom: '6px' }}>
+                    {isSignup ? "Create Password" : "Password"}
+                  </label>
                   <input
                     type="password"
                     className="form-input"
@@ -265,6 +337,7 @@ export const AuthPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={6}
+                    style={{ borderRadius: '10px', padding: '11px 14px', fontSize: '14px' }}
                   />
                 </div>
 
@@ -272,7 +345,16 @@ export const AuthPage = () => {
                   type="submit"
                   disabled={loading}
                   className="btn btn-primary"
-                  style={{ width: '100%', marginTop: '12px' }}
+                  style={{
+                    width: '100%',
+                    marginTop: '8px',
+                    backgroundColor: '#c81e1e',
+                    borderColor: '#c81e1e',
+                    borderRadius: '10px',
+                    padding: '12px',
+                    fontWeight: 600,
+                    fontSize: '15px'
+                  }}
                 >
                   {loading
                     ? "Processing..."
@@ -285,9 +367,18 @@ export const AuthPage = () => {
           </form>
         </div>
 
-        {/* Security Footer Notice */}
-        <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '12px', color: 'var(--text-muted)' }}>
-          🔒 Restricted to verified Thapar University faculty and students.
+        {/* Security Notice */}
+        <div style={{
+          textAlign: 'center',
+          marginTop: '20px',
+          fontSize: '13px',
+          color: '#64748b',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '6px'
+        }}>
+          <span>🔒</span> Restricted to verified Thapar University faculty and students.
         </div>
       </div>
     </div>
