@@ -1,6 +1,6 @@
 # Campus Feedback System
 
-![TIET Logo](assets/tiet-logo.svg){ width=120px }
+![TIET Logo](assets/tiet-logo-full.png){ width=260px }
 
 **UCS503 : Software Engineering Project (2026-27 ODD)**  
 **Thapar Institute of Engineering and Technology (TIET), Patiala**  

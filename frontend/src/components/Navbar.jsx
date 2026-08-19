@@ -10,10 +10,10 @@ export const Navbar = ({ currentView, setCurrentView }) => {
       <div className="navbar-inner">
         <div className="brand-logo" style={{ cursor: 'pointer' }} onClick={() => setCurrentView('home')}>
           <img
-            src="/tiet-logo.svg"
+            src="/tiet-mark.png"
             alt="TIET Logo"
             style={{
-              height: '38px',
+              height: '40px',
               width: 'auto',
               objectFit: 'contain',
               display: 'block'

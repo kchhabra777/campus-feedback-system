@@ -26,7 +26,7 @@ theme:
   palette:
     primary: amber
     accent: orange
-  logo: assets/tiet-logo.svg
+  logo: assets/tiet-mark.png
   favicon: assets/favicon.png
 
 repo_url: https://github.com/kchhabra777/campus-feedback-system

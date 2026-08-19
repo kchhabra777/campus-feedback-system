@@ -100,13 +100,13 @@ export const AuthPage = () => {
         {/* Header Branding */}
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <img
-            src="/tiet-logo.svg"
-            alt="Thapar Institute Logo"
+            src="/tiet-logo-full.png"
+            alt="Thapar Institute of Engineering & Technology"
             style={{
-              height: '64px',
-              width: 'auto',
+              height: '90px',
+              maxWidth: '100%',
               objectFit: 'contain',
-              marginBottom: '12px',
+              marginBottom: '16px',
               display: 'inline-block'
             }}
           />
