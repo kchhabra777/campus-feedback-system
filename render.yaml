@@ -1,0 +1,55 @@
+services:
+  # 1. API Gateway Service
+  - type: web
+    name: gateway
+    runtime: node
+    rootDir: gateway
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: NODE_ENV
+        value: production
+      - key: AUTH_SERVICE_URL
+        fromService:
+          type: web
+          name: auth-service
+          property: host
+      - key: FEEDBACK_SERVICE_URL
+        fromService:
+          type: web
+          name: feedback-microservice
+          property: host
+
+  # 2. Auth & Profile Microservice
+  - type: web
+    name: auth-service
+    runtime: node
+    rootDir: auth-service
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5001
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+
+  # 3. Feedback Microservice
+  - type: web
+    name: feedback-microservice
+    runtime: node
+    rootDir: feedback-microservice
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
