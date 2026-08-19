@@ -30,6 +30,11 @@ async function request(endpoint, options = {}) {
   return data;
 }
 
+export const ALLOWED_BATCHES = [
+  "3Q11", "3Q12", "3Q13", "3Q14", "3Q15",
+  "2Q11", "2Q12", "2Q13", "2Q14", "2Q15"
+];
+
 export const api = {
   // Auth & Roles
   checkEmail: (email) => request("/auth/check-email", {
@@ -90,6 +95,10 @@ export const api = {
   addReply: (reviewId, data) => request(`/reviews/${reviewId}/replies`, {
     method: "POST",
     body: JSON.stringify(data)
+  }),
+  voteReply: (replyId, voteType, userId) => request(`/reviews/replies/${replyId}/vote`, {
+    method: "POST",
+    body: JSON.stringify({ user: { userId }, vote: { type: voteType } })
   }),
   getReplies: (reviewId) => request(`/reviews/${reviewId}/replies`)
 };

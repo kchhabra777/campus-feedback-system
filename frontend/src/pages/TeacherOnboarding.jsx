@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { ALLOWED_BATCHES } from '../api/client';
 import { Award, Plus, Trash2, BookOpen, AlertCircle } from 'lucide-react';
 
 export const TeacherOnboarding = () => {
@@ -12,7 +13,7 @@ export const TeacherOnboarding = () => {
     {
       courseCode: '',
       courseName: '',
-      batchTaught: 'BE24',
+      batchTaught: '3Q11',
       branchTaught: 'COE',
       academicYear: '2024-2025'
     }
@@ -27,7 +28,7 @@ export const TeacherOnboarding = () => {
       {
         courseCode: '',
         courseName: '',
-        batchTaught: 'BE24',
+        batchTaught: '3Q11',
         branchTaught: 'COE',
         academicYear: '2024-2025'
       }
@@ -79,7 +80,7 @@ export const TeacherOnboarding = () => {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px 20px', background: 'var(--bg-main)' }}>
-      <div className="card" style={{ maxWidth: '640px', width: '100%', padding: '32px', borderRadius: 'var(--radius-lg)' }}>
+      <div className="card" style={{ maxWidth: '680px', width: '100%', padding: '32px', borderRadius: 'var(--radius-lg)' }}>
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div className="badge badge-teacher" style={{ fontSize: '13px', marginBottom: '12px' }}>
             <Award size={15} />
@@ -207,14 +208,25 @@ export const TeacherOnboarding = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '10px', alignItems: 'flex-end' }}>
                   <div>
                     <label className="form-label" style={{ fontSize: '12px' }}>Batch Taught</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      placeholder="e.g. BE24"
+                    <select
+                      className="form-select"
                       value={offering.batchTaught}
                       onChange={(e) => handleOfferingChange(idx, 'batchTaught', e.target.value)}
                       required
-                    />
+                      style={{ fontSize: '12px' }}
+                    >
+                      <option value="ALL">ALL Batches</option>
+                      <optgroup label="3rd Year (3Q Batches)">
+                        {ALLOWED_BATCHES.filter(b => b.startsWith('3')).map(b => (
+                          <option key={b} value={b}>{b}</option>
+                        ))}
+                      </optgroup>
+                      <optgroup label="2nd Year (2Q Batches)">
+                        {ALLOWED_BATCHES.filter(b => b.startsWith('2')).map(b => (
+                          <option key={b} value={b}>{b}</option>
+                        ))}
+                      </optgroup>
+                    </select>
                   </div>
                   <div>
                     <label className="form-label" style={{ fontSize: '12px' }}>Branch</label>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { api } from '../api/client';
+import { api, ALLOWED_BATCHES } from '../api/client';
 import { ReviewCard } from '../components/ReviewCard';
 import { StarRating } from '../components/StarRating';
 import {
@@ -26,7 +26,7 @@ export const TeacherDashboard = () => {
   const [showAddCourse, setShowAddCourse] = useState(false);
   const [courseCode, setCourseCode] = useState('');
   const [courseName, setCourseName] = useState('');
-  const [batchTaught, setBatchTaught] = useState('BE24');
+  const [batchTaught, setBatchTaught] = useState('3Q11');
   const [branchTaught, setBranchTaught] = useState('COE');
   const [academicYear, setAcademicYear] = useState('2024-2025');
   const [courseSaving, setCourseSaving] = useState(false);
@@ -42,8 +42,15 @@ export const TeacherDashboard = () => {
         api.getMyOfferings().catch(() => ({ offerings: [] }))
       ]);
 
-      setRatings(ratingsData);
-      setReviews(reviewsData.reviews || []);
+      const rObj = ratingsData?.rating || ratingsData || {};
+      const revList = reviewsData.reviews || [];
+
+      setRatings({
+        overallRating: Number(rObj.overallRating) || 0,
+        recentRating: Number(rObj.recentRating) || 0,
+        totalReviews: Number(rObj.totalReviews) || revList.length
+      });
+      setReviews(revList);
       setOfferings(offeringsData.offerings || []);
     } catch (err) {
       console.error("Failed to load teacher data:", err);
@@ -190,11 +197,16 @@ export const TeacherDashboard = () => {
         )}
       </div>
 
-      {/* Student Reviews Feed */}
+      {/* Student Reviews Feed (Read-Only) */}
       <div>
-        <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '14px' }}>
-          Student Feedback & Reviews ({reviews.length})
-        </h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: 700 }}>
+            Student Feedback & Reviews ({reviews.length})
+          </h3>
+          <span className="badge badge-neutral" style={{ fontSize: '12px' }}>
+            Read-Only Faculty View
+          </span>
+        </div>
 
         {loading ? (
           <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
@@ -268,14 +280,24 @@ export const TeacherDashboard = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div className="form-group">
                   <label className="form-label">Batch Taught *</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="e.g. BE24 or ALL"
+                  <select
+                    className="form-select"
                     value={batchTaught}
                     onChange={(e) => setBatchTaught(e.target.value)}
                     required
-                  />
+                  >
+                    <option value="ALL">ALL Batches</option>
+                    <optgroup label="3rd Year (3Q Batches)">
+                      {ALLOWED_BATCHES.filter(b => b.startsWith('3')).map(b => (
+                        <option key={b} value={b}>{b}</option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="2nd Year (2Q Batches)">
+                      {ALLOWED_BATCHES.filter(b => b.startsWith('2')).map(b => (
+                        <option key={b} value={b}>{b}</option>
+                      ))}
+                    </optgroup>
+                  </select>
                 </div>
 
                 <div className="form-group">

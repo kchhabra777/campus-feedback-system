@@ -7,10 +7,11 @@ import {
 
 export const onboardStudent = async (req, res) => {
   try {
-    const { rollNumber, branch, batch, yearOfStudy } = req.body;
+    const { fullName, rollNumber, branch, batch, yearOfStudy } = req.body;
 
     const profile = await saveStudentProfile({
       userId: req.user.id,
+      fullName,
       rollNumber,
       branch,
       batch: batch || req.user.detectedBatch,

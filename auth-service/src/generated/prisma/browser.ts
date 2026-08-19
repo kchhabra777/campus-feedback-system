@@ -63,6 +63,11 @@ export type ReviewFlag = Prisma.ReviewFlagModel
  */
 export type ReviewReply = Prisma.ReviewReplyModel
 /**
+ * Model ReplyVote
+ * 
+ */
+export type ReplyVote = Prisma.ReplyVoteModel
+/**
  * Model ProfileRating
  * 
  */

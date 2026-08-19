@@ -36,7 +36,7 @@ export const StudentDashboard = () => {
   // Write review modal
   const [reviewingTeacher, setReviewingTeacher] = useState(null);
 
-  const studentBatch = user?.studentProfile?.batch || user?.detectedBatch || 'BE24';
+  const studentBatch = user?.studentProfile?.batch || user?.detectedBatch || '3Q11';
   const studentBranch = user?.studentProfile?.branch || 'COE';
   const studentRollNo = user?.studentProfile?.rollNumber || '';
 
@@ -59,7 +59,12 @@ export const StudentDashboard = () => {
         if (id && !ratings[id]) {
           try {
             const rData = await api.getTeacherRatings(id);
-            ratings[id] = rData;
+            const rObj = rData?.rating || rData || {};
+            ratings[id] = {
+              overallRating: Number(rObj.overallRating) || 0,
+              recentRating: Number(rObj.recentRating) || 0,
+              totalReviews: Number(rObj.totalReviews) || 0
+            };
           } catch {
             ratings[id] = { overallRating: 0, recentRating: 0, totalReviews: 0 };
           }
@@ -86,8 +91,14 @@ export const StudentDashboard = () => {
         api.getTeacherReviews(teacherId),
         api.getTeacherRatings(teacherId).catch(() => null)
       ]);
-      setSelectedTeacherReviews(reviewsRes.reviews || []);
-      setSelectedTeacherRatings(ratingRes);
+      const rObj = ratingRes?.rating || ratingRes || {};
+      const reviewsList = reviewsRes.reviews || [];
+      setSelectedTeacherReviews(reviewsList);
+      setSelectedTeacherRatings({
+        overallRating: Number(rObj.overallRating) || 0,
+        recentRating: Number(rObj.recentRating) || 0,
+        totalReviews: Number(rObj.totalReviews) || reviewsList.length
+      });
     } catch (err) {
       console.error("Fetch reviews error:", err);
     } finally {
@@ -116,7 +127,9 @@ export const StudentDashboard = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-              <h2 style={{ fontSize: '22px', fontWeight: 800 }}>Student Feedback Portal</h2>
+              <h2 style={{ fontSize: '22px', fontWeight: 800 }}>
+                {user?.studentProfile?.fullName || 'Student Feedback Portal'}
+              </h2>
               <span className="badge badge-verified">
                 Roll: {studentRollNo}
               </span>

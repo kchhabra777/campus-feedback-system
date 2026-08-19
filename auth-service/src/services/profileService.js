@@ -2,6 +2,7 @@ import prisma from "../lib/prisma.js";
 
 export const saveStudentProfile = async ({
   userId,
+  fullName,
   rollNumber,
   branch,
   batch,
@@ -16,7 +17,7 @@ export const saveStudentProfile = async ({
   }
 
   if (!batch || batch.trim() === "") {
-    throw new Error("Batch is required (e.g. BE24).");
+    throw new Error("Batch is required (e.g. 3Q11, 2Q12).");
   }
 
   const numYear = Number(yearOfStudy);
@@ -39,6 +40,7 @@ export const saveStudentProfile = async ({
   const profile = await prisma.studentProfile.upsert({
     where: { userId },
     update: {
+      fullName: (fullName && fullName.trim()) || null,
       rollNumber: rollNumber.trim(),
       branch: branch.trim().toUpperCase(),
       batch: batch.trim().toUpperCase(),
@@ -46,6 +48,7 @@ export const saveStudentProfile = async ({
     },
     create: {
       userId,
+      fullName: (fullName && fullName.trim()) || null,
       rollNumber: rollNumber.trim(),
       branch: branch.trim().toUpperCase(),
       batch: batch.trim().toUpperCase(),

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StarRating } from './StarRating';
-import { X, CheckCircle, AlertCircle } from 'lucide-react';
+import { X, CheckCircle, AlertCircle, Clock } from 'lucide-react';
 import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
@@ -30,6 +30,8 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
       await api.createReview({
         reviewer: {
           userId: user.id,
+          name: user.studentProfile?.fullName || user.email?.split('@')[0],
+          email: user.email,
           rollNumber: user.studentProfile?.rollNumber || '',
           batch: user.studentProfile?.batch || user.detectedBatch || '',
           branch: user.studentProfile?.branch || ''
@@ -41,7 +43,7 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
         courseName: courseObj?.courseName || null,
         rating,
         reviewText: reviewText.trim(),
-        context: `Batch ${user.studentProfile?.batch || user.detectedBatch || 'BE'} - ${user.studentProfile?.branch || 'Engineering'}`
+        context: `Batch ${user.studentProfile?.batch || user.detectedBatch || '3Q11'} - ${user.studentProfile?.branch || 'Engineering'}`
       });
 
       if (onSuccess) onSuccess();
@@ -75,10 +77,17 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
           </div>
         )}
 
-        <div className="alert alert-info" style={{ fontSize: '12.5px' }}>
+        <div className="alert alert-info" style={{ fontSize: '12.5px', marginBottom: '8px' }}>
           <CheckCircle size={16} />
           <span>
-            <strong>Transparency Notice:</strong> Your verified roll number (<strong>{user?.studentProfile?.rollNumber}</strong>) and batch (<strong>{user?.studentProfile?.batch}</strong>) will be displayed with this review.
+            <strong>Transparency Notice:</strong> Your verified name (<strong>{user?.studentProfile?.fullName || 'Student'}</strong>), roll number (<strong>{user?.studentProfile?.rollNumber}</strong>), and email (<strong>{user?.email}</strong>) will be visibly displayed with this review.
+          </span>
+        </div>
+
+        <div className="alert alert-info" style={{ fontSize: '12px', background: '#f8fafc', borderColor: '#e2e8f0', color: 'var(--text-secondary)' }}>
+          <Clock size={15} style={{ color: 'var(--primary)' }} />
+          <span>
+            <strong>21-Day Cooldown Policy:</strong> You can submit one rating per faculty member every 21 days.
           </span>
         </div>
 

@@ -3,9 +3,10 @@ import { StarRating } from './StarRating';
 import { Award, BookOpen, Clock, TrendingUp, ChevronRight, Edit3 } from 'lucide-react';
 
 export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, canReview = false }) => {
-  const overallRating = ratings?.overallRating ?? 0;
-  const recentRating = ratings?.recentRating ?? 0;
-  const totalReviews = ratings?.totalReviews ?? 0;
+  const rObj = ratings?.rating || ratings || {};
+  const overallRating = Number(rObj.overallRating) || 0;
+  const recentRating = Number(rObj.recentRating) || 0;
+  const totalReviews = Number(rObj.totalReviews) || 0;
 
   return (
     <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>

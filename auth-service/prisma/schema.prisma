@@ -53,10 +53,11 @@ model OtpVerification {
 model StudentProfile {
   id          String   @id @default(uuid())
   userId      String   @unique
+  fullName    String?  // e.g. "Robin Singh"
   rollNumber  String   @unique
   branch      String
-  batch       String   // e.g. "BE24"
-  yearOfStudy Int      // 1, 2, 3, 4
+  batch       String   // e.g. "3Q11", "2Q12"
+  yearOfStudy Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -79,11 +80,11 @@ model TeacherProfile {
 model CourseOffering {
   id           String         @id @default(uuid())
   teacherId    String
-  courseCode   String         // e.g. "UCS405"
-  courseName   String         // e.g. "Discrete Mathematics"
-  batchTaught  String         // e.g. "BE24"
-  branchTaught String         // e.g. "COE"
-  academicYear String         // e.g. "2024-2025"
+  courseCode   String
+  courseName   String
+  batchTaught  String         // e.g. "3Q11", "2Q12"
+  branchTaught String
+  academicYear String
   createdAt    DateTime       @default(now())
 
   teacher      TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
@@ -92,9 +93,11 @@ model CourseOffering {
 model Review {
   reviewId        Int          @id @default(autoincrement())
   reviewerId      String
-  reviewerRollNo  String?
-  reviewerBatch   String?
-  reviewerBranch  String?
+  reviewerName    String?      // Student Full Name
+  reviewerEmail   String?      // Student @thapar.edu Email
+  reviewerRollNo  String?      // 10-digit roll number
+  reviewerBatch   String?      // e.g. "3Q11"
+  reviewerBranch  String?      // e.g. "COE"
   revieweeId      String
   courseCode      String?
   courseName      String?
@@ -134,17 +137,30 @@ model ReviewFlag {
 }
 
 model ReviewReply {
-  replyId        Int      @id @default(autoincrement())
+  replyId        Int          @id @default(autoincrement())
   reviewId       Int
   authorId       String
   authorRole     Role
   authorName     String
   authorBadge    String?
   replyText      String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
-  review         Review   @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
+  review         Review       @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
+  votes          ReplyVote[]
+}
+
+model ReplyVote {
+  voteId    Int      @id @default(autoincrement())
+  replyId   Int
+  userId    String
+  voteType  VoteType
+  createdAt DateTime @default(now())
+
+  reply     ReviewReply @relation(fields: [replyId], references: [replyId], onDelete: Cascade)
+
+  @@unique([replyId, userId])
 }
 
 model ProfileRating {

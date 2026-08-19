@@ -60,6 +60,7 @@ export const ModelName = {
   ReviewVote: 'ReviewVote',
   ReviewFlag: 'ReviewFlag',
   ReviewReply: 'ReviewReply',
+  ReplyVote: 'ReplyVote',
   ProfileRating: 'ProfileRating'
 } as const
 
@@ -108,6 +109,7 @@ export type OtpVerificationScalarFieldEnum = (typeof OtpVerificationScalarFieldE
 export const StudentProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  fullName: 'fullName',
   rollNumber: 'rollNumber',
   branch: 'branch',
   batch: 'batch',
@@ -149,6 +151,8 @@ export type CourseOfferingScalarFieldEnum = (typeof CourseOfferingScalarFieldEnu
 export const ReviewScalarFieldEnum = {
   reviewId: 'reviewId',
   reviewerId: 'reviewerId',
+  reviewerName: 'reviewerName',
+  reviewerEmail: 'reviewerEmail',
   reviewerRollNo: 'reviewerRollNo',
   reviewerBatch: 'reviewerBatch',
   reviewerBranch: 'reviewerBranch',
@@ -202,6 +206,17 @@ export const ReviewReplyScalarFieldEnum = {
 } as const
 
 export type ReviewReplyScalarFieldEnum = (typeof ReviewReplyScalarFieldEnum)[keyof typeof ReviewReplyScalarFieldEnum]
+
+
+export const ReplyVoteScalarFieldEnum = {
+  voteId: 'voteId',
+  replyId: 'replyId',
+  userId: 'userId',
+  voteType: 'voteType',
+  createdAt: 'createdAt'
+} as const
+
+export type ReplyVoteScalarFieldEnum = (typeof ReplyVoteScalarFieldEnum)[keyof typeof ReplyVoteScalarFieldEnum]
 
 
 export const ProfileRatingScalarFieldEnum = {

@@ -406,6 +406,7 @@ export const ModelName = {
   ReviewVote: 'ReviewVote',
   ReviewFlag: 'ReviewFlag',
   ReviewReply: 'ReviewReply',
+  ReplyVote: 'ReplyVote',
   ProfileRating: 'ProfileRating'
 } as const
 
@@ -422,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "otpVerification" | "studentProfile" | "teacherProfile" | "courseOffering" | "review" | "reviewVote" | "reviewFlag" | "reviewReply" | "profileRating"
+    modelProps: "user" | "otpVerification" | "studentProfile" | "teacherProfile" | "courseOffering" | "review" | "reviewVote" | "reviewFlag" | "reviewReply" | "replyVote" | "profileRating"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1092,6 +1093,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ReplyVote: {
+      payload: Prisma.$ReplyVotePayload<ExtArgs>
+      fields: Prisma.ReplyVoteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ReplyVoteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReplyVotePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ReplyVoteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReplyVotePayload>
+        }
+        findFirst: {
+          args: Prisma.ReplyVoteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReplyVotePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ReplyVoteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReplyVotePayload>
+        }
+        findMany: {
+          args: Prisma.ReplyVoteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReplyVotePayload>[]
+        }
+        create: {
+          args: Prisma.ReplyVoteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReplyVotePayload>
+        }
+        createMany: {
+          args: Prisma.ReplyVoteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ReplyVoteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReplyVotePayload>[]
+        }
+        delete: {
+          args: Prisma.ReplyVoteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReplyVotePayload>
+        }
+        update: {
+          args: Prisma.ReplyVoteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReplyVotePayload>
+        }
+        deleteMany: {
+          args: Prisma.ReplyVoteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ReplyVoteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ReplyVoteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReplyVotePayload>[]
+        }
+        upsert: {
+          args: Prisma.ReplyVoteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReplyVotePayload>
+        }
+        aggregate: {
+          args: Prisma.ReplyVoteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateReplyVote>
+        }
+        groupBy: {
+          args: Prisma.ReplyVoteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReplyVoteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ReplyVoteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReplyVoteCountAggregateOutputType> | number
+        }
+      }
+    }
     ProfileRating: {
       payload: Prisma.$ProfileRatingPayload<ExtArgs>
       fields: Prisma.ProfileRatingFieldRefs
@@ -1234,6 +1309,7 @@ export type OtpVerificationScalarFieldEnum = (typeof OtpVerificationScalarFieldE
 export const StudentProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  fullName: 'fullName',
   rollNumber: 'rollNumber',
   branch: 'branch',
   batch: 'batch',
@@ -1275,6 +1351,8 @@ export type CourseOfferingScalarFieldEnum = (typeof CourseOfferingScalarFieldEnu
 export const ReviewScalarFieldEnum = {
   reviewId: 'reviewId',
   reviewerId: 'reviewerId',
+  reviewerName: 'reviewerName',
+  reviewerEmail: 'reviewerEmail',
   reviewerRollNo: 'reviewerRollNo',
   reviewerBatch: 'reviewerBatch',
   reviewerBranch: 'reviewerBranch',
@@ -1328,6 +1406,17 @@ export const ReviewReplyScalarFieldEnum = {
 } as const
 
 export type ReviewReplyScalarFieldEnum = (typeof ReviewReplyScalarFieldEnum)[keyof typeof ReviewReplyScalarFieldEnum]
+
+
+export const ReplyVoteScalarFieldEnum = {
+  voteId: 'voteId',
+  replyId: 'replyId',
+  userId: 'userId',
+  voteType: 'voteType',
+  createdAt: 'createdAt'
+} as const
+
+export type ReplyVoteScalarFieldEnum = (typeof ReplyVoteScalarFieldEnum)[keyof typeof ReplyVoteScalarFieldEnum]
 
 
 export const ProfileRatingScalarFieldEnum = {
@@ -1636,6 +1725,7 @@ export type GlobalOmitConfig = {
   reviewVote?: Prisma.ReviewVoteOmit
   reviewFlag?: Prisma.ReviewFlagOmit
   reviewReply?: Prisma.ReviewReplyOmit
+  replyVote?: Prisma.ReplyVoteOmit
   profileRating?: Prisma.ProfileRatingOmit
 }
 

@@ -1,5 +1,10 @@
 import prisma from "../lib/prisma.js";
 
+export const ALLOWED_BATCHES = [
+  "3Q11", "3Q12", "3Q13", "3Q14", "3Q15",
+  "2Q11", "2Q12", "2Q13", "2Q14", "2Q15"
+];
+
 export const addCourseOffering = async ({
   teacherUserId,
   courseCode,
@@ -45,14 +50,8 @@ export const getEligibleTeachersForStudent = async ({ batch, branch }) => {
   const normalizedBatch = batch ? batch.trim().toUpperCase() : "";
   const normalizedBranch = branch ? branch.trim().toUpperCase() : "";
 
-  // Find all course offerings where batch matches student batch (or ALL)
-  const offerings = await prisma.courseOffering.findMany({
-    where: {
-      OR: [
-        { batchTaught: normalizedBatch },
-        { batchTaught: "ALL" }
-      ]
-    },
+  // Find all offerings
+  const allOfferings = await prisma.courseOffering.findMany({
     include: {
       teacher: {
         include: {
@@ -67,11 +66,16 @@ export const getEligibleTeachersForStudent = async ({ batch, branch }) => {
     }
   });
 
-  // Filter by branch if specific
-  const filteredOfferings = offerings.filter((off) => {
+  // Filter matching batch (exact, comma-separated, or ALL) and branch
+  const filteredOfferings = allOfferings.filter((off) => {
+    const batches = off.batchTaught.split(",").map((b) => b.trim().toUpperCase());
+    const batchMatches = off.batchTaught === "ALL" || batches.includes(normalizedBatch) || off.batchTaught === normalizedBatch;
+    if (!batchMatches) return false;
+
     if (off.branchTaught === "ALL") return true;
     if (!normalizedBranch) return true;
-    return off.branchTaught.includes(normalizedBranch) || normalizedBranch.includes(off.branchTaught);
+    const branches = off.branchTaught.split(",").map((b) => b.trim().toUpperCase());
+    return branches.includes(normalizedBranch) || off.branchTaught.includes(normalizedBranch);
   });
 
   // Group by teacher
@@ -123,8 +127,10 @@ export const verifyStudentTeacherEligibility = async ({ studentUserId, teacherUs
 
   // Check if teacher has any offering matching student's batch
   const matchingOffering = teacher.offerings.find((off) => {
-    const batchMatches = off.batchTaught === student.batch || off.batchTaught === "ALL";
-    const branchMatches = off.branchTaught === "ALL" || off.branchTaught === student.branch;
+    const batches = off.batchTaught.split(",").map((b) => b.trim().toUpperCase());
+    const batchMatches = off.batchTaught === "ALL" || batches.includes(student.batch) || off.batchTaught === student.batch;
+    const branches = off.branchTaught.split(",").map((b) => b.trim().toUpperCase());
+    const branchMatches = off.branchTaught === "ALL" || branches.includes(student.branch) || off.branchTaught.includes(student.branch);
     const courseMatches = !courseCode || off.courseCode === courseCode.toUpperCase();
     return batchMatches && branchMatches && courseMatches;
   });

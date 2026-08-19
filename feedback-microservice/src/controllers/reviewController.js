@@ -44,6 +44,8 @@ export const createReview = async (req, res) => {
 
         const review = await createReviewService({
             reviewerId: reviewer.userId,
+            reviewerName: reviewer.name || reviewer.fullName || null,
+            reviewerEmail: reviewer.email || null,
             reviewerRollNo: reviewer.rollNumber || null,
             reviewerBatch: reviewer.batch || null,
             reviewerBranch: reviewer.branch || null,
@@ -60,8 +62,8 @@ export const createReview = async (req, res) => {
         });
     } catch (error) {
         console.error("Create review error:", error);
-        return res.status(500).json({
-            error: "Failed to submit review"
+        return res.status(400).json({
+            error: error.message || "Failed to submit review"
         });
     }
 };

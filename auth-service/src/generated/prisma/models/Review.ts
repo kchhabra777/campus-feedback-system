@@ -39,6 +39,8 @@ export type ReviewSumAggregateOutputType = {
 export type ReviewMinAggregateOutputType = {
   reviewId: number | null
   reviewerId: string | null
+  reviewerName: string | null
+  reviewerEmail: string | null
   reviewerRollNo: string | null
   reviewerBatch: string | null
   reviewerBranch: string | null
@@ -56,6 +58,8 @@ export type ReviewMinAggregateOutputType = {
 export type ReviewMaxAggregateOutputType = {
   reviewId: number | null
   reviewerId: string | null
+  reviewerName: string | null
+  reviewerEmail: string | null
   reviewerRollNo: string | null
   reviewerBatch: string | null
   reviewerBranch: string | null
@@ -73,6 +77,8 @@ export type ReviewMaxAggregateOutputType = {
 export type ReviewCountAggregateOutputType = {
   reviewId: number
   reviewerId: number
+  reviewerName: number
+  reviewerEmail: number
   reviewerRollNo: number
   reviewerBatch: number
   reviewerBranch: number
@@ -102,6 +108,8 @@ export type ReviewSumAggregateInputType = {
 export type ReviewMinAggregateInputType = {
   reviewId?: true
   reviewerId?: true
+  reviewerName?: true
+  reviewerEmail?: true
   reviewerRollNo?: true
   reviewerBatch?: true
   reviewerBranch?: true
@@ -119,6 +127,8 @@ export type ReviewMinAggregateInputType = {
 export type ReviewMaxAggregateInputType = {
   reviewId?: true
   reviewerId?: true
+  reviewerName?: true
+  reviewerEmail?: true
   reviewerRollNo?: true
   reviewerBatch?: true
   reviewerBranch?: true
@@ -136,6 +146,8 @@ export type ReviewMaxAggregateInputType = {
 export type ReviewCountAggregateInputType = {
   reviewId?: true
   reviewerId?: true
+  reviewerName?: true
+  reviewerEmail?: true
   reviewerRollNo?: true
   reviewerBatch?: true
   reviewerBranch?: true
@@ -240,6 +252,8 @@ export type ReviewGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type ReviewGroupByOutputType = {
   reviewId: number
   reviewerId: string
+  reviewerName: string | null
+  reviewerEmail: string | null
   reviewerRollNo: string | null
   reviewerBatch: string | null
   reviewerBranch: string | null
@@ -280,6 +294,8 @@ export type ReviewWhereInput = {
   NOT?: Prisma.ReviewWhereInput | Prisma.ReviewWhereInput[]
   reviewId?: Prisma.IntFilter<"Review"> | number
   reviewerId?: Prisma.StringFilter<"Review"> | string
+  reviewerName?: Prisma.StringNullableFilter<"Review"> | string | null
+  reviewerEmail?: Prisma.StringNullableFilter<"Review"> | string | null
   reviewerRollNo?: Prisma.StringNullableFilter<"Review"> | string | null
   reviewerBatch?: Prisma.StringNullableFilter<"Review"> | string | null
   reviewerBranch?: Prisma.StringNullableFilter<"Review"> | string | null
@@ -300,6 +316,8 @@ export type ReviewWhereInput = {
 export type ReviewOrderByWithRelationInput = {
   reviewId?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
+  reviewerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewerRollNo?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewerBatch?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewerBranch?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -323,6 +341,8 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ReviewWhereInput[]
   NOT?: Prisma.ReviewWhereInput | Prisma.ReviewWhereInput[]
   reviewerId?: Prisma.StringFilter<"Review"> | string
+  reviewerName?: Prisma.StringNullableFilter<"Review"> | string | null
+  reviewerEmail?: Prisma.StringNullableFilter<"Review"> | string | null
   reviewerRollNo?: Prisma.StringNullableFilter<"Review"> | string | null
   reviewerBatch?: Prisma.StringNullableFilter<"Review"> | string | null
   reviewerBranch?: Prisma.StringNullableFilter<"Review"> | string | null
@@ -343,6 +363,8 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
 export type ReviewOrderByWithAggregationInput = {
   reviewId?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
+  reviewerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewerRollNo?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewerBatch?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewerBranch?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -368,6 +390,8 @@ export type ReviewScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ReviewScalarWhereWithAggregatesInput | Prisma.ReviewScalarWhereWithAggregatesInput[]
   reviewId?: Prisma.IntWithAggregatesFilter<"Review"> | number
   reviewerId?: Prisma.StringWithAggregatesFilter<"Review"> | string
+  reviewerName?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
+  reviewerEmail?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
   reviewerRollNo?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
   reviewerBatch?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
   reviewerBranch?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
@@ -384,6 +408,8 @@ export type ReviewScalarWhereWithAggregatesInput = {
 
 export type ReviewCreateInput = {
   reviewerId: string
+  reviewerName?: string | null
+  reviewerEmail?: string | null
   reviewerRollNo?: string | null
   reviewerBatch?: string | null
   reviewerBranch?: string | null
@@ -404,6 +430,8 @@ export type ReviewCreateInput = {
 export type ReviewUncheckedCreateInput = {
   reviewId?: number
   reviewerId: string
+  reviewerName?: string | null
+  reviewerEmail?: string | null
   reviewerRollNo?: string | null
   reviewerBatch?: string | null
   reviewerBranch?: string | null
@@ -423,6 +451,8 @@ export type ReviewUncheckedCreateInput = {
 
 export type ReviewUpdateInput = {
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerRollNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBranch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -443,6 +473,8 @@ export type ReviewUpdateInput = {
 export type ReviewUncheckedUpdateInput = {
   reviewId?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerRollNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBranch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -463,6 +495,8 @@ export type ReviewUncheckedUpdateInput = {
 export type ReviewCreateManyInput = {
   reviewId?: number
   reviewerId: string
+  reviewerName?: string | null
+  reviewerEmail?: string | null
   reviewerRollNo?: string | null
   reviewerBatch?: string | null
   reviewerBranch?: string | null
@@ -479,6 +513,8 @@ export type ReviewCreateManyInput = {
 
 export type ReviewUpdateManyMutationInput = {
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerRollNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBranch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -496,6 +532,8 @@ export type ReviewUpdateManyMutationInput = {
 export type ReviewUncheckedUpdateManyInput = {
   reviewId?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerRollNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBranch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -513,6 +551,8 @@ export type ReviewUncheckedUpdateManyInput = {
 export type ReviewCountOrderByAggregateInput = {
   reviewId?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
+  reviewerName?: Prisma.SortOrder
+  reviewerEmail?: Prisma.SortOrder
   reviewerRollNo?: Prisma.SortOrder
   reviewerBatch?: Prisma.SortOrder
   reviewerBranch?: Prisma.SortOrder
@@ -535,6 +575,8 @@ export type ReviewAvgOrderByAggregateInput = {
 export type ReviewMaxOrderByAggregateInput = {
   reviewId?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
+  reviewerName?: Prisma.SortOrder
+  reviewerEmail?: Prisma.SortOrder
   reviewerRollNo?: Prisma.SortOrder
   reviewerBatch?: Prisma.SortOrder
   reviewerBranch?: Prisma.SortOrder
@@ -552,6 +594,8 @@ export type ReviewMaxOrderByAggregateInput = {
 export type ReviewMinOrderByAggregateInput = {
   reviewId?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
+  reviewerName?: Prisma.SortOrder
+  reviewerEmail?: Prisma.SortOrder
   reviewerRollNo?: Prisma.SortOrder
   reviewerBatch?: Prisma.SortOrder
   reviewerBranch?: Prisma.SortOrder
@@ -620,6 +664,8 @@ export type ReviewUpdateOneRequiredWithoutRepliesNestedInput = {
 
 export type ReviewCreateWithoutVotesInput = {
   reviewerId: string
+  reviewerName?: string | null
+  reviewerEmail?: string | null
   reviewerRollNo?: string | null
   reviewerBatch?: string | null
   reviewerBranch?: string | null
@@ -639,6 +685,8 @@ export type ReviewCreateWithoutVotesInput = {
 export type ReviewUncheckedCreateWithoutVotesInput = {
   reviewId?: number
   reviewerId: string
+  reviewerName?: string | null
+  reviewerEmail?: string | null
   reviewerRollNo?: string | null
   reviewerBatch?: string | null
   reviewerBranch?: string | null
@@ -673,6 +721,8 @@ export type ReviewUpdateToOneWithWhereWithoutVotesInput = {
 
 export type ReviewUpdateWithoutVotesInput = {
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerRollNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBranch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -692,6 +742,8 @@ export type ReviewUpdateWithoutVotesInput = {
 export type ReviewUncheckedUpdateWithoutVotesInput = {
   reviewId?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerRollNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBranch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -710,6 +762,8 @@ export type ReviewUncheckedUpdateWithoutVotesInput = {
 
 export type ReviewCreateWithoutFlagsInput = {
   reviewerId: string
+  reviewerName?: string | null
+  reviewerEmail?: string | null
   reviewerRollNo?: string | null
   reviewerBatch?: string | null
   reviewerBranch?: string | null
@@ -729,6 +783,8 @@ export type ReviewCreateWithoutFlagsInput = {
 export type ReviewUncheckedCreateWithoutFlagsInput = {
   reviewId?: number
   reviewerId: string
+  reviewerName?: string | null
+  reviewerEmail?: string | null
   reviewerRollNo?: string | null
   reviewerBatch?: string | null
   reviewerBranch?: string | null
@@ -763,6 +819,8 @@ export type ReviewUpdateToOneWithWhereWithoutFlagsInput = {
 
 export type ReviewUpdateWithoutFlagsInput = {
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerRollNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBranch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -782,6 +840,8 @@ export type ReviewUpdateWithoutFlagsInput = {
 export type ReviewUncheckedUpdateWithoutFlagsInput = {
   reviewId?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerRollNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBranch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -800,6 +860,8 @@ export type ReviewUncheckedUpdateWithoutFlagsInput = {
 
 export type ReviewCreateWithoutRepliesInput = {
   reviewerId: string
+  reviewerName?: string | null
+  reviewerEmail?: string | null
   reviewerRollNo?: string | null
   reviewerBatch?: string | null
   reviewerBranch?: string | null
@@ -819,6 +881,8 @@ export type ReviewCreateWithoutRepliesInput = {
 export type ReviewUncheckedCreateWithoutRepliesInput = {
   reviewId?: number
   reviewerId: string
+  reviewerName?: string | null
+  reviewerEmail?: string | null
   reviewerRollNo?: string | null
   reviewerBatch?: string | null
   reviewerBranch?: string | null
@@ -853,6 +917,8 @@ export type ReviewUpdateToOneWithWhereWithoutRepliesInput = {
 
 export type ReviewUpdateWithoutRepliesInput = {
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerRollNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBranch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -872,6 +938,8 @@ export type ReviewUpdateWithoutRepliesInput = {
 export type ReviewUncheckedUpdateWithoutRepliesInput = {
   reviewId?: Prisma.IntFieldUpdateOperationsInput | number
   reviewerId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerRollNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerBranch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -940,6 +1008,8 @@ export type ReviewCountOutputTypeCountRepliesArgs<ExtArgs extends runtime.Types.
 export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   reviewId?: boolean
   reviewerId?: boolean
+  reviewerName?: boolean
+  reviewerEmail?: boolean
   reviewerRollNo?: boolean
   reviewerBatch?: boolean
   reviewerBranch?: boolean
@@ -961,6 +1031,8 @@ export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type ReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   reviewId?: boolean
   reviewerId?: boolean
+  reviewerName?: boolean
+  reviewerEmail?: boolean
   reviewerRollNo?: boolean
   reviewerBatch?: boolean
   reviewerBranch?: boolean
@@ -978,6 +1050,8 @@ export type ReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type ReviewSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   reviewId?: boolean
   reviewerId?: boolean
+  reviewerName?: boolean
+  reviewerEmail?: boolean
   reviewerRollNo?: boolean
   reviewerBatch?: boolean
   reviewerBranch?: boolean
@@ -995,6 +1069,8 @@ export type ReviewSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type ReviewSelectScalar = {
   reviewId?: boolean
   reviewerId?: boolean
+  reviewerName?: boolean
+  reviewerEmail?: boolean
   reviewerRollNo?: boolean
   reviewerBatch?: boolean
   reviewerBranch?: boolean
@@ -1009,7 +1085,7 @@ export type ReviewSelectScalar = {
   isFlagged?: boolean
 }
 
-export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"reviewId" | "reviewerId" | "reviewerRollNo" | "reviewerBatch" | "reviewerBranch" | "revieweeId" | "courseCode" | "courseName" | "rating" | "reviewText" | "context" | "createdAt" | "updatedAt" | "isFlagged", ExtArgs["result"]["review"]>
+export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"reviewId" | "reviewerId" | "reviewerName" | "reviewerEmail" | "reviewerRollNo" | "reviewerBatch" | "reviewerBranch" | "revieweeId" | "courseCode" | "courseName" | "rating" | "reviewText" | "context" | "createdAt" | "updatedAt" | "isFlagged", ExtArgs["result"]["review"]>
 export type ReviewInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   votes?: boolean | Prisma.Review$votesArgs<ExtArgs>
   flags?: boolean | Prisma.Review$flagsArgs<ExtArgs>
@@ -1029,6 +1105,8 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     reviewId: number
     reviewerId: string
+    reviewerName: string | null
+    reviewerEmail: string | null
     reviewerRollNo: string | null
     reviewerBatch: string | null
     reviewerBranch: string | null
@@ -1469,6 +1547,8 @@ export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends runtime.T
 export interface ReviewFieldRefs {
   readonly reviewId: Prisma.FieldRef<"Review", 'Int'>
   readonly reviewerId: Prisma.FieldRef<"Review", 'String'>
+  readonly reviewerName: Prisma.FieldRef<"Review", 'String'>
+  readonly reviewerEmail: Prisma.FieldRef<"Review", 'String'>
   readonly reviewerRollNo: Prisma.FieldRef<"Review", 'String'>
   readonly reviewerBatch: Prisma.FieldRef<"Review", 'String'>
   readonly reviewerBranch: Prisma.FieldRef<"Review", 'String'>

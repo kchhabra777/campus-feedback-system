@@ -1,7 +1,9 @@
 import {
     createReply as createReplyService,
-    getRepliesByReview as getRepliesService
+    getRepliesByReview as getRepliesService,
+    voteReply as voteReplyService
 } from "../services/replyService.js";
+import prisma from "../lib/prisma.js";
 
 export const createReply = async (req, res) => {
     try {
@@ -18,8 +20,8 @@ export const createReply = async (req, res) => {
             return res.status(400).json({ error: "Author ID is required" });
         }
 
-        if (!authorRole || !["STUDENT", "TEACHER"].includes(authorRole)) {
-            return res.status(400).json({ error: "Valid author role (STUDENT or TEACHER) is required" });
+        if (authorRole !== "STUDENT") {
+            return res.status(403).json({ error: "Only students are permitted to post replies or comments." });
         }
 
         if (!replyText || replyText.trim() === "") {
@@ -29,16 +31,55 @@ export const createReply = async (req, res) => {
         const reply = await createReplyService({
             reviewId: Number(id),
             authorId,
-            authorRole,
-            authorName: authorName || (authorRole === "STUDENT" ? "Student" : "Faculty"),
-            authorBadge: authorBadge || (authorRole === "STUDENT" ? "Verified Student" : "Faculty"),
+            authorRole: "STUDENT",
+            authorName: authorName || "Student",
+            authorBadge: authorBadge || "Student",
             replyText: replyText.trim()
         });
 
         return res.status(201).json({ reply });
     } catch (error) {
         console.error("Failed to create reply:", error);
-        return res.status(500).json({ error: "Failed to create reply" });
+        return res.status(400).json({ error: error.message || "Failed to create reply" });
+    }
+};
+
+export const voteOnReply = async (req, res) => {
+    try {
+        const { replyId } = req.params;
+        const { user, vote } = req.body;
+
+        if (!user || !user.userId) {
+            return res.status(400).json({ error: "User is required" });
+        }
+
+        if (!vote || !["UP", "DOWN"].includes(vote.type)) {
+            return res.status(400).json({ error: "Vote type must be UP or DOWN" });
+        }
+
+        const numReplyId = Number(replyId);
+
+        const result = await voteReplyService({
+            replyId: numReplyId,
+            userId: user.userId,
+            voteType: vote.type
+        });
+
+        const upvotes = await prisma.replyVote.count({
+            where: { replyId: numReplyId, voteType: "UP" }
+        });
+        const downvotes = await prisma.replyVote.count({
+            where: { replyId: numReplyId, voteType: "DOWN" }
+        });
+
+        return res.status(200).json({
+            vote: result,
+            upvotes,
+            downvotes
+        });
+    } catch (error) {
+        console.error("Failed to vote on reply:", error);
+        return res.status(500).json({ error: "Failed to vote on reply" });
     }
 };
 

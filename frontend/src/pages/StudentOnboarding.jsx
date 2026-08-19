@@ -1,18 +1,34 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { ALLOWED_BATCHES } from '../api/client';
 import { User, GraduationCap, Building, AlertCircle } from 'lucide-react';
 
 export const StudentOnboarding = () => {
   const { user, onboardStudent } = useAuth();
+  const [fullName, setFullName] = useState('');
   const [rollNumber, setRollNumber] = useState('');
   const [branch, setBranch] = useState('COE');
-  const [batch, setBatch] = useState(user?.detectedBatch || 'BE24');
-  const [yearOfStudy, setYearOfStudy] = useState(1);
+  const [batch, setBatch] = useState(ALLOWED_BATCHES[0]); // default to 3Q11
+  const [yearOfStudy, setYearOfStudy] = useState(batch.startsWith('3') ? 3 : 2);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const handleBatchChange = (newBatch) => {
+    setBatch(newBatch);
+    if (newBatch.startsWith('3')) {
+      setYearOfStudy(3);
+    } else if (newBatch.startsWith('2')) {
+      setYearOfStudy(2);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!fullName.trim()) {
+      setError("Please enter your full name.");
+      return;
+    }
+
     if (!/^\d{10}$/.test(rollNumber.trim())) {
       setError("Roll Number must be exactly 10 numeric digits (e.g. 1024031234).");
       return;
@@ -23,6 +39,7 @@ export const StudentOnboarding = () => {
 
     try {
       await onboardStudent({
+        fullName: fullName.trim(),
         rollNumber: rollNumber.trim(),
         branch,
         batch: batch.toUpperCase(),
@@ -45,7 +62,7 @@ export const StudentOnboarding = () => {
           </div>
           <h2 style={{ fontSize: '22px', fontWeight: 800 }}>Complete Your Student Profile</h2>
           <p style={{ fontSize: '13.5px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-            Enter your academic credentials for campus verification and transparent feedback.
+            Enter your student details for verified campus transparency.
           </p>
         </div>
 
@@ -57,6 +74,19 @@ export const StudentOnboarding = () => {
         )}
 
         <form onSubmit={handleSubmit}>
+          {/* Full Name */}
+          <div className="form-group">
+            <label className="form-label">Full Name *</label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="e.g. Robin Singh"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+            />
+          </div>
+
           {/* 10-Digit Roll Number */}
           <div className="form-group">
             <label className="form-label">10-Digit Roll Number *</label>
@@ -64,7 +94,7 @@ export const StudentOnboarding = () => {
               type="text"
               maxLength={10}
               className="form-input"
-              placeholder="e.g. 1024031234"
+              placeholder="e.g. 1024170003"
               value={rollNumber}
               onChange={(e) => setRollNumber(e.target.value)}
               required
@@ -99,22 +129,38 @@ export const StudentOnboarding = () => {
             </select>
           </div>
 
-          {/* Batch */}
+          {/* Batch Group (Allowed List: 3Q11-3Q15, 2Q11-2Q15) */}
           <div className="form-group">
-            <label className="form-label">Admission Batch *</label>
-            <input
-              type="text"
-              className="form-input"
-              placeholder="e.g. BE24"
+            <label className="form-label">Batch Group / Sub-group *</label>
+            <select
+              className="form-select"
               value={batch}
-              onChange={(e) => setBatch(e.target.value)}
+              onChange={(e) => handleBatchChange(e.target.value)}
               required
-            />
+            >
+              <optgroup label="3rd Year (3Q Batches)">
+                <option value="3Q11">3Q11</option>
+                <option value="3Q12">3Q12</option>
+                <option value="3Q13">3Q13</option>
+                <option value="3Q14">3Q14</option>
+                <option value="3Q15">3Q15</option>
+              </optgroup>
+              <optgroup label="2nd Year (2Q Batches)">
+                <option value="2Q11">2Q11</option>
+                <option value="2Q12">2Q12</option>
+                <option value="2Q13">2Q13</option>
+                <option value="2Q14">2Q14</option>
+                <option value="2Q15">2Q15</option>
+              </optgroup>
+            </select>
+            <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>
+              Select your active assigned campus batch group.
+            </span>
           </div>
 
           {/* Year of Study */}
           <div className="form-group">
-            <label className="form-label">Current Year of Study *</label>
+            <label className="form-label">Year of Study *</label>
             <select
               className="form-select"
               value={yearOfStudy}
