@@ -50,6 +50,15 @@ export const voteReply = async ({ replyId, userId, voteType }) => {
         }
     });
 
+    // If user clicked the same vote button again -> toggle off (delete reply vote)
+    if (existing && existing.voteType === voteType) {
+        await prisma.replyVote.delete({
+            where: { voteId: existing.voteId }
+        });
+        return { deleted: true, voteType: null };
+    }
+
+    // If user already voted a different type -> switch vote type
     if (existing) {
         return await prisma.replyVote.update({
             where: { voteId: existing.voteId },
@@ -57,6 +66,7 @@ export const voteReply = async ({ replyId, userId, voteType }) => {
         });
     }
 
+    // If first time -> create vote
     return await prisma.replyVote.create({
         data: {
             replyId: Number(replyId),

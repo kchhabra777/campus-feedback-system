@@ -1,13 +1,10 @@
 import prisma from "../lib/prisma.js";
 
-
 export const voteReview = async ({
     reviewId,
     userId,
     voteType
 }) => {
-
-
     const existingVote = await prisma.reviewVote.findUnique({
         where: {
             reviewId_userId: {
@@ -17,10 +14,18 @@ export const voteReview = async ({
         }
     });
 
+    // If user clicked the same vote button again -> toggle off (delete vote)
+    if (existingVote && existingVote.voteType === voteType) {
+        await prisma.reviewVote.delete({
+            where: {
+                voteId: existingVote.voteId
+            }
+        });
+        return { deleted: true, voteType: null };
+    }
 
-    // If user already voted → update vote
+    // If user already voted a different type -> switch vote type
     if (existingVote) {
-
         return await prisma.reviewVote.update({
             where: {
                 voteId: existingVote.voteId
@@ -29,11 +34,9 @@ export const voteReview = async ({
                 voteType
             }
         });
-
     }
 
-
-    // If first time voting → create vote
+    // If first time voting -> create vote
     return await prisma.reviewVote.create({
         data: {
             reviewId,
@@ -41,5 +44,4 @@ export const voteReview = async ({
             voteType
         }
     });
-
 };

@@ -21,22 +21,29 @@ export const ReviewCard = ({ review, onUpdate }) => {
 
   const handleVote = async (type) => {
     if (!user || user.role !== 'STUDENT' || isVoting) return;
-    if (hasVoted === type) return; // Prevent multiple clicks for same vote
 
     setIsVoting(true);
     try {
+      const isUnvoting = hasVoted === type;
       const res = await api.voteReview(review.reviewId, type, user.id);
-      setHasVoted(type);
+      
+      setHasVoted(isUnvoting ? null : type);
+
       if (typeof res.upvotes === 'number' && typeof res.downvotes === 'number') {
         setUpvotes(res.upvotes);
         setDownvotes(res.downvotes);
       } else {
-        if (type === 'UP') {
-          setUpvotes((prev) => prev + 1);
-          if (hasVoted === 'DOWN') setDownvotes((prev) => Math.max(0, prev - 1));
+        if (isUnvoting) {
+          if (type === 'UP') setUpvotes((prev) => Math.max(0, prev - 1));
+          else setDownvotes((prev) => Math.max(0, prev - 1));
         } else {
-          setDownvotes((prev) => prev + 1);
-          if (hasVoted === 'UP') setUpvotes((prev) => Math.max(0, prev - 1));
+          if (type === 'UP') {
+            setUpvotes((prev) => prev + 1);
+            if (hasVoted === 'DOWN') setDownvotes((prev) => Math.max(0, prev - 1));
+          } else {
+            setDownvotes((prev) => prev + 1);
+            if (hasVoted === 'UP') setUpvotes((prev) => Math.max(0, prev - 1));
+          }
         }
       }
     } catch (err) {
@@ -48,19 +55,30 @@ export const ReviewCard = ({ review, onUpdate }) => {
 
   const handleVoteReply = async (replyId, type) => {
     if (!user || user.role !== 'STUDENT' || isVotingReply[replyId]) return;
-    if (replyVoteState[replyId] === type) return; // Prevent multiple clicks on same reply vote
 
     setIsVotingReply((prev) => ({ ...prev, [replyId]: true }));
     try {
+      const currentVote = replyVoteState[replyId];
+      const isUnvoting = currentVote === type;
       const res = await api.voteReply(replyId, type, user.id);
-      setReplyVoteState((prev) => ({ ...prev, [replyId]: type }));
+      
+      setReplyVoteState((prev) => ({ ...prev, [replyId]: isUnvoting ? null : type }));
 
       setReplies((prev) =>
         prev.map((r) => {
           if (r.replyId === replyId) {
-            const newUp = typeof res.upvotes === 'number' ? res.upvotes : (type === 'UP' ? (r.upvotes || 0) + 1 : (r.upvotes || 0));
-            const newDown = typeof res.downvotes === 'number' ? res.downvotes : (type === 'DOWN' ? (r.downvotes || 0) + 1 : (r.downvotes || 0));
-            return { ...r, upvotes: newUp, downvotes: newDown };
+            if (typeof res.upvotes === 'number' && typeof res.downvotes === 'number') {
+              return { ...r, upvotes: res.upvotes, downvotes: res.downvotes };
+            }
+            if (isUnvoting) {
+              const newUp = type === 'UP' ? Math.max(0, (r.upvotes || 0) - 1) : (r.upvotes || 0);
+              const newDown = type === 'DOWN' ? Math.max(0, (r.downvotes || 0) - 1) : (r.downvotes || 0);
+              return { ...r, upvotes: newUp, downvotes: newDown };
+            } else {
+              const newUp = type === 'UP' ? (r.upvotes || 0) + 1 : (currentVote === 'UP' ? Math.max(0, (r.upvotes || 0) - 1) : (r.upvotes || 0));
+              const newDown = type === 'DOWN' ? (r.downvotes || 0) + 1 : (currentVote === 'DOWN' ? Math.max(0, (r.downvotes || 0) - 1) : (r.downvotes || 0));
+              return { ...r, upvotes: newUp, downvotes: newDown };
+            }
           }
           return r;
         })
@@ -204,13 +222,14 @@ export const ReviewCard = ({ review, onUpdate }) => {
               <button
                 type="button"
                 onClick={() => handleVote('UP')}
-                disabled={isVoting || hasVoted === 'UP'}
+                disabled={isVoting}
                 className="btn btn-subtle btn-sm"
                 style={{
                   color: hasVoted === 'UP' ? 'var(--badge-verified-text)' : 'inherit',
                   fontWeight: hasVoted === 'UP' ? 700 : 500,
-                  cursor: hasVoted === 'UP' ? 'default' : 'pointer'
+                  cursor: isVoting ? 'default' : 'pointer'
                 }}
+                title={hasVoted === 'UP' ? 'Click again to remove your helpful vote' : 'Mark as helpful'}
               >
                 <ThumbsUp size={14} />
                 <span>Helpful ({upvotes})</span>
@@ -219,13 +238,14 @@ export const ReviewCard = ({ review, onUpdate }) => {
               <button
                 type="button"
                 onClick={() => handleVote('DOWN')}
-                disabled={isVoting || hasVoted === 'DOWN'}
+                disabled={isVoting}
                 className="btn btn-subtle btn-sm"
                 style={{
                   color: hasVoted === 'DOWN' ? 'var(--primary)' : 'inherit',
                   fontWeight: hasVoted === 'DOWN' ? 700 : 500,
-                  cursor: hasVoted === 'DOWN' ? 'default' : 'pointer'
+                  cursor: isVoting ? 'default' : 'pointer'
                 }}
+                title={hasVoted === 'DOWN' ? 'Click again to remove your downvote' : 'Mark as unhelpful'}
               >
                 <ThumbsDown size={14} />
                 <span>({downvotes})</span>
@@ -307,15 +327,16 @@ export const ReviewCard = ({ review, onUpdate }) => {
                       <button
                         type="button"
                         onClick={() => handleVoteReply(reply.replyId, 'UP')}
-                        disabled={isVotingReply[reply.replyId] || replyVoteState[reply.replyId] === 'UP'}
+                        disabled={isVotingReply[reply.replyId]}
                         className="btn btn-subtle btn-sm"
                         style={{
                           padding: '2px 8px',
                           fontSize: '11px',
                           color: replyVoteState[reply.replyId] === 'UP' ? 'var(--badge-verified-text)' : 'var(--text-secondary)',
                           fontWeight: replyVoteState[reply.replyId] === 'UP' ? 700 : 500,
-                          cursor: replyVoteState[reply.replyId] === 'UP' ? 'default' : 'pointer'
+                          cursor: isVotingReply[reply.replyId] ? 'default' : 'pointer'
                         }}
+                        title={replyVoteState[reply.replyId] === 'UP' ? 'Click again to remove your upvote' : 'Upvote reply'}
                       >
                         <ThumbsUp size={11} />
                         <span>{reply.upvotes || 0}</span>
@@ -324,15 +345,16 @@ export const ReviewCard = ({ review, onUpdate }) => {
                       <button
                         type="button"
                         onClick={() => handleVoteReply(reply.replyId, 'DOWN')}
-                        disabled={isVotingReply[reply.replyId] || replyVoteState[reply.replyId] === 'DOWN'}
+                        disabled={isVotingReply[reply.replyId]}
                         className="btn btn-subtle btn-sm"
                         style={{
                           padding: '2px 8px',
                           fontSize: '11px',
                           color: replyVoteState[reply.replyId] === 'DOWN' ? 'var(--primary)' : 'var(--text-secondary)',
                           fontWeight: replyVoteState[reply.replyId] === 'DOWN' ? 700 : 500,
-                          cursor: replyVoteState[reply.replyId] === 'DOWN' ? 'default' : 'pointer'
+                          cursor: isVotingReply[reply.replyId] ? 'default' : 'pointer'
                         }}
+                        title={replyVoteState[reply.replyId] === 'DOWN' ? 'Click again to remove your downvote' : 'Downvote reply'}
                       >
                         <ThumbsDown size={11} />
                         <span>{reply.downvotes || 0}</span>
