@@ -98,10 +98,18 @@ export const AuthPage = () => {
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', background: 'linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)' }}>
       <div style={{ maxWidth: '440px', width: '100%' }}>
         {/* Header Branding */}
-        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', backgroundColor: 'var(--primary)', color: '#fff', borderRadius: '12px', fontWeight: 800, fontSize: '20px', marginBottom: '12px' }}>
-            TIET
-          </div>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <img
+            src="/tiet-logo.svg"
+            alt="Thapar Institute Logo"
+            style={{
+              height: '64px',
+              width: 'auto',
+              objectFit: 'contain',
+              marginBottom: '12px',
+              display: 'inline-block'
+            }}
+          />
           <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
             Faculty Feedback System
           </h1>
