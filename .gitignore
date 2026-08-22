@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+frontend/.env
+gateway/.env
+auth-service/.env
+feedback-microservice/.env
+
+# Build outputs & caches
+dist/
+frontend/dist/
+build/
+.cache/
+
+# OS & Logs
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

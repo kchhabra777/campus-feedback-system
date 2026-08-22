@@ -1,7 +1,21 @@
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || "/api").replace(/\/$/, "");
 
-function getHeaders(extraHeaders = {}) {
-  const token = localStorage.getItem("campus_token");
+let tokenProvider = null;
+
+export function setTokenProvider(provider) {
+  tokenProvider = provider;
+}
+
+async function getHeaders(extraHeaders = {}) {
+  let token = localStorage.getItem("campus_token");
+  if (tokenProvider) {
+    try {
+      const dynamicToken = await tokenProvider();
+      if (dynamicToken) token = dynamicToken;
+    } catch (e) {
+      console.warn("Could not fetch auth token:", e);
+    }
+  }
   const headers = {
     "Content-Type": "application/json",
     ...extraHeaders
@@ -14,9 +28,10 @@ function getHeaders(extraHeaders = {}) {
 
 async function request(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint}`;
+  const headers = await getHeaders(options.headers);
   const config = {
     ...options,
-    headers: getHeaders(options.headers)
+    headers
   };
 
   const response = await fetch(url, config);
@@ -30,13 +45,38 @@ async function request(endpoint, options = {}) {
   return data;
 }
 
+export const ALLOWED_BRANCHES = [
+  "Computer Engineering (COE)",
+  "Electronics & Communication (ECE)",
+  "Electronics & Computer (ENC)",
+  "Electrical & Computer (EEC)",
+  "Mechanical Engineering (ME)",
+  "Civil Engineering (CE)",
+  "Chemical Engineering (CHE)",
+  "Biotechnology (BT)"
+];
+
 export const ALLOWED_BATCHES = [
   "3Q11", "3Q12", "3Q13", "3Q14", "3Q15",
-  "2Q11", "2Q12", "2Q13", "2Q14", "2Q15"
+  "3A1", "3A2", "3A3", "3B1", "3B2", "3C1", "3C2",
+  "2Q11", "2Q12", "2Q13", "2Q14", "2Q15",
+  "2A1", "2A2", "2B1", "2B2", "2C1", "2C2",
+  "4Q11", "4Q12", "1Q11", "1Q12", "ALL"
+];
+
+export const ALLOWED_ACADEMIC_YEARS = [
+  "2026-2027 ODD",
+  "2026-2027 EVEN",
+  "2025-2026",
+  "2024-2025"
 ];
 
 export const api = {
   // Auth & Roles
+  syncClerkUser: (userData) => request("/auth/clerk-sync", {
+    method: "POST",
+    body: JSON.stringify(userData)
+  }),
   checkEmail: (email) => request("/auth/check-email", {
     method: "POST",
     body: JSON.stringify({ email })
@@ -67,12 +107,25 @@ export const api = {
   getAllTeachers: () => request("/profiles/teachers"),
   getTeacherProfile: (teacherId) => request(`/profiles/teachers/${teacherId}`),
 
-  // Courses & Eligibility
-  getEligibleTeachers: () => request("/courses/eligible-teachers"),
+  // Courses & Offerings CRUD
+  getEligibleTeachers: (batch, branch) => {
+    const params = new URLSearchParams();
+    if (batch) params.append("batch", batch);
+    if (branch) params.append("branch", branch);
+    const query = params.toString();
+    return request(`/courses/eligible-teachers${query ? `?${query}` : ""}`);
+  },
   getMyOfferings: () => request("/courses/my-offerings"),
   addCourseOffering: (data) => request("/courses/offerings", {
     method: "POST",
     body: JSON.stringify(data)
+  }),
+  updateCourseOffering: (id, data) => request(`/courses/offerings/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data)
+  }),
+  deleteCourseOffering: (id) => request(`/courses/offerings/${id}`, {
+    method: "DELETE"
   }),
   checkEligibility: (teacherId, courseCode) =>
     request(`/courses/check-eligibility?teacherId=${teacherId}${courseCode ? `&courseCode=${courseCode}` : ""}`),
@@ -92,6 +145,7 @@ export const api = {
     method: "POST",
     body: JSON.stringify({ user: { userId }, reason })
   }),
+  getFlags: () => request("/reviews/flags"),
   addReply: (reviewId, data) => request(`/reviews/${reviewId}/replies`, {
     method: "POST",
     body: JSON.stringify(data)

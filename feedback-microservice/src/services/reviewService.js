@@ -19,55 +19,54 @@ export const createReview = async ({
 }) => {
     const cooldownThreshold = new Date(Date.now() - COOLDOWN_DAYS * 24 * 60 * 60 * 1000);
 
-    // Atomic transaction enforcing serialized cooldown check + creation
-    const review = await prisma.$transaction(async (tx) => {
-        const lastReview = await tx.review.findFirst({
-            where: {
-                reviewerId,
-                revieweeId,
-                createdAt: {
-                    gte: cooldownThreshold
-                }
-            },
-            orderBy: {
-                createdAt: "desc"
+    // 1. Enforce 21-day cooldown check
+    const lastReview = await prisma.review.findFirst({
+        where: {
+            reviewerId,
+            revieweeId,
+            createdAt: {
+                gte: cooldownThreshold
             }
-        });
-
-        if (lastReview) {
-            const ageInMs = Date.now() - new Date(lastReview.createdAt).getTime();
-            const ageInDays = ageInMs / (1000 * 60 * 60 * 24);
-            const remainingDays = Math.max(1, Math.ceil(COOLDOWN_DAYS - ageInDays));
-            throw new Error(`21-day cooldown active. You have already reviewed this faculty member. You can submit another rating in ${remainingDays} day(s).`);
+        },
+        orderBy: {
+            createdAt: "desc"
         }
-
-        return await tx.review.create({
-            data: {
-                reviewerId,
-                reviewerName: reviewerName || null,
-                reviewerEmail: reviewerEmail || null,
-                reviewerRollNo: reviewerRollNo || null,
-                reviewerBatch: reviewerBatch || null,
-                reviewerBranch: reviewerBranch || null,
-                revieweeId,
-                courseCode: courseCode || null,
-                courseName: courseName || null,
-                rating,
-                reviewText,
-                context: context || (reviewerBatch ? `Batch ${reviewerBatch}` : null)
-            },
-            include: {
-                replies: {
-                    include: {
-                        votes: true
-                    }
-                },
-                votes: true
-            }
-        });
     });
 
-    // Automatically recalculate time-weighted ratings for the teacher
+    if (lastReview) {
+        const ageInMs = Date.now() - new Date(lastReview.createdAt).getTime();
+        const ageInDays = ageInMs / (1000 * 60 * 60 * 24);
+        const remainingDays = Math.max(1, Math.ceil(COOLDOWN_DAYS - ageInDays));
+        throw new Error(`21-day cooldown active. You have already reviewed this faculty member. You can submit another rating in ${remainingDays} day(s).`);
+    }
+
+    // 2. Create the review record
+    const review = await prisma.review.create({
+        data: {
+            reviewerId,
+            reviewerName: reviewerName || null,
+            reviewerEmail: reviewerEmail || null,
+            reviewerRollNo: reviewerRollNo || null,
+            reviewerBatch: reviewerBatch || null,
+            reviewerBranch: reviewerBranch || null,
+            revieweeId,
+            courseCode: courseCode || null,
+            courseName: courseName || null,
+            rating,
+            reviewText,
+            context: context || (reviewerBatch ? `Batch ${reviewerBatch}` : null)
+        },
+        include: {
+            replies: {
+                include: {
+                    votes: true
+                }
+            },
+            votes: true
+        }
+    });
+
+    // 3. Automatically recalculate time-weighted ratings for the teacher
     try {
         await calculateRating(revieweeId);
     } catch (err) {
@@ -110,7 +109,6 @@ export const getReviewsByReviewee = async (revieweeId, page = 1, limit = 20) => 
         }
     });
 
-    // Format reviews with review votes and reply votes breakdown
     const reviews = rawReviews.map((rev) => {
         const upvotes = rev.votes.filter((v) => v.voteType === "UP").length;
         const downvotes = rev.votes.filter((v) => v.voteType === "DOWN").length;

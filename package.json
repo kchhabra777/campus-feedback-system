@@ -8,7 +8,7 @@
     "start": "concurrently -n \"AUTH,FEEDBACK,GATEWAY,FRONTEND\" -c \"blue,green,magenta,cyan\" \"npm start --prefix auth-service\" \"npm start --prefix feedback-microservice\" \"npm start --prefix gateway\" \"npm run dev --prefix frontend\"",
     "install:all": "npm install && npm install --prefix auth-service && npm install --prefix feedback-microservice && npm install --prefix gateway && npm install --prefix frontend",
     "otp": "node --env-file=auth-service/.env -e \"import('./auth-service/src/lib/prisma.js').then(async ({default: p}) => { const otps = await p.otpVerification.findMany({orderBy: {createdAt: 'desc'}, take: 5}); console.table(otps.map(o => ({ Email: o.email, OTP: o.otp, Time: o.createdAt.toLocaleTimeString() }))); process.exit(0); })\"",
-    "studio": "npx --prefix auth-service prisma studio"
+    "studio": "node --env-file=auth-service/.env ./auth-service/node_modules/prisma/build/index.js studio --config=auth-service/prisma.config.ts"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

@@ -2,7 +2,9 @@ import prisma from "../lib/prisma.js";
 
 export const ALLOWED_BATCHES = [
   "3Q11", "3Q12", "3Q13", "3Q14", "3Q15",
-  "2Q11", "2Q12", "2Q13", "2Q14", "2Q15"
+  "2Q11", "2Q12", "2Q13", "2Q14", "2Q15",
+  "3A1", "3A2", "3A3", "3B1", "3B2", "3C1", "3C2",
+  "4Q11", "4Q12", "1Q11", "1Q12"
 ];
 
 export const addCourseOffering = async ({
@@ -32,9 +34,78 @@ export const addCourseOffering = async ({
       courseName: courseName.trim(),
       batchTaught: batchTaught.trim().toUpperCase(),
       branchTaught: (branchTaught && branchTaught.trim().toUpperCase()) || "ALL",
-      academicYear: (academicYear && academicYear.trim()) || "2024-2025"
+      academicYear: (academicYear && academicYear.trim()) || "2026-2027 ODD"
     }
   });
+};
+
+export const updateCourseOffering = async ({
+  offeringId,
+  teacherUserId,
+  courseCode,
+  courseName,
+  batchTaught,
+  branchTaught,
+  academicYear
+}) => {
+  const teacher = await prisma.teacherProfile.findUnique({
+    where: { userId: teacherUserId }
+  });
+
+  if (!teacher) {
+    throw new Error("Teacher profile not found.");
+  }
+
+  const existingOffering = await prisma.courseOffering.findUnique({
+    where: { id: offeringId }
+  });
+
+  if (!existingOffering) {
+    throw new Error("Course offering not found.");
+  }
+
+  if (existingOffering.teacherId !== teacher.id) {
+    throw new Error("Unauthorized: You can only edit your own course offerings.");
+  }
+
+  return await prisma.courseOffering.update({
+    where: { id: offeringId },
+    data: {
+      ...(courseCode ? { courseCode: courseCode.trim().toUpperCase() } : {}),
+      ...(courseName ? { courseName: courseName.trim() } : {}),
+      ...(batchTaught ? { batchTaught: batchTaught.trim().toUpperCase() } : {}),
+      ...(branchTaught ? { branchTaught: branchTaught.trim().toUpperCase() } : {}),
+      ...(academicYear ? { academicYear: academicYear.trim() } : {})
+    }
+  });
+};
+
+export const deleteCourseOffering = async ({ offeringId, teacherUserId }) => {
+  const teacher = await prisma.teacherProfile.findUnique({
+    where: { userId: teacherUserId }
+  });
+
+  if (!teacher) {
+    throw new Error("Teacher profile not found.");
+  }
+
+  const existingOffering = await prisma.courseOffering.findUnique({
+    where: { id: offeringId }
+  });
+
+  if (!existingOffering) {
+    throw new Error("Course offering not found.");
+  }
+
+  if (existingOffering.teacherId !== teacher.id) {
+    throw new Error("Unauthorized: You can only delete your own course offerings.");
+  }
+
+  await prisma.courseOffering.delete({
+    where: { id: offeringId }
+  });
+
+  return { success: true, message: "Course offering deleted successfully." };
 };
 
 export const getTeacherOfferings = async (teacherUserId) => {

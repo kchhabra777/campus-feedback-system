@@ -6,6 +6,9 @@ import { useAuth } from '../context/AuthContext';
 
 export const ReviewCard = ({ review, onUpdate }) => {
   const { user } = useAuth();
+  const isOwnReview = Boolean(
+    user && (user.id === review.reviewerId || user.email === review.reviewerEmail)
+  );
   const [replies, setReplies] = useState(review.replies || []);
   const [showReplies, setShowReplies] = useState(false);
   const [newReply, setNewReply] = useState('');
@@ -222,14 +225,15 @@ export const ReviewCard = ({ review, onUpdate }) => {
               <button
                 type="button"
                 onClick={() => handleVote('UP')}
-                disabled={isVoting}
+                disabled={isVoting || isOwnReview}
                 className="btn btn-subtle btn-sm"
                 style={{
                   color: hasVoted === 'UP' ? 'var(--badge-verified-text)' : 'inherit',
                   fontWeight: hasVoted === 'UP' ? 700 : 500,
-                  cursor: isVoting ? 'default' : 'pointer'
+                  opacity: isOwnReview ? 0.6 : 1,
+                  cursor: isOwnReview ? 'not-allowed' : isVoting ? 'default' : 'pointer'
                 }}
-                title={hasVoted === 'UP' ? 'Click again to remove your helpful vote' : 'Mark as helpful'}
+                title={isOwnReview ? 'You cannot vote on your own review' : hasVoted === 'UP' ? 'Click again to remove your helpful vote' : 'Mark as helpful'}
               >
                 <ThumbsUp size={14} />
                 <span>Helpful ({upvotes})</span>
@@ -238,14 +242,15 @@ export const ReviewCard = ({ review, onUpdate }) => {
               <button
                 type="button"
                 onClick={() => handleVote('DOWN')}
-                disabled={isVoting}
+                disabled={isVoting || isOwnReview}
                 className="btn btn-subtle btn-sm"
                 style={{
                   color: hasVoted === 'DOWN' ? 'var(--primary)' : 'inherit',
                   fontWeight: hasVoted === 'DOWN' ? 700 : 500,
-                  cursor: isVoting ? 'default' : 'pointer'
+                  opacity: isOwnReview ? 0.6 : 1,
+                  cursor: isOwnReview ? 'not-allowed' : isVoting ? 'default' : 'pointer'
                 }}
-                title={hasVoted === 'DOWN' ? 'Click again to remove your downvote' : 'Mark as unhelpful'}
+                title={isOwnReview ? 'You cannot vote on your own review' : hasVoted === 'DOWN' ? 'Click again to remove your downvote' : 'Mark as unhelpful'}
               >
                 <ThumbsDown size={14} />
                 <span>({downvotes})</span>
