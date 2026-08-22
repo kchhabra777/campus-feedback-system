@@ -44,7 +44,7 @@ export const StudentDashboard = () => {
     setLoading(true);
     try {
       // 1. Fetch eligible teachers
-      const eligibleRes = await api.getEligibleTeachers().catch(() => ({ teachers: [] }));
+      const eligibleRes = await api.getEligibleTeachers(studentBatch, studentBranch).catch(() => ({ teachers: [] }));
       setEligibleTeachers(eligibleRes.teachers || []);
 
       // 2. Fetch all teachers
@@ -80,7 +80,7 @@ export const StudentDashboard = () => {
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [user, user?.studentProfile?.batch]);
 
   const handleViewReviews = async (teacher) => {
     setSelectedTeacher(teacher);

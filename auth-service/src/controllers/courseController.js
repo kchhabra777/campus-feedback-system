@@ -4,6 +4,7 @@ import {
   getEligibleTeachersForStudent,
   verifyStudentTeacherEligibility
 } from "../services/courseService.js";
+import prisma from "../lib/prisma.js";
 
 export const createOffering = async (req, res) => {
   try {
@@ -39,13 +40,28 @@ export const getMyOfferings = async (req, res) => {
 
 export const getEligibleTeachers = async (req, res) => {
   try {
-    const batch = req.query.batch || req.user?.studentProfile?.batch || req.user?.detectedBatch;
-    const branch = req.query.branch || req.user?.studentProfile?.branch;
+    let batch = req.query.batch;
+    let branch = req.query.branch;
+
+    if (!batch && req.user?.id) {
+      const student = await prisma.studentProfile.findUnique({
+        where: { userId: req.user.id }
+      });
+      if (student) {
+        batch = student.batch;
+        branch = branch || student.branch;
+      }
+    }
+
+    if (!batch) {
+      batch = req.user?.studentProfile?.batch || req.user?.detectedBatch || "3Q11";
+      branch = branch || req.user?.studentProfile?.branch || "COE";
+    }
 
     const teachers = await getEligibleTeachersForStudent({ batch, branch });
     return res.status(200).json({ teachers });
   } catch (error) {
-    return res.status(500).json({ error: "Failed to fetch eligible teachers" });
+    return res.status(500).json({ error: error.message || "Failed to fetch eligible teachers" });
   }
 };
 

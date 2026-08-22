@@ -5,6 +5,19 @@ export const voteReview = async ({
     userId,
     voteType
 }) => {
+    // 1. Fetch the review to verify self-voting restriction
+    const review = await prisma.review.findUnique({
+        where: { reviewId }
+    });
+
+    if (!review) {
+        throw new Error("Review not found.");
+    }
+
+    if (review.reviewerId === userId) {
+        throw new Error("You cannot vote on your own review.");
+    }
+
     const existingVote = await prisma.reviewVote.findUnique({
         where: {
             reviewId_userId: {

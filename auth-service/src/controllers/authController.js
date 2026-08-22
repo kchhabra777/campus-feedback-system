@@ -6,6 +6,8 @@ import {
 } from "../services/authService.js";
 import { sendOtp as sendOtpService } from "../services/emailOtpService.js";
 import { determineRoleFromEmail } from "../utils/roleDetector.js";
+import prisma from "../lib/prisma.js";
+import { generateToken } from "../utils/jwt.js";
 
 export const checkEmail = async (req, res) => {
   try {
@@ -78,5 +80,40 @@ export const getMe = async (req, res) => {
     return res.status(200).json({ user });
   } catch (error) {
     return res.status(500).json({ error: "Failed to fetch user details" });
+  }
+};
+
+export const syncClerkUser = async (req, res) => {
+  try {
+    const { email, fullName, clerkId } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: "Email is required." });
+    }
+
+    const roleInfo = determineRoleFromEmail(email);
+
+    let user = await prisma.user.findUnique({
+      where: { email: roleInfo.email },
+      include: { studentProfile: true, teacherProfile: true }
+    });
+
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email: roleInfo.email,
+          passwordHash: `CLERK_${clerkId || 'MANAGED'}`,
+          role: roleInfo.role,
+          detectedBatch: roleInfo.batch,
+          isEmailVerified: true,
+          isProfileComplete: false
+        },
+        include: { studentProfile: true, teacherProfile: true }
+      });
+    }
+
+    const token = generateToken(user);
+    return res.status(200).json({ user, token });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 };

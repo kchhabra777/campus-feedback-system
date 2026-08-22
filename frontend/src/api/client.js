@@ -1,7 +1,21 @@
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || "/api").replace(/\/$/, "");
 
-function getHeaders(extraHeaders = {}) {
-  const token = localStorage.getItem("campus_token");
+let tokenProvider = null;
+
+export function setTokenProvider(provider) {
+  tokenProvider = provider;
+}
+
+async function getHeaders(extraHeaders = {}) {
+  let token = localStorage.getItem("campus_token");
+  if (tokenProvider) {
+    try {
+      const dynamicToken = await tokenProvider();
+      if (dynamicToken) token = dynamicToken;
+    } catch (e) {
+      console.warn("Could not fetch auth token:", e);
+    }
+  }
   const headers = {
     "Content-Type": "application/json",
     ...extraHeaders
@@ -14,9 +28,10 @@ function getHeaders(extraHeaders = {}) {
 
 async function request(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint}`;
+  const headers = await getHeaders(options.headers);
   const config = {
     ...options,
-    headers: getHeaders(options.headers)
+    headers
   };
 
   const response = await fetch(url, config);
@@ -37,6 +52,10 @@ export const ALLOWED_BATCHES = [
 
 export const api = {
   // Auth & Roles
+  syncClerkUser: (userData) => request("/auth/clerk-sync", {
+    method: "POST",
+    body: JSON.stringify(userData)
+  }),
   checkEmail: (email) => request("/auth/check-email", {
     method: "POST",
     body: JSON.stringify({ email })
@@ -68,7 +87,13 @@ export const api = {
   getTeacherProfile: (teacherId) => request(`/profiles/teachers/${teacherId}`),
 
   // Courses & Eligibility
-  getEligibleTeachers: () => request("/courses/eligible-teachers"),
+  getEligibleTeachers: (batch, branch) => {
+    const params = new URLSearchParams();
+    if (batch) params.append("batch", batch);
+    if (branch) params.append("branch", branch);
+    const query = params.toString();
+    return request(`/courses/eligible-teachers${query ? `?${query}` : ""}`);
+  },
   getMyOfferings: () => request("/courses/my-offerings"),
   addCourseOffering: (data) => request("/courses/offerings", {
     method: "POST",

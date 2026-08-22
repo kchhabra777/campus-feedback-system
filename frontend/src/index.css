@@ -45,6 +45,31 @@
   --radius-full: 9999px;
 }
 
+.thapar-auth-header {
+  height: 120px;
+  max-height: 120px;
+  width: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  position: relative;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .thapar-auth-header {
+    height: 105px;
+    max-height: 105px;
+  }
+}
+
+@media (max-width: 640px) {
+  .thapar-auth-header {
+    height: 85px;
+    max-height: 85px;
+  }
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
