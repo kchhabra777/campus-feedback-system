@@ -1,5 +1,7 @@
 import {
   addCourseOffering,
+  updateCourseOffering,
+  deleteCourseOffering,
   getTeacherOfferings,
   getEligibleTeachersForStudent,
   verifyStudentTeacherEligibility
@@ -24,6 +26,45 @@ export const createOffering = async (req, res) => {
       message: "Course offering registered successfully",
       offering
     });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+export const updateOffering = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { courseCode, courseName, batchTaught, branchTaught, academicYear } = req.body;
+
+    const offering = await updateCourseOffering({
+      offeringId: id,
+      teacherUserId: req.user.id,
+      courseCode,
+      courseName,
+      batchTaught,
+      branchTaught,
+      academicYear
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Course offering updated successfully.",
+      offering
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+export const deleteOffering = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await deleteCourseOffering({
+      offeringId: id,
+      teacherUserId: req.user.id
+    });
+
+    return res.status(200).json(result);
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
