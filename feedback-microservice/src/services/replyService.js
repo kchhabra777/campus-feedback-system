@@ -6,7 +6,8 @@ export const createReply = async ({
     authorRole,
     authorName,
     authorBadge,
-    replyText
+    replyText,
+    parentReplyId
 }) => {
     if (!["STUDENT", "TEACHER"].includes(authorRole)) {
         throw new Error("Invalid author role for reply.");
@@ -32,7 +33,8 @@ export const createReply = async ({
             authorRole,
             authorName,
             authorBadge,
-            replyText
+            replyText,
+            parentReplyId
         },
         include: {
             votes: true

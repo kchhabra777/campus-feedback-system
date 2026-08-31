@@ -145,7 +145,11 @@ export const api = {
     method: "POST",
     body: JSON.stringify({ user: { userId }, reason })
   }),
-  getFlags: () => request("/reviews/flags"),
+  getFlags: () => request(`/reviews/flags`),
+  resolveFlag: (flagId, action) => request(`/reviews/flags/${flagId}/resolve`, {
+    method: "POST",
+    body: JSON.stringify({ action })
+  }),
   addReply: (reviewId, data) => request(`/reviews/${reviewId}/replies`, {
     method: "POST",
     body: JSON.stringify(data)
@@ -154,5 +158,27 @@ export const api = {
     method: "POST",
     body: JSON.stringify({ user: { userId }, vote: { type: voteType } })
   }),
-  getReplies: (reviewId) => request(`/reviews/${reviewId}/replies`)
+  getReplies: (reviewId) => request(`/reviews/${reviewId}/replies`),
+
+  // Admin Powers
+  getStudents: () => request("/admin/students"),
+  banUser: (userId, isBanned) => request(`/admin/users/${userId}/ban`, {
+    method: "PATCH",
+    body: JSON.stringify({ isBanned })
+  }),
+  deleteTeacher: (teacherId) => request(`/admin/teachers/${teacherId}`, {
+    method: "DELETE"
+  }),
+  getAdminTeacherCourses: (teacherId) => request(`/admin/teachers/${teacherId}/courses`),
+  addAdminTeacherCourse: (teacherId, data) => request(`/admin/teachers/${teacherId}/courses`, {
+    method: "POST",
+    body: JSON.stringify(data)
+  }),
+  deleteAdminTeacherCourse: (courseId) => request(`/admin/courses/${courseId}`, {
+    method: "DELETE"
+  }),
+  adminRegisterTeacher: (data) => request("/admin/register-teacher", {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
 };

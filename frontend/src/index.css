@@ -2,8 +2,9 @@
   --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* Colors */
+  /* Colors - Light Mode */
   --bg-main: #f8fafc;
+  --bg-secondary: #f1f5f9;
   --bg-card: #ffffff;
   --bg-card-subtle: #f1f5f9;
   --border-light: #e2e8f0;
@@ -43,6 +44,48 @@
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-full: 9999px;
+
+  color-scheme: light;
+}
+
+/* ---- Dark Mode ---- */
+[data-theme="dark"] {
+  --bg-main: #09090b;
+  --bg-secondary: #18181b;
+  --bg-card: #18181b;
+  --bg-card-subtle: #27272a;
+  --border-light: #27272a;
+  --border-subtle: #3f3f46;
+
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --text-inverse: #09090b;
+
+  --primary: #ef4444;
+  --primary-hover: #dc2626;
+  --primary-subtle: #450a0a;
+  --primary-border: #7f1d1d;
+
+  --badge-student-bg: #1e3a5f;
+  --badge-student-text: #93c5fd;
+  --badge-student-border: #1e40af;
+
+  --badge-teacher-bg: #4a1942;
+  --badge-teacher-text: #f9a8d4;
+  --badge-teacher-border: #9d174d;
+
+  --badge-verified-bg: #052e16;
+  --badge-verified-text: #6ee7b7;
+  --badge-verified-border: #065f46;
+
+  --star-empty: #3f3f46;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+
+  color-scheme: dark;
 }
 
 .thapar-auth-header {
@@ -82,6 +125,7 @@ body {
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -406,6 +450,27 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 13px;
 }
 
+.reply-teacher-bg {
+  border-left: 3px solid var(--primary) !important;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%) !important;
+}
+
+[data-theme='dark'] .reply-teacher-bg {
+  border-left: 3px solid var(--primary) !important;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(30, 41, 59, 1) 100%) !important;
+}
+
+.reply-admin-bg {
+  border-left: 3px solid #2d3748 !important;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%) !important;
+}
+
+[data-theme='dark'] .reply-admin-bg {
+  border-left: 3px solid #94a3b8 !important;
+  background: linear-gradient(135deg, rgba(71, 85, 105, 0.2) 0%, rgba(30, 41, 59, 1) 100%) !important;
+}
+
+
 .reply-meta {
   display: flex;
   align-items: center;
@@ -413,6 +478,58 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 4px;
   font-weight: 600;
   color: var(--text-secondary);
+}
+
+/* Admin Layout */
+.admin-layout {
+  display: flex;
+  min-height: calc(100vh - 68px);
+  width: 100%;
+}
+
+.admin-sidebar {
+  width: 240px;
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border-light);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.admin-nav-item:hover {
+  background-color: var(--bg-card-subtle);
+  color: var(--text-primary);
+}
+
+.admin-nav-item.active {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.admin-main {
+  flex: 1;
+  padding: 32px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Grid Layouts */
@@ -432,4 +549,103 @@ h1, h2, h3, h4, h5, h6 {
   .grid-2, .grid-3 {
     grid-template-columns: 1fr;
   }
+}
+
+/* Dark mode overrides for hardcoded white backgrounds */
+[data-theme="dark"] .modal-content {
+  background: var(--bg-card);
+}
+[data-theme="dark"] .navbar {
+  background-color: var(--bg-card);
+}
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .form-textarea {
+  background-color: var(--bg-card-subtle);
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .btn-secondary {
+  background-color: var(--bg-card-subtle);
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+[data-theme="dark"] .btn-secondary:hover {
+  background-color: var(--border-light);
+}
+[data-theme="dark"] .alert-error {
+  background-color: #450a0a;
+  color: #fca5a5;
+  border-color: #7f1d1d;
+}
+[data-theme="dark"] .alert-success {
+  background-color: #052e16;
+  color: #6ee7b7;
+  border-color: #065f46;
+}
+[data-theme="dark"] .thapar-auth-header {
+  background: var(--bg-card);
+  border-color: var(--border-light);
+}
+
+/* Fade-in animation for page transitions */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+  animation: fadeSlideIn 0.25s ease forwards;
+}
+
+/* Admin stat boxes */
+.stat-box {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+}
+.stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+}
+.teacher-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+/* Dark mode toggle button */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.theme-toggle:hover {
+  background-color: var(--bg-card-subtle);
+  color: var(--text-primary);
+}
+
+/* Spin animation for loading spinners */
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

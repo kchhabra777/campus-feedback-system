@@ -45,9 +45,9 @@ export const TeacherDashboard = () => {
   const [editSaving, setEditSaving] = useState(false);
   const [editError, setEditError] = useState('');
 
-  const fetchTeacherData = async () => {
+  const fetchTeacherData = async (isSilentRefresh = false) => {
     if (!user) return;
-    setLoading(true);
+    if (!isSilentRefresh) setLoading(true);
     try {
       const [ratingsData, reviewsData, offeringsData] = await Promise.all([
         api.getTeacherRatings(user.id).catch(() => null),
@@ -68,7 +68,7 @@ export const TeacherDashboard = () => {
     } catch (err) {
       console.error("Failed to load teacher data:", err);
     } finally {
-      setLoading(false);
+      if (!isSilentRefresh) setLoading(false);
     }
   };
 
@@ -313,7 +313,7 @@ export const TeacherDashboard = () => {
             <ReviewCard
               key={rev.reviewId}
               review={rev}
-              onUpdate={fetchTeacherData}
+              onUpdate={() => fetchTeacherData(true)}
             />
           ))
         )}

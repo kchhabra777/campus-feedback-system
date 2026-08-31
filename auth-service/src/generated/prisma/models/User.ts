@@ -32,6 +32,7 @@ export type UserMinAggregateOutputType = {
   detectedBatch: string | null
   isEmailVerified: boolean | null
   isProfileComplete: boolean | null
+  isBanned: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +45,7 @@ export type UserMaxAggregateOutputType = {
   detectedBatch: string | null
   isEmailVerified: boolean | null
   isProfileComplete: boolean | null
+  isBanned: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +58,7 @@ export type UserCountAggregateOutputType = {
   detectedBatch: number
   isEmailVerified: number
   isProfileComplete: number
+  isBanned: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -70,6 +73,7 @@ export type UserMinAggregateInputType = {
   detectedBatch?: true
   isEmailVerified?: true
   isProfileComplete?: true
+  isBanned?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +86,7 @@ export type UserMaxAggregateInputType = {
   detectedBatch?: true
   isEmailVerified?: true
   isProfileComplete?: true
+  isBanned?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +99,7 @@ export type UserCountAggregateInputType = {
   detectedBatch?: true
   isEmailVerified?: true
   isProfileComplete?: true
+  isBanned?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -179,6 +185,7 @@ export type UserGroupByOutputType = {
   detectedBatch: string | null
   isEmailVerified: boolean
   isProfileComplete: boolean
+  isBanned: boolean
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -212,6 +219,7 @@ export type UserWhereInput = {
   detectedBatch?: Prisma.StringNullableFilter<"User"> | string | null
   isEmailVerified?: Prisma.BoolFilter<"User"> | boolean
   isProfileComplete?: Prisma.BoolFilter<"User"> | boolean
+  isBanned?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   studentProfile?: Prisma.XOR<Prisma.StudentProfileNullableScalarRelationFilter, Prisma.StudentProfileWhereInput> | null
@@ -226,6 +234,7 @@ export type UserOrderByWithRelationInput = {
   detectedBatch?: Prisma.SortOrderInput | Prisma.SortOrder
   isEmailVerified?: Prisma.SortOrder
   isProfileComplete?: Prisma.SortOrder
+  isBanned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   studentProfile?: Prisma.StudentProfileOrderByWithRelationInput
@@ -243,6 +252,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   detectedBatch?: Prisma.StringNullableFilter<"User"> | string | null
   isEmailVerified?: Prisma.BoolFilter<"User"> | boolean
   isProfileComplete?: Prisma.BoolFilter<"User"> | boolean
+  isBanned?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   studentProfile?: Prisma.XOR<Prisma.StudentProfileNullableScalarRelationFilter, Prisma.StudentProfileWhereInput> | null
@@ -257,6 +267,7 @@ export type UserOrderByWithAggregationInput = {
   detectedBatch?: Prisma.SortOrderInput | Prisma.SortOrder
   isEmailVerified?: Prisma.SortOrder
   isProfileComplete?: Prisma.SortOrder
+  isBanned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -275,6 +286,7 @@ export type UserScalarWhereWithAggregatesInput = {
   detectedBatch?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   isEmailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   isProfileComplete?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  isBanned?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -287,6 +299,7 @@ export type UserCreateInput = {
   detectedBatch?: string | null
   isEmailVerified?: boolean
   isProfileComplete?: boolean
+  isBanned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
@@ -301,6 +314,7 @@ export type UserUncheckedCreateInput = {
   detectedBatch?: string | null
   isEmailVerified?: boolean
   isProfileComplete?: boolean
+  isBanned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
@@ -315,6 +329,7 @@ export type UserUpdateInput = {
   detectedBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isProfileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
@@ -329,6 +344,7 @@ export type UserUncheckedUpdateInput = {
   detectedBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isProfileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -343,6 +359,7 @@ export type UserCreateManyInput = {
   detectedBatch?: string | null
   isEmailVerified?: boolean
   isProfileComplete?: boolean
+  isBanned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -355,6 +372,7 @@ export type UserUpdateManyMutationInput = {
   detectedBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isProfileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -367,6 +385,7 @@ export type UserUncheckedUpdateManyInput = {
   detectedBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isProfileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -379,6 +398,7 @@ export type UserCountOrderByAggregateInput = {
   detectedBatch?: Prisma.SortOrder
   isEmailVerified?: Prisma.SortOrder
   isProfileComplete?: Prisma.SortOrder
+  isBanned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -391,6 +411,7 @@ export type UserMaxOrderByAggregateInput = {
   detectedBatch?: Prisma.SortOrder
   isEmailVerified?: Prisma.SortOrder
   isProfileComplete?: Prisma.SortOrder
+  isBanned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -403,6 +424,7 @@ export type UserMinOrderByAggregateInput = {
   detectedBatch?: Prisma.SortOrder
   isEmailVerified?: Prisma.SortOrder
   isProfileComplete?: Prisma.SortOrder
+  isBanned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -468,6 +490,7 @@ export type UserCreateWithoutStudentProfileInput = {
   detectedBatch?: string | null
   isEmailVerified?: boolean
   isProfileComplete?: boolean
+  isBanned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
@@ -481,6 +504,7 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   detectedBatch?: string | null
   isEmailVerified?: boolean
   isProfileComplete?: boolean
+  isBanned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
@@ -510,6 +534,7 @@ export type UserUpdateWithoutStudentProfileInput = {
   detectedBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isProfileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
@@ -523,6 +548,7 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   detectedBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isProfileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -536,6 +562,7 @@ export type UserCreateWithoutTeacherProfileInput = {
   detectedBatch?: string | null
   isEmailVerified?: boolean
   isProfileComplete?: boolean
+  isBanned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
@@ -549,6 +576,7 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   detectedBatch?: string | null
   isEmailVerified?: boolean
   isProfileComplete?: boolean
+  isBanned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
@@ -578,6 +606,7 @@ export type UserUpdateWithoutTeacherProfileInput = {
   detectedBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isProfileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
@@ -591,6 +620,7 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   detectedBatch?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isProfileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -606,6 +636,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   detectedBatch?: boolean
   isEmailVerified?: boolean
   isProfileComplete?: boolean
+  isBanned?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   studentProfile?: boolean | Prisma.User$studentProfileArgs<ExtArgs>
@@ -620,6 +651,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   detectedBatch?: boolean
   isEmailVerified?: boolean
   isProfileComplete?: boolean
+  isBanned?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -632,6 +664,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   detectedBatch?: boolean
   isEmailVerified?: boolean
   isProfileComplete?: boolean
+  isBanned?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -644,11 +677,12 @@ export type UserSelectScalar = {
   detectedBatch?: boolean
   isEmailVerified?: boolean
   isProfileComplete?: boolean
+  isBanned?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "role" | "detectedBatch" | "isEmailVerified" | "isProfileComplete" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "role" | "detectedBatch" | "isEmailVerified" | "isProfileComplete" | "isBanned" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   studentProfile?: boolean | Prisma.User$studentProfileArgs<ExtArgs>
   teacherProfile?: boolean | Prisma.User$teacherProfileArgs<ExtArgs>
@@ -670,6 +704,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     detectedBatch: string | null
     isEmailVerified: boolean
     isProfileComplete: boolean
+    isBanned: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1104,6 +1139,7 @@ export interface UserFieldRefs {
   readonly detectedBatch: Prisma.FieldRef<"User", 'String'>
   readonly isEmailVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly isProfileComplete: Prisma.FieldRef<"User", 'Boolean'>
+  readonly isBanned: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

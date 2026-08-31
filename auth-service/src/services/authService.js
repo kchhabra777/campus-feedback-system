@@ -34,23 +34,36 @@ export const registerUser = async ({ email, password, otp }) => {
     where: { email: roleInfo.email }
   });
 
-  if (existingUser) {
-    throw new Error("An account with this Thapar email already exists. Please log in.");
-  }
-
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash(password, salt);
 
-  const user = await prisma.user.create({
-    data: {
-      email: roleInfo.email,
-      passwordHash,
-      role: roleInfo.role,
-      detectedBatch: roleInfo.batch,
-      isEmailVerified: true,
-      isProfileComplete: false
+  let user;
+
+  if (existingUser) {
+    if (existingUser.passwordHash === "PENDING") {
+      // This is a pre-registered teacher account by an admin! Complete their registration.
+      user = await prisma.user.update({
+        where: { email: roleInfo.email },
+        data: {
+          passwordHash,
+          isEmailVerified: true
+        }
+      });
+    } else {
+      throw new Error("An account with this Thapar email already exists. Please log in.");
     }
-  });
+  } else {
+    user = await prisma.user.create({
+      data: {
+        email: roleInfo.email,
+        passwordHash,
+        role: roleInfo.role,
+        detectedBatch: roleInfo.batch,
+        isEmailVerified: true,
+        isProfileComplete: false
+      }
+    });
+  }
 
   const token = generateToken({
     userId: user.id,

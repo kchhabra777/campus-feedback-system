@@ -5,6 +5,7 @@ import { StudentOnboarding } from './pages/StudentOnboarding';
 import { TeacherOnboarding } from './pages/TeacherOnboarding';
 import { StudentDashboard } from './pages/StudentDashboard';
 import { TeacherDashboard } from './pages/TeacherDashboard';
+import { AdminDashboard } from './pages/AdminDashboard';
 import { Navbar } from './components/Navbar';
 
 export function App() {
@@ -46,7 +47,13 @@ export function App() {
   return (
     <div className="app-container">
       <Navbar currentView={currentView} setCurrentView={setCurrentView} />
-      {user.role === 'STUDENT' ? <StudentDashboard /> : <TeacherDashboard />}
+      {user.role === 'ADMIN' ? (
+        <AdminDashboard />
+      ) : user.role === 'STUDENT' ? (
+        <StudentDashboard />
+      ) : (
+        <TeacherDashboard />
+      )}
     </div>
   );
 }
