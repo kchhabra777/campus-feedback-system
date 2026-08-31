@@ -87,6 +87,7 @@ model CourseOffering {
   batchTaught  String         // e.g. "3Q11", "2Q12"
   branchTaught String
   academicYear String
+  ltp          String?        @default("L") // L, T, P
   createdAt    DateTime       @default(now())
 
   teacher      TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)

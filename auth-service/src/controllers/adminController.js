@@ -87,8 +87,16 @@ export const deleteTeacher = async (req, res) => {
 export const getTeacherCourses = async (req, res) => {
   try {
     const { id } = req.params;
+    
+    // Find teacher profile first
+    const teacherProfile = await prisma.teacherProfile.findUnique({
+      where: { userId: id }
+    });
+    
+    if (!teacherProfile) return res.status(404).json({ error: "Teacher profile not found" });
+
     const courses = await prisma.courseOffering.findMany({
-      where: { teacherUserId: id }
+      where: { teacherId: teacherProfile.id }
     });
     res.status(200).json({ courses });
   } catch (error) {
@@ -99,15 +107,24 @@ export const getTeacherCourses = async (req, res) => {
 export const addTeacherCourse = async (req, res) => {
   try {
     const { id } = req.params;
-    const { courseCode, courseName, batchTaught, branchTaught, academicYear } = req.body;
+    const { courseCode, courseName, batchTaught, branchTaught, academicYear, ltp } = req.body;
+    
+    // Find teacher profile first
+    const teacherProfile = await prisma.teacherProfile.findUnique({
+      where: { userId: id }
+    });
+    
+    if (!teacherProfile) return res.status(404).json({ error: "Teacher profile not found" });
+
     const course = await prisma.courseOffering.create({
       data: {
-        teacherUserId: id,
+        teacherId: teacherProfile.id,
         courseCode,
         courseName,
         batchTaught,
         branchTaught,
-        academicYear
+        academicYear,
+        ltp: ltp || "L"
       }
     });
     res.status(201).json({ course });

@@ -32,6 +32,7 @@ export type CourseOfferingMinAggregateOutputType = {
   batchTaught: string | null
   branchTaught: string | null
   academicYear: string | null
+  ltp: string | null
   createdAt: Date | null
 }
 
@@ -43,6 +44,7 @@ export type CourseOfferingMaxAggregateOutputType = {
   batchTaught: string | null
   branchTaught: string | null
   academicYear: string | null
+  ltp: string | null
   createdAt: Date | null
 }
 
@@ -54,6 +56,7 @@ export type CourseOfferingCountAggregateOutputType = {
   batchTaught: number
   branchTaught: number
   academicYear: number
+  ltp: number
   createdAt: number
   _all: number
 }
@@ -67,6 +70,7 @@ export type CourseOfferingMinAggregateInputType = {
   batchTaught?: true
   branchTaught?: true
   academicYear?: true
+  ltp?: true
   createdAt?: true
 }
 
@@ -78,6 +82,7 @@ export type CourseOfferingMaxAggregateInputType = {
   batchTaught?: true
   branchTaught?: true
   academicYear?: true
+  ltp?: true
   createdAt?: true
 }
 
@@ -89,6 +94,7 @@ export type CourseOfferingCountAggregateInputType = {
   batchTaught?: true
   branchTaught?: true
   academicYear?: true
+  ltp?: true
   createdAt?: true
   _all?: true
 }
@@ -173,6 +179,7 @@ export type CourseOfferingGroupByOutputType = {
   batchTaught: string
   branchTaught: string
   academicYear: string
+  ltp: string | null
   createdAt: Date
   _count: CourseOfferingCountAggregateOutputType | null
   _min: CourseOfferingMinAggregateOutputType | null
@@ -205,6 +212,7 @@ export type CourseOfferingWhereInput = {
   batchTaught?: Prisma.StringFilter<"CourseOffering"> | string
   branchTaught?: Prisma.StringFilter<"CourseOffering"> | string
   academicYear?: Prisma.StringFilter<"CourseOffering"> | string
+  ltp?: Prisma.StringNullableFilter<"CourseOffering"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CourseOffering"> | Date | string
   teacher?: Prisma.XOR<Prisma.TeacherProfileScalarRelationFilter, Prisma.TeacherProfileWhereInput>
 }
@@ -217,6 +225,7 @@ export type CourseOfferingOrderByWithRelationInput = {
   batchTaught?: Prisma.SortOrder
   branchTaught?: Prisma.SortOrder
   academicYear?: Prisma.SortOrder
+  ltp?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   teacher?: Prisma.TeacherProfileOrderByWithRelationInput
 }
@@ -232,6 +241,7 @@ export type CourseOfferingWhereUniqueInput = Prisma.AtLeast<{
   batchTaught?: Prisma.StringFilter<"CourseOffering"> | string
   branchTaught?: Prisma.StringFilter<"CourseOffering"> | string
   academicYear?: Prisma.StringFilter<"CourseOffering"> | string
+  ltp?: Prisma.StringNullableFilter<"CourseOffering"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CourseOffering"> | Date | string
   teacher?: Prisma.XOR<Prisma.TeacherProfileScalarRelationFilter, Prisma.TeacherProfileWhereInput>
 }, "id">
@@ -244,6 +254,7 @@ export type CourseOfferingOrderByWithAggregationInput = {
   batchTaught?: Prisma.SortOrder
   branchTaught?: Prisma.SortOrder
   academicYear?: Prisma.SortOrder
+  ltp?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.CourseOfferingCountOrderByAggregateInput
   _max?: Prisma.CourseOfferingMaxOrderByAggregateInput
@@ -261,6 +272,7 @@ export type CourseOfferingScalarWhereWithAggregatesInput = {
   batchTaught?: Prisma.StringWithAggregatesFilter<"CourseOffering"> | string
   branchTaught?: Prisma.StringWithAggregatesFilter<"CourseOffering"> | string
   academicYear?: Prisma.StringWithAggregatesFilter<"CourseOffering"> | string
+  ltp?: Prisma.StringNullableWithAggregatesFilter<"CourseOffering"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CourseOffering"> | Date | string
 }
 
@@ -271,6 +283,7 @@ export type CourseOfferingCreateInput = {
   batchTaught: string
   branchTaught: string
   academicYear: string
+  ltp?: string | null
   createdAt?: Date | string
   teacher: Prisma.TeacherProfileCreateNestedOneWithoutOfferingsInput
 }
@@ -283,6 +296,7 @@ export type CourseOfferingUncheckedCreateInput = {
   batchTaught: string
   branchTaught: string
   academicYear: string
+  ltp?: string | null
   createdAt?: Date | string
 }
 
@@ -293,6 +307,7 @@ export type CourseOfferingUpdateInput = {
   batchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   branchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   academicYear?: Prisma.StringFieldUpdateOperationsInput | string
+  ltp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teacher?: Prisma.TeacherProfileUpdateOneRequiredWithoutOfferingsNestedInput
 }
@@ -305,6 +320,7 @@ export type CourseOfferingUncheckedUpdateInput = {
   batchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   branchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   academicYear?: Prisma.StringFieldUpdateOperationsInput | string
+  ltp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -316,6 +332,7 @@ export type CourseOfferingCreateManyInput = {
   batchTaught: string
   branchTaught: string
   academicYear: string
+  ltp?: string | null
   createdAt?: Date | string
 }
 
@@ -326,6 +343,7 @@ export type CourseOfferingUpdateManyMutationInput = {
   batchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   branchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   academicYear?: Prisma.StringFieldUpdateOperationsInput | string
+  ltp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -337,6 +355,7 @@ export type CourseOfferingUncheckedUpdateManyInput = {
   batchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   branchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   academicYear?: Prisma.StringFieldUpdateOperationsInput | string
+  ltp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -358,6 +377,7 @@ export type CourseOfferingCountOrderByAggregateInput = {
   batchTaught?: Prisma.SortOrder
   branchTaught?: Prisma.SortOrder
   academicYear?: Prisma.SortOrder
+  ltp?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -369,6 +389,7 @@ export type CourseOfferingMaxOrderByAggregateInput = {
   batchTaught?: Prisma.SortOrder
   branchTaught?: Prisma.SortOrder
   academicYear?: Prisma.SortOrder
+  ltp?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -380,6 +401,7 @@ export type CourseOfferingMinOrderByAggregateInput = {
   batchTaught?: Prisma.SortOrder
   branchTaught?: Prisma.SortOrder
   academicYear?: Prisma.SortOrder
+  ltp?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -432,6 +454,7 @@ export type CourseOfferingCreateWithoutTeacherInput = {
   batchTaught: string
   branchTaught: string
   academicYear: string
+  ltp?: string | null
   createdAt?: Date | string
 }
 
@@ -442,6 +465,7 @@ export type CourseOfferingUncheckedCreateWithoutTeacherInput = {
   batchTaught: string
   branchTaught: string
   academicYear: string
+  ltp?: string | null
   createdAt?: Date | string
 }
 
@@ -482,6 +506,7 @@ export type CourseOfferingScalarWhereInput = {
   batchTaught?: Prisma.StringFilter<"CourseOffering"> | string
   branchTaught?: Prisma.StringFilter<"CourseOffering"> | string
   academicYear?: Prisma.StringFilter<"CourseOffering"> | string
+  ltp?: Prisma.StringNullableFilter<"CourseOffering"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CourseOffering"> | Date | string
 }
 
@@ -492,6 +517,7 @@ export type CourseOfferingCreateManyTeacherInput = {
   batchTaught: string
   branchTaught: string
   academicYear: string
+  ltp?: string | null
   createdAt?: Date | string
 }
 
@@ -502,6 +528,7 @@ export type CourseOfferingUpdateWithoutTeacherInput = {
   batchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   branchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   academicYear?: Prisma.StringFieldUpdateOperationsInput | string
+  ltp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -512,6 +539,7 @@ export type CourseOfferingUncheckedUpdateWithoutTeacherInput = {
   batchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   branchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   academicYear?: Prisma.StringFieldUpdateOperationsInput | string
+  ltp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -522,6 +550,7 @@ export type CourseOfferingUncheckedUpdateManyWithoutTeacherInput = {
   batchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   branchTaught?: Prisma.StringFieldUpdateOperationsInput | string
   academicYear?: Prisma.StringFieldUpdateOperationsInput | string
+  ltp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -535,6 +564,7 @@ export type CourseOfferingSelect<ExtArgs extends runtime.Types.Extensions.Intern
   batchTaught?: boolean
   branchTaught?: boolean
   academicYear?: boolean
+  ltp?: boolean
   createdAt?: boolean
   teacher?: boolean | Prisma.TeacherProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["courseOffering"]>
@@ -547,6 +577,7 @@ export type CourseOfferingSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   batchTaught?: boolean
   branchTaught?: boolean
   academicYear?: boolean
+  ltp?: boolean
   createdAt?: boolean
   teacher?: boolean | Prisma.TeacherProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["courseOffering"]>
@@ -559,6 +590,7 @@ export type CourseOfferingSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   batchTaught?: boolean
   branchTaught?: boolean
   academicYear?: boolean
+  ltp?: boolean
   createdAt?: boolean
   teacher?: boolean | Prisma.TeacherProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["courseOffering"]>
@@ -571,10 +603,11 @@ export type CourseOfferingSelectScalar = {
   batchTaught?: boolean
   branchTaught?: boolean
   academicYear?: boolean
+  ltp?: boolean
   createdAt?: boolean
 }
 
-export type CourseOfferingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "teacherId" | "courseCode" | "courseName" | "batchTaught" | "branchTaught" | "academicYear" | "createdAt", ExtArgs["result"]["courseOffering"]>
+export type CourseOfferingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "teacherId" | "courseCode" | "courseName" | "batchTaught" | "branchTaught" | "academicYear" | "ltp" | "createdAt", ExtArgs["result"]["courseOffering"]>
 export type CourseOfferingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   teacher?: boolean | Prisma.TeacherProfileDefaultArgs<ExtArgs>
 }
@@ -598,6 +631,7 @@ export type $CourseOfferingPayload<ExtArgs extends runtime.Types.Extensions.Inte
     batchTaught: string
     branchTaught: string
     academicYear: string
+    ltp: string | null
     createdAt: Date
   }, ExtArgs["result"]["courseOffering"]>
   composites: {}
@@ -1030,6 +1064,7 @@ export interface CourseOfferingFieldRefs {
   readonly batchTaught: Prisma.FieldRef<"CourseOffering", 'String'>
   readonly branchTaught: Prisma.FieldRef<"CourseOffering", 'String'>
   readonly academicYear: Prisma.FieldRef<"CourseOffering", 'String'>
+  readonly ltp: Prisma.FieldRef<"CourseOffering", 'String'>
   readonly createdAt: Prisma.FieldRef<"CourseOffering", 'DateTime'>
 }
     

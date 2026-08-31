@@ -65,13 +65,13 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, ca
           {teacher.courses && teacher.courses.length > 0 ? (
             teacher.courses.map((c, i) => (
               <span key={i} className="badge badge-neutral" style={{ fontSize: '11.5px' }}>
-                {c.courseCode} ({c.batchTaught})
+                {c.courseCode} ({c.batchTaught} - {c.ltp || 'L'})
               </span>
             ))
           ) : teacher.offerings && teacher.offerings.length > 0 ? (
             teacher.offerings.map((c, i) => (
               <span key={i} className="badge badge-neutral" style={{ fontSize: '11.5px' }}>
-                {c.courseCode} ({c.batchTaught})
+                {c.courseCode} ({c.batchTaught} - {c.ltp || 'L'})
               </span>
             ))
           ) : (

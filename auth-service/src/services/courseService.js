@@ -171,6 +171,7 @@ export const getEligibleTeachersForStudent = async ({ batch, branch }) => {
       courseName: off.courseName,
       batchTaught: off.batchTaught,
       branchTaught: off.branchTaught,
+      ltp: off.ltp || "L",
       academicYear: off.academicYear
     });
   }

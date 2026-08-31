@@ -167,6 +167,17 @@ export const StudentDashboard = () => {
                 <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '4px' }}>
                   {selectedTeacher.designation} • {selectedTeacher.department}
                 </div>
+                
+                {/* Courses Tags */}
+                {selectedTeacher.courses && selectedTeacher.courses.length > 0 && (
+                  <div style={{ marginTop: '10px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    {selectedTeacher.courses.map((course, idx) => (
+                      <span key={idx} className="badge badge-neutral" style={{ fontSize: '11px', padding: '4px 8px', background: 'var(--bg-card-hover)', border: '1px solid var(--border-light)', color: 'var(--text-primary)' }}>
+                        {course.courseCode} ({course.batchTaught})
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <button

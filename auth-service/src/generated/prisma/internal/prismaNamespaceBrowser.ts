@@ -143,6 +143,7 @@ export const CourseOfferingScalarFieldEnum = {
   batchTaught: 'batchTaught',
   branchTaught: 'branchTaught',
   academicYear: 'academicYear',
+  ltp: 'ltp',
   createdAt: 'createdAt'
 } as const
 

@@ -74,7 +74,14 @@ export const AdminDashboard = () => {
   const [teacherRatings, setTeacherRatings] = useState(null);
   const [teacherCourses, setTeacherCourses] = useState([]);
   const [addingCourse, setAddingCourse] = useState(false);
-  const [newCourse, setNewCourse] = useState({ courseCode: '', courseName: '', batchTaught: '3Q11', branchTaught: 'COE', academicYear: '2026-2027' });
+  const [newCourse, setNewCourse] = useState({
+    courseCode: '',
+    courseName: '',
+    batchTaught: '3Q11',
+    branchTaught: 'COE',
+    academicYear: '2026-2027',
+    ltp: 'L'
+  });
   const [reviewSort, setReviewSort] = useState('recent');
   const [reviewLoading, setReviewLoading] = useState(false);
 
@@ -487,11 +494,16 @@ export const AdminDashboard = () => {
 
               {addingCourse && (
                 <form onSubmit={handleAddCourse} style={{ marginBottom: '20px', padding: '16px', background: 'var(--bg-default)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-light)' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
-                    <input type="text" className="form-input" placeholder="Course Code (e.g. UCS503)" value={newCourse.courseCode} onChange={e => setNewCourse({ ...newCourse, courseCode: e.target.value })} required />
-                    <input type="text" className="form-input" placeholder="Course Name (e.g. Software Eng)" value={newCourse.courseName} onChange={e => setNewCourse({ ...newCourse, courseName: e.target.value })} required />
-                    <input type="text" className="form-input" placeholder="Batch (e.g. 3Q11)" value={newCourse.batchTaught} onChange={e => setNewCourse({ ...newCourse, batchTaught: e.target.value })} required />
-                    <input type="text" className="form-input" placeholder="Branch (e.g. COE)" value={newCourse.branchTaught} onChange={e => setNewCourse({ ...newCourse, branchTaught: e.target.value })} required />
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                    <input type="text" className="form-input" placeholder="Course Code" value={newCourse.courseCode} onChange={e => setNewCourse({ ...newCourse, courseCode: e.target.value })} required />
+                    <input type="text" className="form-input" placeholder="Course Name" value={newCourse.courseName} onChange={e => setNewCourse({ ...newCourse, courseName: e.target.value })} required />
+                    <select className="form-input" value={newCourse.ltp} onChange={e => setNewCourse({ ...newCourse, ltp: e.target.value })}>
+                      <option value="L">Lecture (L)</option>
+                      <option value="T">Tutorial (T)</option>
+                      <option value="P">Practical (P)</option>
+                    </select>
+                    <input type="text" className="form-input" placeholder="Batch" value={newCourse.batchTaught} onChange={e => setNewCourse({ ...newCourse, batchTaught: e.target.value })} required />
+                    <input type="text" className="form-input" placeholder="Branch" value={newCourse.branchTaught} onChange={e => setNewCourse({ ...newCourse, branchTaught: e.target.value })} required />
                   </div>
                   <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
                     <button type="button" onClick={() => setAddingCourse(false)} className="btn btn-secondary btn-sm">Cancel</button>
@@ -507,7 +519,7 @@ export const AdminDashboard = () => {
                   {teacherCourses.map(course => (
                     <div key={course.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: 'var(--bg-default)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-light)' }}>
                       <div>
-                        <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)' }}>{course.courseCode} - {course.courseName}</div>
+                        <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)' }}>{course.courseCode} - {course.courseName} <span style={{ color: 'var(--text-muted)', fontWeight: 'normal' }}>({course.ltp || 'L'})</span></div>
                         <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Batch: {course.batchTaught} • Branch: {course.branchTaught} • Year: {course.academicYear}</div>
                       </div>
                       <button onClick={() => handleDeleteCourse(course.id)} className="btn btn-subtle btn-sm" style={{ color: '#ef4444' }}>
