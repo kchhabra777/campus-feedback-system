@@ -63,6 +63,12 @@ app.use(
   createProxyMiddleware(proxyOptions(`${AUTH_SERVICE_URL}/courses`))
 );
 
+// Proxy /api/admin/* and /admin/* -> AUTH_SERVICE_URL/admin/*
+app.use(
+  ["/api/admin", "/admin"],
+  createProxyMiddleware(proxyOptions(`${AUTH_SERVICE_URL}/admin`))
+);
+
 // Proxy /api/reviews/* and /reviews/* -> FEEDBACK_SERVICE_URL/reviews/*
 app.use(
   ["/api/reviews", "/reviews"],

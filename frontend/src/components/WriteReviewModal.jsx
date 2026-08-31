@@ -80,7 +80,7 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
         <div className="alert alert-info" style={{ fontSize: '12.5px', marginBottom: '8px' }}>
           <CheckCircle size={16} />
           <span>
-            <strong>Transparency Notice:</strong> Your verified name (<strong>{user?.studentProfile?.fullName || 'Student'}</strong>), roll number (<strong>{user?.studentProfile?.rollNumber}</strong>), and email (<strong>{user?.email}</strong>) will be visibly displayed with this review.
+            <strong>Anonymity Guarantee:</strong> Your review will be posted anonymously. Your verified identity is securely hidden from students and faculty, and is only visible to college administrators.
           </span>
         </div>
 

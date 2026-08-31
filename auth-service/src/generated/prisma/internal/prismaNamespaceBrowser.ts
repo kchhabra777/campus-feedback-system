@@ -88,6 +88,7 @@ export const UserScalarFieldEnum = {
   detectedBatch: 'detectedBatch',
   isEmailVerified: 'isEmailVerified',
   isProfileComplete: 'isProfileComplete',
+  isBanned: 'isBanned',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

@@ -1,3 +1,4 @@
+import prisma from "../lib/prisma.js";
 import {
     createReview as createReviewService,
     getReviewsByReviewee,
@@ -81,6 +82,34 @@ export const getReviews = async (req, res) => {
 
         const result = await getReviewsByReviewee(id, page, limit);
 
+        const requesterEmail = req.headers["x-user-email"] ? req.headers["x-user-email"].toLowerCase() : "";
+        let isAdmin = false;
+        
+        if (requesterEmail) {
+            const user = await prisma.user.findUnique({
+                where: { email: requesterEmail }
+            });
+            if (user && user.role === "ADMIN") {
+                isAdmin = true;
+            } else {
+                const localPart = requesterEmail.split("@")[0] || "";
+                const baseLocalPart = localPart.split("+")[0];
+                const aliasPart = localPart.includes("+") ? localPart.split("+")[1] : "";
+                const adminEmails = ["doaa", "dosa", "admin"];
+                isAdmin = adminEmails.includes(baseLocalPart) || adminEmails.includes(aliasPart);
+            }
+        }
+
+        // Anonymize for non-admins
+        const processedReviews = isAdmin ? result.reviews : result.reviews.map(review => ({
+            ...review,
+            reviewerName: "Anonymous Student",
+            reviewerEmail: null,
+            reviewerRollNo: null,
+            reviewerBatch: null,
+            reviewerBranch: null
+        }));
+
         return res.status(200).json({
             reviewee: {
                 userId: id
@@ -88,7 +117,7 @@ export const getReviews = async (req, res) => {
             page,
             limit,
             totalReviews: result.totalReviews,
-            reviews: result.reviews
+            reviews: processedReviews
         });
     } catch (error) {
         console.error("Get reviews error:", error);
@@ -105,7 +134,24 @@ export const getSingleReview = async (req, res) => {
         if (!review) {
             return res.status(404).json({ error: "Review not found" });
         }
-        return res.status(200).json({ review });
+        const requesterEmail = req.headers["x-user-email"] ? req.headers["x-user-email"].toLowerCase() : "";
+        const localPart = requesterEmail.split("@")[0] || "";
+        const baseLocalPart = localPart.split("+")[0];
+        const aliasPart = localPart.includes("+") ? localPart.split("+")[1] : "";
+        
+        const adminEmails = ["doaa", "dosa", "admin"];
+        const isAdmin = requesterEmail && (adminEmails.includes(baseLocalPart) || adminEmails.includes(aliasPart));
+
+        const processedReview = isAdmin ? review : {
+            ...review,
+            reviewerName: "Anonymous Student",
+            reviewerEmail: null,
+            reviewerRollNo: null,
+            reviewerBatch: null,
+            reviewerBranch: null
+        };
+
+        return res.status(200).json({ review: processedReview });
     } catch (error) {
         console.error("Get single review error:", error);
         return res.status(500).json({ error: "Failed to retrieve review" });

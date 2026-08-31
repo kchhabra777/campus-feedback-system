@@ -82,9 +82,9 @@ export const StudentDashboard = () => {
     fetchDashboardData();
   }, [user, user?.studentProfile?.batch]);
 
-  const handleViewReviews = async (teacher) => {
+  const handleViewReviews = async (teacher, isSilentRefresh = false) => {
     setSelectedTeacher(teacher);
-    setReviewsLoading(true);
+    if (!isSilentRefresh) setReviewsLoading(true);
     const teacherId = teacher.userId || teacher.user?.id || teacher.id;
     try {
       const [reviewsRes, ratingRes] = await Promise.all([
@@ -102,14 +102,14 @@ export const StudentDashboard = () => {
     } catch (err) {
       console.error("Fetch reviews error:", err);
     } finally {
-      setReviewsLoading(false);
+      if (!isSilentRefresh) setReviewsLoading(false);
     }
   };
 
   const handleReviewSubmitted = () => {
     fetchDashboardData();
     if (selectedTeacher) {
-      handleViewReviews(selectedTeacher);
+      handleViewReviews(selectedTeacher, true);
     }
   };
 
@@ -123,7 +123,7 @@ export const StudentDashboard = () => {
   return (
     <div className="main-content">
       {/* Student Welcome Card */}
-      <div className="card" style={{ marginBottom: '24px', background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)' }}>
+      <div className="card" style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>

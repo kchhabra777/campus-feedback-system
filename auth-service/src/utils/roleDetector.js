@@ -16,8 +16,22 @@ export function determineRoleFromEmail(email) {
 
   const localPart = normalized.substring(0, normalized.indexOf("@"));
 
+  // Check for admin emails (including + aliases for testing like kchhabra_be24+admin@thapar.edu)
+  const adminEmails = ["doaa", "dosa", "admin"];
+  const baseLocalPart = localPart.split("+")[0];
+  const aliasPart = localPart.includes("+") ? localPart.split("+")[1] : "";
+  
+  if (adminEmails.includes(baseLocalPart) || adminEmails.includes(aliasPart)) {
+    return {
+      role: "ADMIN",
+      batch: null,
+      isStudent: false,
+      email: normalized
+    };
+  }
+
   // Check for be23 through be30
-  const beStudentRegex = /(?:^|_|\.)be(2[3-9]|30)(?:$|_|\.|\d*)/i;
+  const beStudentRegex = /(?:^|_|\.)be(2[3-9]|30)(?:$|_|\.|\+)/i;
   const match = localPart.match(beStudentRegex);
 
   if (match) {

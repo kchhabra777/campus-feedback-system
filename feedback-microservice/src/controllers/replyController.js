@@ -13,7 +13,8 @@ export const createReply = async (req, res) => {
             authorRole,
             authorName,
             authorBadge,
-            replyText
+            replyText,
+            parentReplyId
         } = req.body;
 
         if (!authorId) {
@@ -34,7 +35,8 @@ export const createReply = async (req, res) => {
             authorRole,
             authorName: authorName || (authorRole === "TEACHER" ? "Faculty Member" : "Student"),
             authorBadge: authorBadge || (authorRole === "TEACHER" ? "Faculty" : "Student"),
-            replyText: replyText.trim()
+            replyText: replyText.trim(),
+            parentReplyId: parentReplyId ? Number(parentReplyId) : null
         });
 
         return res.status(201).json({ reply });

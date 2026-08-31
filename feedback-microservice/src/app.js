@@ -19,10 +19,10 @@ app.get("/health", (req, res) => {
     });
 });
 
-app.use("/reviews", reviewRoutes);
-app.use("/reviews", voteRoutes);
 app.use("/reviews", flagRoutes);
+app.use("/reviews", voteRoutes);
 app.use("/reviews", replyRoutes);
+app.use("/reviews", reviewRoutes);
 app.use("/ratings", ratingRoutes);
 
 export default app;
