@@ -1,4 +1,4 @@
-import express from "express";
+﻿import express from "express";
 import {
   createOffering,
   updateOffering,
@@ -16,7 +16,9 @@ router.post("/offerings", requireAuth, requireRole("TEACHER"), createOffering);
 router.put("/offerings/:id", requireAuth, requireRole("TEACHER"), updateOffering);
 router.delete("/offerings/:id", requireAuth, requireRole("TEACHER"), deleteOffering);
 router.get("/my-offerings", requireAuth, requireRole("TEACHER"), getMyOfferings);
-router.get("/eligible-teachers", requireAuth, requireRole("STUDENT"), getEligibleTeachers);
-router.get("/check-eligibility", requireAuth, requireRole("STUDENT"), checkEligibility);
+
+// Allow eligible-teachers to be read publicly via batch & branch query params
+router.get("/eligible-teachers", getEligibleTeachers);
+router.get("/check-eligibility", requireAuth, checkEligibility);
 
 export default router;
