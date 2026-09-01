@@ -9,7 +9,7 @@ export const createReply = async ({
     replyText,
     parentReplyId
 }) => {
-    if (!["STUDENT", "TEACHER"].includes(authorRole)) {
+    if (!["STUDENT", "TEACHER", "ADMIN"].includes(authorRole)) {
         throw new Error("Invalid author role for reply.");
     }
 
