@@ -21,8 +21,8 @@ export const createReply = async (req, res) => {
             return res.status(400).json({ error: "Author ID is required" });
         }
 
-        if (!["STUDENT", "TEACHER"].includes(authorRole)) {
-            return res.status(403).json({ error: "Only registered students and faculty can post in discussion threads." });
+        if (!["STUDENT", "TEACHER", "ADMIN"].includes(authorRole)) {
+            return res.status(403).json({ error: "Only registered students, faculty, and admins can post in discussion threads." });
         }
 
         if (!replyText || replyText.trim() === "") {
@@ -33,8 +33,8 @@ export const createReply = async (req, res) => {
             reviewId: Number(id),
             authorId,
             authorRole,
-            authorName: authorName || (authorRole === "TEACHER" ? "Faculty Member" : "Student"),
-            authorBadge: authorBadge || (authorRole === "TEACHER" ? "Faculty" : "Student"),
+            authorName: authorName || (authorRole === "TEACHER" ? "Faculty Member" : authorRole === "ADMIN" ? "Administrator" : "Student"),
+            authorBadge: authorBadge || (authorRole === "TEACHER" ? "Faculty" : authorRole === "ADMIN" ? "Admin" : "Student"),
             replyText: replyText.trim(),
             parentReplyId: parentReplyId ? Number(parentReplyId) : null
         });
