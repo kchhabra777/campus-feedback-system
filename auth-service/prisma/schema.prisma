@@ -105,6 +105,7 @@ model Review {
   rating          Int
   reviewText      String
   context         String?
+  tags            String[]     @default([])
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
   isFlagged       Boolean      @default(false)
@@ -140,6 +141,8 @@ model ReviewFlag {
 model ReviewReply {
   replyId        Int          @id @default(autoincrement())
   reviewId       Int
+  parentReplyId  Int?
+  
   authorId       String
   authorRole     Role
   authorName     String
@@ -149,6 +152,8 @@ model ReviewReply {
   updatedAt      DateTime     @updatedAt
 
   review         Review       @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
+  parentReply    ReviewReply? @relation("ThreadedReplies", fields: [parentReplyId], references: [replyId], onDelete: Cascade)
+  childReplies   ReviewReply[] @relation("ThreadedReplies")
   votes          ReplyVote[]
 }
 
@@ -171,4 +176,11 @@ model ProfileRating {
   recentRating   Float
   totalReviews   Int
   calculatedAt   DateTime @default(now())
+}
+model CommunityTag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  type      String
+  opposite  String?
+  createdAt DateTime @default(now())
 }

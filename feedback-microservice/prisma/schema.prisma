@@ -105,6 +105,7 @@ model Review {
   rating          Int
   reviewText      String
   context         String?
+  tags            String[]     @default([])
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
   isFlagged       Boolean      @default(false)
@@ -175,4 +176,11 @@ model ProfileRating {
   recentRating   Float
   totalReviews   Int
   calculatedAt   DateTime @default(now())
+}
+model CommunityTag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  type      String
+  opposite  String?
+  createdAt DateTime @default(now())
 }

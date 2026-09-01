@@ -15,7 +15,8 @@ export const createReview = async ({
     courseName,
     rating,
     reviewText,
-    context
+    context,
+    tags
 }) => {
     const cooldownThreshold = new Date(Date.now() - COOLDOWN_DAYS * 24 * 60 * 60 * 1000);
 
@@ -54,7 +55,8 @@ export const createReview = async ({
             courseName: courseName || null,
             rating,
             reviewText,
-            context: context || (reviewerBatch ? `Batch ${reviewerBatch}` : null)
+            context: context || (reviewerBatch ? `Batch ${reviewerBatch}` : null),
+            tags: tags || []
         },
         include: {
             replies: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StarRating } from './StarRating';
 import { X, CheckCircle, AlertCircle, Clock } from 'lucide-react';
 import { api } from '../api/client';
@@ -8,14 +8,34 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
   const { user } = useAuth();
   const [rating, setRating] = useState(5);
   const [reviewText, setReviewText] = useState('');
-  const [selectedCourse, setSelectedCourse] = useState('');
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [availableTags, setAvailableTags] = useState([]);
+  const [selectedCourseId, setSelectedCourseId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  const ESCAPE_TAG = "None of these fit";
+
+  useEffect(() => {
+    const loadTags = async () => {
+      try {
+        const res = await api.getPublicTags();
+        setAvailableTags(res.tags || []);
+      } catch (err) {
+        console.error("Failed to load community tags");
+      }
+    };
+    loadTags();
+  }, []);
 
   const courses = teacher?.courses || teacher?.offerings || [];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (selectedTags.length === 0) {
+      setError("Pick at least one tag, or 'None of these fit'.");
+      return;
+    }
     if (!reviewText.trim()) {
       setError("Please enter your detailed feedback text.");
       return;
@@ -25,7 +45,13 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
     setError('');
 
     try {
-      const courseObj = courses.find((c) => c.courseCode === selectedCourse);
+      const courseObj = courses.find((c) => c.id === selectedCourseId || c.courseCode === selectedCourseId);
+      
+      const submittedCourseCode = courseObj?.courseCode || (courses[0]?.courseCode || null);
+      let submittedCourseName = courseObj?.courseName || null;
+      if (courseObj && courseObj.ltp) {
+        submittedCourseName = `${courseObj.courseName} [${courseObj.ltp}]`;
+      }
 
       await api.createReview({
         reviewer: {
@@ -39,9 +65,10 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
         reviewee: {
           userId: teacher.userId || teacher.user?.id || teacher.id
         },
-        courseCode: selectedCourse || (courses[0]?.courseCode || null),
-        courseName: courseObj?.courseName || null,
+        courseCode: submittedCourseCode,
+        courseName: submittedCourseName,
         rating,
+        tags: selectedTags,
         reviewText: reviewText.trim(),
         context: `Batch ${user.studentProfile?.batch || user.detectedBatch || '3Q11'} - ${user.studentProfile?.branch || 'Engineering'}`
       });
@@ -52,6 +79,40 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
       setError(err.message || "Failed to submit review");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleTagClick = (tag) => {
+    if (tag === ESCAPE_TAG) {
+      if (selectedTags.includes(ESCAPE_TAG)) {
+        setSelectedTags([]);
+      } else {
+        setSelectedTags([ESCAPE_TAG]);
+      }
+      return;
+    }
+
+    if (selectedTags.includes(ESCAPE_TAG)) {
+      setSelectedTags([tag]);
+      return;
+    }
+
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter(t => t !== tag));
+    } else {
+      if (selectedTags.length >= 3) {
+        setError("You can select up to 3 tags maximum.");
+        return;
+      }
+      
+      const tagObj = availableTags.find(t => t.name === tag);
+      if (tagObj && tagObj.opposite && selectedTags.includes(tagObj.opposite)) {
+        setError(`Cannot select '${tag}' because its opposite '${tagObj.opposite}' is already selected.`);
+        return;
+      }
+      
+      setError('');
+      setSelectedTags([...selectedTags, tag]);
     }
   };
 
@@ -97,13 +158,13 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
               <label className="form-label">Course Taught to You</label>
               <select
                 className="form-select"
-                value={selectedCourse}
-                onChange={(e) => setSelectedCourse(e.target.value)}
+                value={selectedCourseId}
+                onChange={(e) => setSelectedCourseId(e.target.value)}
               >
                 <option value="">Select Course...</option>
                 {courses.map((c, i) => (
-                  <option key={i} value={c.courseCode}>
-                    {c.courseCode} - {c.courseName} (Batch {c.batchTaught})
+                  <option key={c.id || i} value={c.id || c.courseCode}>
+                    {c.courseCode} - {c.courseName} (Batch {c.batchTaught}) {c.ltp ? `[${c.ltp}]` : ''}
                   </option>
                 ))}
               </select>
@@ -117,6 +178,58 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
               <span style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-primary)' }}>
                 {rating}.0 / 5.0
               </span>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label" style={{ marginBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span>Community Tags <span style={{ color: 'var(--text-muted)', fontSize: '12px', fontWeight: 'normal' }}>(Select up to 3)</span></span>
+            </label>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
+              {availableTags.map(tagObj => {
+                const tag = tagObj.name;
+                return (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => handleTagClick(tag)}
+                  style={{
+                    padding: '6px 12px',
+                    borderRadius: '16px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    border: '1px solid',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s',
+                    backgroundColor: selectedTags.includes(tag) ? 'var(--primary)' : 'transparent',
+                    color: selectedTags.includes(tag) ? '#fff' : 'var(--text-secondary)',
+                    borderColor: selectedTags.includes(tag) ? 'var(--primary)' : 'var(--border-light)'
+                  }}
+                >
+                  {tag}
+                </button>
+                );
+              })}
+            </div>
+            <div style={{ display: 'flex' }}>
+              <button
+                type="button"
+                onClick={() => handleTagClick(ESCAPE_TAG)}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '16px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  border: '1px solid',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                  backgroundColor: selectedTags.includes(ESCAPE_TAG) ? 'var(--bg-card-subtle)' : 'transparent',
+                  color: selectedTags.includes(ESCAPE_TAG) ? 'var(--text-primary)' : 'var(--text-muted)',
+                  borderColor: selectedTags.includes(ESCAPE_TAG) ? 'var(--text-primary)' : 'var(--border-light)'
+                }}
+              >
+                {ESCAPE_TAG}
+              </button>
             </div>
           </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { ALLOWED_BATCHES } from '../api/client';
+import { ALLOWED_BATCHES, ALLOWED_ACADEMIC_YEARS } from '../api/client';
 import { Award, Plus, Trash2, BookOpen, AlertCircle } from 'lucide-react';
 
 export const TeacherOnboarding = () => {
@@ -15,7 +15,7 @@ export const TeacherOnboarding = () => {
       courseName: '',
       batchTaught: '3Q11',
       branchTaught: 'COE',
-      academicYear: '2024-2025'
+      academicYear: ALLOWED_ACADEMIC_YEARS[0]
     }
   ]);
 
@@ -30,7 +30,7 @@ export const TeacherOnboarding = () => {
         courseName: '',
         batchTaught: '3Q11',
         branchTaught: 'COE',
-        academicYear: '2024-2025'
+        academicYear: ALLOWED_ACADEMIC_YEARS[0]
       }
     ]);
   };
@@ -240,13 +240,15 @@ export const TeacherOnboarding = () => {
                   </div>
                   <div>
                     <label className="form-label" style={{ fontSize: '12px' }}>Academic Year</label>
-                    <input
-                      type="text"
+                    <select
                       className="form-input"
-                      placeholder="e.g. 2024-2025"
                       value={offering.academicYear}
                       onChange={(e) => handleOfferingChange(idx, 'academicYear', e.target.value)}
-                    />
+                    >
+                      {ALLOWED_ACADEMIC_YEARS.map((y) => (
+                        <option key={y} value={y}>{y}</option>
+                      ))}
+                    </select>
                   </div>
                   {offerings.length > 1 && (
                     <button

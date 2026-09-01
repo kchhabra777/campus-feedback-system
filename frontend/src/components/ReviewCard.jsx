@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StarRating } from './StarRating';
-import { ThumbsUp, ThumbsDown, MessageSquare, Flag, Send, User, Mail, Award } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, MessageSquare, Flag, Send, User, Mail, Award, Tag } from 'lucide-react';
 import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
@@ -377,6 +377,36 @@ export const ReviewCard = ({ review, onUpdate }) => {
           <span style={{ fontWeight: 800, fontSize: '15px' }}>{review.rating}.0</span>
         </div>
       </div>
+
+      {review.tags && review.tags.length > 0 && (
+        <div style={{ 
+          display: 'flex', 
+          flexWrap: 'wrap', 
+          gap: '8px', 
+          marginBottom: '16px',
+          paddingTop: '4px'
+        }}>
+          {review.tags.filter(t => t !== "None of these fit").map((tag, idx) => (
+            <span key={idx} style={{ 
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              fontSize: '12px', 
+              fontWeight: 600, 
+              padding: '4px 12px', 
+              borderRadius: '20px', 
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              color: 'rgba(255, 255, 255, 0.75)',
+              letterSpacing: '0.01em',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+            }}>
+              <Tag size={10} style={{ opacity: 0.6 }} />
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Review Text */}
       <p style={{ fontSize: '14.5px', color: 'var(--text-primary)', lineHeight: 1.6, whiteSpace: 'pre-wrap', marginBottom: '16px' }}>

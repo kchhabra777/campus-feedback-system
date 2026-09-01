@@ -144,3 +144,107 @@ export const deleteTeacherCourse = async (req, res) => {
     res.status(500).json({ error: "Failed to delete course" });
   }
 };
+
+export const updateTeacherCourse = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const { courseCode, courseName, batchTaught, branchTaught, ltp, academicYear } = req.body;
+    
+    const updated = await prisma.courseOffering.update({
+      where: { id: courseId },
+      data: { courseCode, courseName, batchTaught, branchTaught, ltp, academicYear }
+    });
+    res.status(200).json({ message: "Course updated", course: updated });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update course" });
+  }
+};
+
+export const updateStudent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fullName, rollNumber } = req.body;
+    
+    const updated = await prisma.studentProfile.update({
+      where: { userId: id },
+      data: { fullName, rollNumber }
+    });
+    res.status(200).json({ message: "Student updated", profile: updated });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update student" });
+  }
+};
+
+export const updateTeacher = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fullName, department, designation } = req.body;
+    
+    const updated = await prisma.teacherProfile.update({
+      where: { userId: id },
+      data: { fullName, department, designation }
+    });
+    res.status(200).json({ message: "Teacher updated", profile: updated });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update teacher" });
+  }
+};
+
+export const getCommunityTags = async (req, res) => {
+  try {
+    const tags = await prisma.communityTag.findMany({ orderBy: { type: 'desc' } });
+    res.status(200).json({ tags });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch tags" });
+  }
+};
+
+export const addCommunityTag = async (req, res) => {
+  try {
+    const { name, type, opposite } = req.body;
+    const tag = await prisma.communityTag.create({ data: { name, type, opposite } });
+    res.status(201).json({ tag });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to add tag" });
+  }
+};
+
+export const updateCommunityTag = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, type, opposite } = req.body;
+    
+    // Get old tag to cascade updates to reviews
+    const oldTag = await prisma.communityTag.findUnique({ where: { id: parseInt(id) } });
+    
+    const tag = await prisma.communityTag.update({
+      where: { id: parseInt(id) },
+      data: { name, type, opposite }
+    });
+    
+    // If the name changed, we MUST update all existing reviews so old tags don't get orphaned
+    if (oldTag && oldTag.name !== name) {
+      await prisma.$executeRaw`UPDATE "Review" SET "tags" = array_replace("tags", ${oldTag.name}, ${name})`;
+    }
+    
+    res.status(200).json({ tag });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to update tag" });
+  }
+};
+
+export const deleteCommunityTag = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const oldTag = await prisma.communityTag.findUnique({ where: { id: parseInt(id) } });
+    if (oldTag) {
+      await prisma.$executeRaw`UPDATE "Review" SET "tags" = array_remove("tags", ${oldTag.name})`;
+    }
+    await prisma.communityTag.delete({ where: { id: parseInt(id) } });
+    res.status(200).json({ message: "Tag deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to delete tag" });
+  }
+};

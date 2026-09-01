@@ -1,3 +1,6 @@
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
+import { Tag, Sparkles } from 'lucide-react';
+import { TeacherAIInsights } from '../components/TeacherAIInsights';
 import React, { useState, useEffect } from 'react';
 import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
@@ -6,7 +9,7 @@ import { ReviewCard } from '../components/ReviewCard';
 import {
   Activity, TrendingDown, ArrowLeft, Download,
   Users, MessageSquare, Star, ChevronRight, Search, AlertTriangle,
-  UserPlus, UserX, Trash2, CheckCircle2, ShieldBan
+  UserPlus, UserX, Edit2, Trash2, CheckCircle2, ShieldBan
 } from 'lucide-react';
 
 /* ── tiny helpers ── */
@@ -70,9 +73,11 @@ export const AdminDashboard = () => {
 
   // Dossier State
   const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [isAIInsightsOpen, setIsAIInsightsOpen] = useState(false);
   const [teacherReviews, setTeacherReviews] = useState([]);
   const [teacherRatings, setTeacherRatings] = useState(null);
   const [teacherCourses, setTeacherCourses] = useState([]);
+  const [selectedTeacherTags, setSelectedTeacherTags] = useState(null);
   const [addingCourse, setAddingCourse] = useState(false);
   const [newCourse, setNewCourse] = useState({
     courseCode: '',
@@ -86,7 +91,56 @@ export const AdminDashboard = () => {
   const [reviewLoading, setReviewLoading] = useState(false);
 
   // Moderation
+  
   const [flags, setFlags] = useState([]);
+  const [communityTags, setCommunityTags] = useState([]);
+  const [tagForm, setTagForm] = useState({ name: '', type: 'POSITIVE', opposite: '' });
+  const [editingTagId, setEditingTagId] = useState(null);
+
+  const loadTags = async () => {
+    try {
+      const res = await api.getAdminTags();
+      setCommunityTags(res.tags || []);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'tags') loadTags();
+  }, [activeTab]);
+
+  const handleTagSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (editingTagId) {
+        await api.updateAdminTag(editingTagId, tagForm);
+      } else {
+        await api.addAdminTag(tagForm);
+      }
+      setTagForm({ name: '', type: 'POSITIVE', opposite: '' });
+      setEditingTagId(null);
+      loadTags();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleEditTag = (tag) => {
+    setEditingTagId(tag.id);
+    setTagForm({ name: tag.name, type: tag.type, opposite: tag.opposite || '' });
+  };
+
+  const handleDeleteTag = async (id) => {
+    if(!window.confirm("Delete this tag?")) return;
+    try {
+      await api.deleteAdminTag(id);
+      loadTags();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const [flagsLoading, setFlagsLoading] = useState(false);
 
   // Stats
@@ -173,14 +227,16 @@ export const AdminDashboard = () => {
     if (!isSilentRefresh) setReviewLoading(true);
     const id = teacher.userId || teacher.user?.id || teacher.id;
     try {
-      const [rRes, ratRes, courseRes] = await Promise.all([
+      const [rRes, ratRes, courseRes, tagsRes] = await Promise.all([
         api.getTeacherReviews(id),
         api.getTeacherRatings(id).catch(() => null),
-        api.getAdminTeacherCourses(id).catch(() => ({ courses: [] }))
+        api.getAdminTeacherCourses(id).catch(() => ({ courses: [] })),
+        api.getTeacherTagStats(id).catch(() => ({ stats: [], totalReviewsWithTags: 0 }))
       ]);
       setTeacherReviews(rRes.reviews || []);
       setTeacherRatings(ratRes || { overallRating: 0, recentRating: 0, totalReviews: 0 });
       setTeacherCourses(courseRes.courses || []);
+      setSelectedTeacherTags(tagsRes);
     } finally {
       if (!isSilentRefresh) setReviewLoading(false);
     }
@@ -348,11 +404,18 @@ export const AdminDashboard = () => {
           Register Teacher
         </button>
 
+
         <button className={`admin-nav-item ${activeTab === 'moderation' ? 'active' : ''}`} onClick={() => { setActiveTab('moderation'); setSelectedTeacher(null); }}>
           <ShieldBan size={18} />
           Moderation
         </button>
+
+        <button className={`admin-nav-item ${activeTab === 'tags' ? 'active' : ''}`} onClick={() => { setActiveTab('tags'); setSelectedTeacher(null); }}>
+          <Activity size={18} />
+          Community Tags
+        </button>
       </aside>
+
 
       {/* ── Main Content Area ── */}
       <main className="admin-main">
@@ -363,12 +426,14 @@ export const AdminDashboard = () => {
             {activeTab === 'students' && "Manage Students"}
             {activeTab === 'register' && "Register New Teacher"}
             {activeTab === 'moderation' && "Moderation Queue"}
+            {activeTab === 'tags' && "Community Tags"}
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>
             {activeTab === 'faculty' && "View ratings, reviews, and remove faculty accounts."}
             {activeTab === 'students' && "Search and ban/unban student accounts."}
             {activeTab === 'register' && "Create an account for a faculty member. They will set their password via email OTP."}
             {activeTab === 'moderation' && "Review and resolve flagged content reported by students."}
+            {activeTab === 'tags' && "Manage positive and constructive community tags."}
           </p>
         </div>
 
@@ -460,7 +525,24 @@ export const AdminDashboard = () => {
                   <h2 style={{ fontSize: '26px', fontWeight: 800, marginBottom: '4px' }}>{selectedTeacher.fullName}</h2>
                   <div style={{ color: 'var(--text-muted)', fontSize: '15px' }}>{selectedTeacher.designation} · {selectedTeacher.department}</div>
                 </div>
-                <button onClick={exportCsv} className="btn btn-secondary btn-sm" style={{ display: 'flex', gap: '6px' }}><Download size={14} /> Export CSV</button>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <button 
+                    onClick={() => setIsAIInsightsOpen(true)}
+                    style={{ 
+                      display: 'flex', alignItems: 'center', gap: '8px', 
+                      padding: '8px 16px', borderRadius: '6px',
+                      background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                      color: 'white', fontWeight: 600, border: 'none',
+                      boxShadow: '0 4px 15px rgba(236, 72, 153, 0.3)',
+                      cursor: 'pointer',
+                      fontSize: '13px'
+                    }}
+                  >
+                    <Sparkles size={16} />
+                    Generate AI Insights
+                  </button>
+                  <button onClick={exportCsv} className="btn btn-secondary btn-sm" style={{ display: 'flex', gap: '6px' }}><Download size={14} /> Export CSV</button>
+                </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginTop: '28px' }}>
@@ -530,6 +612,66 @@ export const AdminDashboard = () => {
                 </div>
               )}
             </div>
+
+          <div className="card" style={{ marginBottom: '24px', padding: '28px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '4px' }}>Community Tags</h3>
+            {selectedTeacherTags && selectedTeacherTags.sufficientData && (
+              <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>
+                Based on {selectedTeacherTags.totalReviewsWithTags} reviews
+              </p>
+            )}
+            
+            {!selectedTeacherTags ? (
+              <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Loading tag statistics...</div>
+            ) : !selectedTeacherTags.sufficientData ? (
+              <div style={{ color: 'var(--text-muted)', fontSize: '14px', fontStyle: 'italic', marginTop: '12px' }}>
+                {selectedTeacherTags.needed} more reviews needed to unlock insights for this teacher.
+              </div>
+            ) : (
+              <div style={{ width: '100%', height: 280 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    layout="vertical"
+                    data={selectedTeacherTags.stats}
+                    margin={{ top: 10, right: 40, left: 10, bottom: 0 }}
+                  >
+                    <defs>
+                      <linearGradient id="barGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.7}/>
+                        <stop offset="100%" stopColor="var(--primary)" stopOpacity={1}/>
+                      </linearGradient>
+                    </defs>
+                    <XAxis type="number" hide domain={[0, 100]} />
+                    <YAxis 
+                      type="category" 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      width={170}
+                      tick={{ fill: 'var(--text-primary)', fontSize: 12.5, fontWeight: 500 }}
+                    />
+                    <Tooltip 
+                      cursor={{ fill: 'rgba(255,255,255,0.03)' }} 
+                      contentStyle={{ backgroundColor: 'var(--bg-panel)', borderColor: 'var(--border-light)', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}
+                      itemStyle={{ color: 'var(--text-primary)', fontWeight: 600 }}
+                      formatter={(val) => [`${val}%`, 'Frequency']}
+                    />
+                    <Bar 
+                      dataKey="percentage" 
+                      radius={[4, 4, 4, 4]} 
+                      barSize={16} 
+                      background={{ fill: 'rgba(255,255,255,0.04)', radius: [4, 4, 4, 4] }}
+                      label={{ position: 'right', fill: 'var(--text-secondary)', fontSize: 13, fontWeight: 600, formatter: (val) => `${val}%` }}
+                    >
+                      {selectedTeacherTags.stats.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill="url(#barGradient)" />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h3 style={{ fontSize: '18px', fontWeight: 700 }}>Official Review Records ({sortedReviews.length})</h3>
@@ -714,7 +856,77 @@ export const AdminDashboard = () => {
             )}
           </div>
         )}
+      
+        {activeTab === 'tags' && (
+          <div className="admin-grid" style={{ gridTemplateColumns: '1fr' }}>
+            <div className="card" style={{ padding: '24px' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '20px' }}>Manage Tags</h3>
+              
+              <form onSubmit={handleTagSubmit} style={{ display: 'flex', gap: '12px', marginBottom: '24px', alignItems: 'flex-end' }}>
+                <div style={{ flex: 1 }}>
+                  <label className="form-label">Tag Name</label>
+                  <input className="form-input" required value={tagForm.name} onChange={e => setTagForm({...tagForm, name: e.target.value})} placeholder="e.g. Clear Explanations" />
+                </div>
+                <div style={{ width: '150px' }}>
+                  <label className="form-label">Type</label>
+                  <select className="form-input" value={tagForm.type} onChange={e => setTagForm({...tagForm, type: e.target.value})}>
+                    <option value="POSITIVE">Positive</option>
+                    <option value="CONSTRUCTIVE">Constructive</option>
+                  </select>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label className="form-label">Opposite (Optional)</label>
+                  <input className="form-input" value={tagForm.opposite} onChange={e => setTagForm({...tagForm, opposite: e.target.value})} placeholder="e.g. Confusing Lectures" />
+                </div>
+                <button type="submit" className="btn btn-primary" style={{ height: '42px', padding: '0 20px' }}>
+                  {editingTagId ? 'Update Tag' : 'Add Tag'}
+                </button>
+                {editingTagId && (
+                  <button type="button" className="btn btn-secondary" onClick={() => { setEditingTagId(null); setTagForm({ name: '', type: 'POSITIVE', opposite: '' }); }} style={{ height: '42px', padding: '0 20px' }}>Cancel</button>
+                )}
+              </form>
+
+              <div className="table-container">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Tag Name</th>
+                      <th>Type</th>
+                      <th>Opposite</th>
+                      <th style={{ width: '150px', textAlign: 'right' }}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {communityTags.map(tag => (
+                      <tr key={tag.id}>
+                        <td style={{ fontWeight: 500 }}>{tag.name}</td>
+                        <td>
+                          <span style={{ 
+                            padding: '4px 8px', borderRadius: '12px', fontSize: '12px', fontWeight: 600,
+                            background: tag.type === 'POSITIVE' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                            color: tag.type === 'POSITIVE' ? '#22c55e' : '#ef4444'
+                          }}>
+                            {tag.type}
+                          </span>
+                        </td>
+                        <td style={{ color: 'var(--text-muted)' }}>{tag.opposite || '-'}</td>
+                        <td style={{ textAlign: 'right' }}>
+                          <button onClick={() => handleEditTag(tag)} style={{ color: 'var(--text-secondary)', marginRight: '16px' }} title="Edit"><Edit2 size={16}/></button>
+                          <button onClick={() => handleDeleteTag(tag.id)} style={{ color: '#ef4444' }} title="Delete"><Trash2 size={16}/></button>
+                        </td>
+                      </tr>
+                    ))}
+                    {communityTags.length === 0 && (
+                      <tr><td colSpan="4" style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)' }}>No tags found. Add some!</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
+
 
       {/* ── Custom Delete Confirmation Modal ── */}
       {teacherToDelete && (
@@ -747,6 +959,16 @@ export const AdminDashboard = () => {
           </div>
         </div>
       )}
-    </div>
+    
+      {isAIInsightsOpen && selectedTeacher && (
+        <TeacherAIInsights 
+          teacherId={selectedTeacher.userId || selectedTeacher.id || selectedTeacher.user?.id}
+          teacherName={selectedTeacher.fullName || selectedTeacher.name}
+          onClose={() => setIsAIInsightsOpen(false)}
+        />
+      )}
+
+      
+</div>
   );
 };

@@ -136,6 +136,8 @@ export const api = {
     body: JSON.stringify(data)
   }),
   getTeacherReviews: (teacherId, page = 1) => request(`/reviews/reviewee/${teacherId}?page=${page}`),
+  getTeacherTagStats: (teacherId) => request(`/reviews/teachers/${teacherId}/tags`),
+  getTeacherAISummary: (teacherId) => request(`/reviews/teachers/${teacherId}/ai-summary`),
   getTeacherRatings: (teacherId) => request(`/ratings/${teacherId}`),
   voteReview: (reviewId, voteType, userId) => request(`/reviews/${reviewId}/vote`, {
     method: "POST",
@@ -166,6 +168,14 @@ export const api = {
     method: "PATCH",
     body: JSON.stringify({ isBanned })
   }),
+  updateStudent: (userId, data) => request(`/admin/students/${userId}`, {
+    method: "PUT",
+    body: JSON.stringify(data)
+  }),
+  updateTeacher: (userId, data) => request(`/admin/teachers/${userId}`, {
+    method: "PUT",
+    body: JSON.stringify(data)
+  }),
   deleteTeacher: (teacherId) => request(`/admin/teachers/${teacherId}`, {
     method: "DELETE"
   }),
@@ -174,9 +184,18 @@ export const api = {
     method: "POST",
     body: JSON.stringify(data)
   }),
+  updateAdminTeacherCourse: (courseId, data) => request(`/admin/courses/${courseId}`, {
+    method: "PUT",
+    body: JSON.stringify(data)
+  }),
   deleteAdminTeacherCourse: (courseId) => request(`/admin/courses/${courseId}`, {
     method: "DELETE"
   }),
+  getAdminTags: () => request("/admin/tags"),
+  addAdminTag: (data) => request("/admin/tags", { method: "POST", body: JSON.stringify(data) }),
+  updateAdminTag: (id, data) => request(`/admin/tags/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteAdminTag: (id) => request(`/admin/tags/${id}`, { method: "DELETE" }),
+  getPublicTags: () => request("/reviews/tags"),
   adminRegisterTeacher: (data) => request("/admin/register-teacher", {
     method: "POST",
     body: JSON.stringify(data)

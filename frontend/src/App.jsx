@@ -7,10 +7,15 @@ import { StudentDashboard } from './pages/StudentDashboard';
 import { TeacherDashboard } from './pages/TeacherDashboard';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { Navbar } from './components/Navbar';
+import { Roadmap } from './pages/Roadmap';
 
 export function App() {
   const { user, loading } = useAuth();
   const [currentView, setCurrentView] = useState('home');
+
+  if (window.location.pathname === '/roadmap') {
+    return <Roadmap onBack={() => window.location.href = '/'} />;
+  }
 
   if (loading) {
     return (
