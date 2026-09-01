@@ -1,6 +1,7 @@
-* [Overview](index.md)
+﻿* [Overview](index.md)
 * [Criteria for Project Selection](criteria-for-project-selection.md)
 * [System Architecture](system-architecture.md)
+* [AI Teacher Insights & Orbital Visualization](ai-insights-synthesis.md)
 * [Interaction Protocols & API Contracts](interaction-protocols.md)
 * [Atomic Transactions & Math Models](atomic-transactions.md)
 * [Concurrency Benchmarks](concurrency-benchmarks.md)

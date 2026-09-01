@@ -1,15 +1,22 @@
-# Dependencies
+﻿# Dependencies
 node_modules/
 */node_modules/
 
-# Environment Variables
+# Environment Variables & Secrets
 .env
-.env.local
-.env.*.local
-frontend/.env
-gateway/.env
+.env.*
+*.env
+*.env.local
 auth-service/.env
 feedback-microservice/.env
+gateway/.env
+frontend/.env
+
+# Allow .env.example files
+!.env.example
+!auth-service/.env.example
+!feedback-microservice/.env.example
+!gateway/.env.example
 
 # Build outputs & caches
 dist/

@@ -1,4 +1,4 @@
-# Campus Feedback System
+﻿# Campus Feedback System
 
 ![TIET Logo](assets/tiet-logo-full.png){ width=260px }
 
@@ -27,45 +27,71 @@
 
 ---
 
+## 🚀 Key Features
+
+### 1. 🪐 Gemini AI Review Synthesis & Radial Orbital Timeline
+- **Automated Qualitative Summarization**: Integrates Google Gemini 3.5 Flash via `@google/genai` to analyze all verified student text reviews.
+- **5-Category Evaluation Taxonomy**: Classifies qualitative insights into *Teaching Quality, Grading & Fairness, Approachability, Course Workload,* and *Overall Vibe*.
+- **60 FPS Revolving Visualization**: Interactive planetary orbital timeline with smart reading auto-pause on hover/expand, step rotation, and dynamic glow categories.
+- **In-Memory Caching & Resilient Fallback**: Optimizes LLM latency and guarantees uninterrupted presentation reliability.
+
+### 2. 🔐 Role-Enforced Institutional Authentication & Onboarding
+- **Cryptographic OTP Flow**: Verifies `@thapar.edu` domain ownership with one-time passwords.
+- **Automated Role Detection**: Locks students and faculty into distinct access tiers based on institutional email patterns.
+- **Batch & Branch Eligibility Matching**: Restricts feedback submission to students who were actually enrolled in the instructor's course and batch (e.g. `3Q11`–`3Q15`).
+
+### 3. ⏱️ Review Integrity & Cooldown Enforcement
+- **21-Day Cooldown Window**: Enforces temporal cooldowns per student-instructor pair to prevent review spam.
+- **Dual Time-Decay Rating Algorithm**: Computes both overall pedagogical decay and 180-day recent semester ratings ($w_i = \frac{1}{1 + \text{age}/30}$).
+- **Community Tags Sentiment Analytics**: Aggregated positive and constructive faculty tag distribution rendered via clamped horizontal percentage charts.
+
+---
+
 ## 📁 Repository Structure
 
 ```text
 ├── .github/workflows/          # GitHub Actions for automated MkDocs deployment & CI
 ├── assets/                     # Logos, stylesheets, and theme overrides
-├── auth-service/               # Authentication & User Profile microservice
-├── feedback-microservice/      # Review, Voting, Reply & Rating microservice
-├── gateway/                    # API Gateway (Port 8000) reverse proxy
-├── frontend/                   # React 19 + Vite single-page web client
-├── docs/                       # MkDocs documentation files
+├── auth-service/               # Authentication, User Profile & Course Offering service (:5001)
+├── feedback-microservice/      # Reviews, Ratings, Community Tags & Gemini AI service (:5000)
+├── gateway/                    # Express.js API Gateway (:8000) reverse proxy
+├── frontend/                   # React 19 + Vite Single Page Application (:5173)
+├── docs/                       # MkDocs documentation source files
 ├── journals/                   # Weekly student work logs
-│   ├── 1024170001-krishna-chhabra/
-│   ├── 1024170017-robin-singla/
-│   └── 1024170015-haritika/
-├── project-proposal/           # LaTeX Project Proposal (main.tex)
-├── project-report-prototype-stage/ # LaTeX Prototype Report (main.tex)
-├── Makefile                    # Standard make targets (make dev, make test, make docs)
+├── Makefile                    # Make automation targets (make dev, make test, make docs)
 ├── mkdocs.yml                  # Material for MkDocs theme configuration
 └── pyproject.toml              # Python docs dependencies
 ```
 
 ---
 
-## ⚡ Quickstart & Verifiable Testing
+## ⚡ Quickstart & Local Setup
 
-### 1. Run Automated Concurrency Benchmark
-```shell
-make test
-# OR: node auth-service/test-concurrency.js
+### 1. Prerequisites
+- Node.js `v20+` or `v22+`
+- PostgreSQL or Neon Serverless DB URL
+- Google Gemini API Key (optional, built-in fallback provided)
+
+### 2. Configure Environment Variables
+Copy `.env.example` templates to each service:
+```bash
+cp .env.example .env
+cp auth-service/.env.example auth-service/.env
+cp feedback-microservice/.env.example feedback-microservice/.env
+cp gateway/.env.example gateway/.env
 ```
 
-### 2. Start Full-Stack Dev Environment
-```shell
-make dev
-# Launches Gateway (:8000), Auth (:5001), Feedback (:5000), and Frontend (:5173) concurrently
+### 3. Install Dependencies & Launch
+```bash
+# Install root & workspace packages
+npm install
+
+# Start all microservices, API Gateway, and Frontend concurrently
+npm run dev
+# OR: make dev
 ```
 
-### 3. Local Documentation Server
-```shell
-make docs
-# Serves interactive documentation at http://localhost:8000
-```
+- **Frontend**: `http://localhost:5173`
+- **API Gateway**: `http://localhost:8000`
+- **Feedback Microservice**: `http://localhost:5000`
+- **Auth Microservice**: `http://localhost:5001`
