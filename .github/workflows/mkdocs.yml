@@ -38,4 +38,8 @@ jobs:
           mkdocs-git-revision-date-localized-plugin \
           mkdocs-git-authors-plugin \
           pymdown-extensions
+      - run: |
+          cp -r assets docs/assets
+          mkdir -p docs/javascript
+          echo 'document.addEventListener("DOMContentLoaded", function() { renderMathInElement(document.body, { delimiters: [ {left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false} ] }); });' > docs/javascript/arithmatex.js
       - run: mkdocs gh-deploy --force
