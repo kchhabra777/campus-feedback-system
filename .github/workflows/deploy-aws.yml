@@ -4,14 +4,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'auth-service/**'
-      - 'feedback-microservice/**'
-      - 'gateway/**'
-      - 'deploy-aws.sh'
-      - '.github/workflows/deploy-aws.yml'
-      - 'package.json'
-      - 'package-lock.json'
+  workflow_dispatch:
 
 jobs:
   deploy:
