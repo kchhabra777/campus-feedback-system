@@ -14,7 +14,7 @@
         <link rel="prev" href="../criteria-for-project-selection/">
       
       
-        <link rel="next" href="../interaction-protocols/">
+        <link rel="next" href="../ai-insights-synthesis/">
       
       
         
@@ -410,10 +410,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-database-layer-neon-serverless-postgresql" class="md-nav__link">
+  <a href="#4-frontend-client-frontend" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Database Layer (Neon Serverless PostgreSQL)
+        4. Frontend Client (frontend)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-database-layer-neon-serverless-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Database Layer (Neon Serverless PostgreSQL)
       
     </span>
   </a>
@@ -429,6 +440,33 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-insights-synthesis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Teacher Insights & Orbital Visualization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -529,10 +567,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
             
   
   
@@ -550,8 +588,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -576,10 +614,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
         
           
-          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
             
   
   
@@ -597,8 +635,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -771,10 +809,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
             
   
   
@@ -792,8 +830,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -938,10 +976,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3" >
         
           
-          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
             
   
   
@@ -959,8 +997,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1118,22 +1156,25 @@
 
 
 <h1 id="system-architecture">System Architecture<a class="headerlink" href="#system-architecture" title="Permanent link">&para;</a></h1>
-<p>The Campus Feedback System follows a microservices-based distributed architecture designed for scalability, fault isolation, and atomic data consistency.</p>
+<p>The Campus Feedback System follows a microservices-based distributed architecture designed for scalability, fault isolation, atomic data consistency, and intelligent LLM-powered review synthesis.</p>
 <hr />
 <h2 id="high-level-architectural-topology">🏛️ High-Level Architectural Topology<a class="headerlink" href="#high-level-architectural-topology" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>graph TD
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    Client[Student &amp; Faculty Web App - React 19 + Vite] --&gt;|HTTPS / REST| GW[API Gateway - Express.js :8000]
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    Client[Student &amp; Faculty Web App - React 19 + Vite :5173] --&gt;|HTTPS / REST| GW[API Gateway - Express.js :8000]
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    subgraph Microservices Layer
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        GW --&gt;|/api/auth &amp; /api/profiles| AUTH[Auth &amp; Profile Microservice :5001]
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        GW --&gt;|/api/courses| AUTH
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        GW --&gt;|/api/reviews &amp; /api/ratings| FB[Feedback &amp; Rating Microservice :5000]
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    end
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    subgraph Data &amp; Storage Layer
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        AUTH --&gt;|Prisma ORM Connection Pool| DB[(Neon Serverless PostgreSQL DB)]
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        FB --&gt;|Prisma ORM Connection Pool| DB
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    end
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        GW --&gt;|/api/auth, /api/profiles, /api/courses| AUTH[Auth &amp; Profile Microservice :5001]
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        GW --&gt;|/api/reviews, /api/ratings, /api/tags| FB[Feedback &amp; Rating Microservice :5000]
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    end
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    subgraph External AI Services
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        FB --&gt;|@google/genai SDK| Gemini[Google Gemini 3.5 Flash LLM]
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    end
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    subgraph Data &amp; Storage Layer
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        AUTH --&gt;|Prisma ORM Connection Pool| DB[(Neon Serverless PostgreSQL DB)]
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        FB --&gt;|Prisma ORM Connection Pool| DB
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    end
 </span></code></pre></div>
 <hr />
 <h2 id="architectural-components">🧩 Architectural Components<a class="headerlink" href="#architectural-components" title="Permanent link">&para;</a></h2>
@@ -1161,16 +1202,27 @@
 <ul>
 <li><strong>Port</strong>: <code>5000</code></li>
 <li><strong>Responsibilities</strong>:</li>
+<li><strong>Gemini 3.5 Flash Review Synthesis</strong>: Aggregates qualitative reviews into 5 structured dimensions (<em>Teaching Quality, Grading &amp; Fairness, Approachability, Course Workload, Overall Vibe</em>) with in-memory caching and fallback simulation.</li>
 <li>Review creation with atomic 21-day cooldown verification.</li>
 <li>Dual time-decay rating calculations (<span class="arithmatex">\(w_i = \frac{1}{1 + \text{age}/30}\)</span>).</li>
 <li>Review voting (Helpful/Unhelpful) with toggle-off / un-vote mechanics.</li>
+<li>Community Tags sentiment statistics aggregation.</li>
 <li>Threaded discussion management for peer student replies and faculty responses.</li>
 <li>Moderation reporting and content flag management.</li>
 </ul>
-<h3 id="4-database-layer-neon-serverless-postgresql">4. Database Layer (Neon Serverless PostgreSQL)<a class="headerlink" href="#4-database-layer-neon-serverless-postgresql" title="Permanent link">&para;</a></h3>
+<h3 id="4-frontend-client-frontend">4. Frontend Client (<code>frontend</code>)<a class="headerlink" href="#4-frontend-client-frontend" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Port</strong>: <code>5173</code></li>
+<li><strong>Stack</strong>: React 19, Vite, Recharts, Lucide Icons, Tailwind CSS.</li>
+<li><strong>Highlights</strong>:</li>
+<li><strong>Radial Orbital Timeline</strong>: 60 FPS revolving planetary visualization with auto-pause on hover/inspection.</li>
+<li><strong>Community Tags BarChart</strong>: Normalized horizontal bar chart with absolute percentage scaling.</li>
+<li><strong>Portal-Rendered Insights</strong>: Isolates full-screen modal overlays from nested stacking contexts.</li>
+</ul>
+<h3 id="5-database-layer-neon-serverless-postgresql">5. Database Layer (Neon Serverless PostgreSQL)<a class="headerlink" href="#5-database-layer-neon-serverless-postgresql" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Engine</strong>: PostgreSQL 16+ on Neon.</li>
-<li><strong>Connection Management</strong>: <code>@prisma/adapter-neon</code> connection pooler with WebSocket and direct TLS pooling.</li>
+<li><strong>Connection Management</strong>: <code>@prisma/adapter-pg</code> connection pooler with WebSocket and direct TLS pooling.</li>
 <li><strong>ACID Integrity</strong>: Enforces strict composite unique constraints and transaction isolation across microservices.</li>
 </ul>
 
@@ -1193,7 +1245,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 19, 2026 20:56:42 UTC">August 19, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 1, 2026 20:00:24 UTC">September 1, 2026</span>
   </span>
 
     
@@ -1263,13 +1315,13 @@
         
         
           
-          <a href="../interaction-protocols/" class="md-footer__link md-footer__link--next" aria-label="Next: Interaction Protocols &amp; API Contracts">
+          <a href="../ai-insights-synthesis/" class="md-footer__link md-footer__link--next" aria-label="Next: AI Teacher Insights &amp; Orbital Visualization">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Interaction Protocols & API Contracts
+                AI Teacher Insights & Orbital Visualization
               </div>
             </div>
             <div class="md-footer__button md-icon">
