@@ -43,7 +43,9 @@ export const StudentDashboard = () => {
   const [reviewingTeacher, setReviewingTeacher] = useState(null);
 
   const studentBatch = user?.studentProfile?.batch || user?.detectedBatch || '3Q11';
-  const studentBranch = user?.studentProfile?.branch || 'COE';
+  const rawBranch = user?.studentProfile?.branch || 'COE';
+  const branchMatch = rawBranch.match(/\(([^)]+)\)/);
+  const studentBranch = branchMatch ? branchMatch[1] : rawBranch;
   const studentRollNo = user?.studentProfile?.rollNumber || '';
 
   const fetchDashboardData = async () => {

@@ -146,7 +146,16 @@ export const getEligibleTeachersForStudent = async ({ batch, branch }) => {
     if (off.branchTaught === "ALL") return true;
     if (!normalizedBranch) return true;
     const branches = off.branchTaught.split(",").map((b) => b.trim().toUpperCase());
-    return branches.includes(normalizedBranch) || off.branchTaught.includes(normalizedBranch);
+    
+    // Check direct equality or bidirectional substring (e.g., "COE" in "Computer Engineering (COE)")
+    const directMatch = branches.includes(normalizedBranch) || off.branchTaught.includes(normalizedBranch) || normalizedBranch.includes(off.branchTaught);
+    if (directMatch) return true;
+
+    // Check acronym extraction inside parentheses: "Computer Engineering (COE)" -> "COE"
+    const match = normalizedBranch.match(/\(([^)]+)\)/);
+    if (match && branches.includes(match[1].trim().toUpperCase())) return true;
+
+    return false;
   });
 
   // Group by teacher
