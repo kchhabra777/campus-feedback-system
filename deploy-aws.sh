@@ -1,12 +1,12 @@
-#!/bin/bash
+﻿#!/bin/bash
 set -e
 
-echo "?? Starting Campus Feedback System AWS Deployment..."
+echo "🚀 Starting Campus Feedback System AWS Deployment..."
 
 export DATABASE_URL="postgresql://neondb_owner:npg_5cqpzoHbZ7IM@ep-quiet-pond-aycfuiga-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
-# 1. Write auth-service .env FIRST so Prisma has DATABASE_URL
-echo "?? Configuring auth-service .env..."
+# 1. Write auth-service .env
+echo "📦 Configuring auth-service .env..."
 cat << 'EOF' > auth-service/.env
 DATABASE_URL="postgresql://neondb_owner:npg_5cqpzoHbZ7IM@ep-quiet-pond-aycfuiga-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 PORT=6001
@@ -14,17 +14,17 @@ NODE_ENV=production
 JWT_SECRET="thapar_campus_feedback_jwt_secret_key_2026"
 EOF
 
-# 2. Write feedback-microservice .env FIRST
-echo "?? Configuring feedback-microservice .env..."
-cat << 'EOF' > feedback-microservice/.env
+# 2. Write feedback-microservice .env
+echo "📦 Configuring feedback-microservice .env..."
+cat << EOF > feedback-microservice/.env
 DATABASE_URL="postgresql://neondb_owner:npg_5cqpzoHbZ7IM@ep-quiet-pond-aycfuiga-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 PORT=6002
 NODE_ENV=production
+GEMINI_API_KEY="${GEMINI_API_KEY}"
 EOF
 
 # 3. Write gateway .env
-echo "?? Configuring gateway .env..."
-# Only create if it doesn't exist, otherwise just update the ports
+echo "📦 Configuring gateway .env..."
 if [ ! -f gateway/.env ]; then
   cat << 'EOF' > gateway/.env
 PORT=8000
@@ -37,12 +37,12 @@ else
   sed -i 's|FEEDBACK_SERVICE_URL=.*|FEEDBACK_SERVICE_URL=http://localhost:6002|g' gateway/.env
 fi
 
-# 4. Now install all dependencies and generate Prisma clients
-echo "?? Installing packages across microservices..."
+# 4. Install all dependencies and generate Prisma clients
+echo "📦 Installing packages across microservices..."
 npm run install:all
 
 # 5. Start/Restart services with PM2
-echo "?? Starting services with PM2..."
+echo "⚡ Starting services with PM2..."
 cd auth-service && pm2 delete campus-auth 2>/dev/null || true && pm2 start src/server.js --name "campus-auth" && cd ..
 cd feedback-microservice && pm2 delete campus-feedback 2>/dev/null || true && pm2 start src/server.js --name "campus-feedback" && cd ..
 cd gateway && pm2 delete campus-gateway 2>/dev/null || true && pm2 start src/server.js --name "campus-gateway" && cd ..
@@ -51,6 +51,6 @@ pm2 save
 
 echo ""
 echo "========================================================="
-echo "? All 3 Campus Feedback microservices are running on AWS!"
+echo "✅ All 3 Campus Feedback microservices are running on AWS!"
 echo "========================================================="
 pm2 status
