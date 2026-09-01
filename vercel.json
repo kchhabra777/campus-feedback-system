@@ -3,6 +3,34 @@
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {
+      "source": "/api/:match*",
+      "destination": "http://3.82.17.79:8000/api/:match*"
+    },
+    {
+      "source": "/auth/:match*",
+      "destination": "http://3.82.17.79:8000/auth/:match*"
+    },
+    {
+      "source": "/profiles/:match*",
+      "destination": "http://3.82.17.79:8000/profiles/:match*"
+    },
+    {
+      "source": "/courses/:match*",
+      "destination": "http://3.82.17.79:8000/courses/:match*"
+    },
+    {
+      "source": "/admin/:match*",
+      "destination": "http://3.82.17.79:8000/admin/:match*"
+    },
+    {
+      "source": "/reviews/:match*",
+      "destination": "http://3.82.17.79:8000/reviews/:match*"
+    },
+    {
+      "source": "/ratings/:match*",
+      "destination": "http://3.82.17.79:8000/ratings/:match*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
