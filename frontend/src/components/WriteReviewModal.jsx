@@ -3,6 +3,7 @@ import { StarRating } from './StarRating';
 import { X, CheckCircle, AlertCircle, Clock } from 'lucide-react';
 import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
+import { getTagTheme } from '../lib/tagTheme';
 
 export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
   const { user } = useAuth();
@@ -185,29 +186,33 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
             <label className="form-label" style={{ marginBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span>Community Tags <span style={{ color: 'var(--text-muted)', fontSize: '12px', fontWeight: 'normal' }}>(Select up to 3)</span></span>
             </label>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '10px' }}>
               {availableTags.map(tagObj => {
                 const tag = tagObj.name;
+                const isSelected = selectedTags.includes(tag);
+                const theme = getTagTheme(tag);
+
                 return (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => handleTagClick(tag)}
-                  style={{
-                    padding: '6px 12px',
-                    borderRadius: '16px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    border: '1px solid',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s',
-                    backgroundColor: selectedTags.includes(tag) ? 'var(--primary)' : 'transparent',
-                    color: selectedTags.includes(tag) ? '#fff' : 'var(--text-secondary)',
-                    borderColor: selectedTags.includes(tag) ? 'var(--primary)' : 'var(--border-light)'
-                  }}
-                >
-                  {tag}
-                </button>
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => handleTagClick(tag)}
+                    style={{
+                      padding: '6px 14px',
+                      borderRadius: '20px',
+                      fontSize: '13px',
+                      fontWeight: isSelected ? 700 : 500,
+                      border: `1px solid ${isSelected ? theme.border : theme.borderSubtle}`,
+                      cursor: 'pointer',
+                      transition: 'all 0.18s ease',
+                      transform: isSelected ? 'scale(1.04)' : 'scale(1)',
+                      backgroundColor: isSelected ? theme.activeBg : theme.bg,
+                      color: theme.color,
+                      boxShadow: isSelected ? theme.glow : 'none'
+                    }}
+                  >
+                    #{tag}
+                  </button>
                 );
               })}
             </div>
@@ -216,16 +221,16 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
                 type="button"
                 onClick={() => handleTagClick(ESCAPE_TAG)}
                 style={{
-                  padding: '6px 12px',
+                  padding: '5px 12px',
                   borderRadius: '16px',
-                  fontSize: '13px',
-                  fontWeight: 600,
+                  fontSize: '12px',
+                  fontWeight: selectedTags.includes(ESCAPE_TAG) ? 600 : 400,
                   border: '1px solid',
                   cursor: 'pointer',
                   transition: 'all 0.15s',
-                  backgroundColor: selectedTags.includes(ESCAPE_TAG) ? 'var(--bg-card-subtle)' : 'transparent',
-                  color: selectedTags.includes(ESCAPE_TAG) ? 'var(--text-primary)' : 'var(--text-muted)',
-                  borderColor: selectedTags.includes(ESCAPE_TAG) ? 'var(--text-primary)' : 'var(--border-light)'
+                  backgroundColor: selectedTags.includes(ESCAPE_TAG) ? 'rgba(255, 255, 255, 0.12)' : 'transparent',
+                  color: selectedTags.includes(ESCAPE_TAG) ? '#f8fafc' : 'var(--text-muted)',
+                  borderColor: selectedTags.includes(ESCAPE_TAG) ? 'rgba(255, 255, 255, 0.25)' : 'var(--border-light)'
                 }}
               >
                 {ESCAPE_TAG}

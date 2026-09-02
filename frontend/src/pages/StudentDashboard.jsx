@@ -20,6 +20,9 @@ import {
 import { Sparkles } from 'lucide-react';
 import { TeacherAIInsights } from '../components/TeacherAIInsights';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
+import CloudLoader from '../components/ui/quantum-cloud-loader';
+import { Marquee } from '../components/ui/marquee';
+import { TAG_THEMES } from '../lib/tagTheme';
 
 export const StudentDashboard = () => {
   const { user } = useAuth();
@@ -381,6 +384,34 @@ export const StudentDashboard = () => {
       ) : (
         /* Teacher Catalog Grid */
         <div>
+          {/* Live Campus Tags Marquee */}
+          <div style={{ marginBottom: '20px', padding: '8px 0', border: '1px solid var(--border-light)', background: 'var(--bg-card)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
+            <Marquee pauseOnHover={true} duration={26}>
+              {Object.values(TAG_THEMES).map(theme => (
+                <span 
+                  key={theme.name} 
+                  style={{ 
+                    margin: '0 16px', 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    gap: '6px', 
+                    fontSize: '13px', 
+                    fontWeight: 600, 
+                    color: theme.color, 
+                    padding: '4px 12px', 
+                    borderRadius: '16px', 
+                    background: theme.bg, 
+                    border: `1px solid ${theme.borderSubtle}`,
+                    boxShadow: `0 0 8px ${theme.borderSubtle}`
+                  }}
+                >
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: theme.border }} />
+                  #{theme.name}
+                </span>
+              ))}
+            </Marquee>
+          </div>
+
           {/* Tabs and Search Bar */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>
             <div style={{ display: 'flex', gap: '8px' }}>
@@ -415,8 +446,11 @@ export const StudentDashboard = () => {
           </div>
 
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '60px', color: 'var(--text-muted)' }}>
-              Loading faculty directory...
+            <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-muted)' }}>
+              <CloudLoader />
+              <p style={{ marginTop: '8px', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)' }}>
+                Loading faculty directory...
+              </p>
             </div>
           ) : displayedTeachers.length === 0 ? (
             <div className="card" style={{ textAlign: 'center', padding: '40px' }}>

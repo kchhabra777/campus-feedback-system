@@ -1,6 +1,7 @@
 import React from 'react';
 import { StarRating } from './StarRating';
 import { Award, BookOpen, Clock, TrendingUp, ChevronRight, Edit3 } from 'lucide-react';
+import { TiltCard } from './ui/tilt-card';
 
 export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, canReview = false }) => {
   const rObj = ratings?.rating || ratings || {};
@@ -9,7 +10,13 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, ca
   const totalReviews = Number(rObj.totalReviews) || 0;
 
   return (
-    <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <TiltCard
+      tiltLimit={8}
+      scale={1.03}
+      spotlight={true}
+      className="card"
+      style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+    >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
         <div>
           <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
@@ -102,6 +109,6 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, ca
           </button>
         )}
       </div>
-    </div>
+    </TiltCard>
   );
 };
