@@ -1,6 +1,7 @@
 import React from 'react';
 import { StarRating } from './StarRating';
 import { Award, BookOpen, Clock, TrendingUp, ChevronRight, Edit3 } from 'lucide-react';
+import { TiltCard } from './ui/tilt-card';
 
 export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, canReview = false }) => {
   const rObj = ratings?.rating || ratings || {};
@@ -9,7 +10,13 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, ca
   const totalReviews = Number(rObj.totalReviews) || 0;
 
   return (
-    <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <TiltCard 
+      className="card" 
+      tiltLimit={7} 
+      scale={1.025} 
+      spotlight={true} 
+      style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}
+    >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
         <div>
           <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
@@ -17,7 +24,7 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, ca
           </h3>
           <div style={{ fontSize: '13px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
             <Award size={13} />
-            <span>{teacher.designation || 'Faculty'} • {teacher.department}</span>
+            <span>{teacher.designation || 'Faculty'} · {teacher.department}</span>
           </div>
         </div>
       </div>
@@ -81,7 +88,7 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, ca
       </div>
 
       {/* Actions */}
-      <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
+      <div style={{ display: 'flex', gap: '8px', marginTop: 'auto', position: 'relative', zIndex: 20 }}>
         <button
           onClick={() => onViewReviews(teacher)}
           className="btn btn-secondary btn-sm"
@@ -102,6 +109,6 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, ca
           </button>
         )}
       </div>
-    </div>
+    </TiltCard>
   );
 };

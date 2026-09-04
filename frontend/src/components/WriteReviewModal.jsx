@@ -1,3 +1,4 @@
+import { getTagTheme } from '../lib/tagTheme';
 import React, { useState, useEffect } from 'react';
 import { StarRating } from './StarRating';
 import { X, CheckCircle, AlertCircle, Clock } from 'lucide-react';
@@ -185,29 +186,33 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
             <label className="form-label" style={{ marginBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span>Community Tags <span style={{ color: 'var(--text-muted)', fontSize: '12px', fontWeight: 'normal' }}>(Select up to 3)</span></span>
             </label>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '10px' }}>
               {availableTags.map(tagObj => {
                 const tag = tagObj.name;
+                const isSelected = selectedTags.includes(tag);
+                const theme = getTagTheme(tag);
+
                 return (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => handleTagClick(tag)}
-                  style={{
-                    padding: '6px 12px',
-                    borderRadius: '16px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    border: '1px solid',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s',
-                    backgroundColor: selectedTags.includes(tag) ? 'var(--primary)' : 'transparent',
-                    color: selectedTags.includes(tag) ? '#fff' : 'var(--text-secondary)',
-                    borderColor: selectedTags.includes(tag) ? 'var(--primary)' : 'var(--border-light)'
-                  }}
-                >
-                  {tag}
-                </button>
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => handleTagClick(tag)}
+                    style={{
+                      padding: '6px 14px',
+                      borderRadius: '20px',
+                      fontSize: '13px',
+                      fontWeight: isSelected ? 700 : 500,
+                      border: `1px solid ${isSelected ? theme.border : theme.borderSubtle}`,
+                      cursor: 'pointer',
+                      transition: 'all 0.18s ease',
+                      transform: isSelected ? 'scale(1.04)' : 'scale(1)',
+                      backgroundColor: isSelected ? theme.activeBg : theme.bg,
+                      color: theme.color,
+                      boxShadow: isSelected ? theme.glow : 'none'
+                    }}
+                  >
+                    #{tag}
+                  </button>
                 );
               })}
             </div>
