@@ -1,3 +1,4 @@
+import CloudLoader from './components/ui/quantum-cloud-loader';
 import { Marquee } from './components/ui/marquee';
 import { TAG_THEMES } from './lib/tagTheme';
 import React, { useState } from 'react';
@@ -61,16 +62,11 @@ export function App() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-main)' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ width: '40px', height: '40px', border: '3px solid var(--border-light)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px auto' }}></div>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 600 }}>Loading Campus Feedback Portal...</p>
-        </div>
-        <style>{`
-          @keyframes spin {
-            to { transform: rotate(360deg); }
-          }
-        `}</style>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#030712', color: '#f8fafc' }}>
+        <CloudLoader />
+        <p style={{ marginTop: '16px', fontSize: '14px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.4px' }}>
+          Loading Campus Feedback Portal...
+        </p>
       </div>
     );
   }

@@ -14,6 +14,14 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState('');
 
+  // Fail-safe timeout: never allow Clerk or network lag to hang on loading screen for > 2.5s
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Set the token provider so every API request gets the latest Clerk JWT
   useEffect(() => {
     setTokenProvider(async () => {
@@ -141,7 +149,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         user,
         token,
-        loading: loading || !isClerkLoaded,
+        loading: loading,
         authError,
         setAuthError,
         login,

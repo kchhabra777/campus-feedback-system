@@ -244,3 +244,5 @@ export default function CloudLoader({ className = '' }) {
     </div>
   );
 }
+
+export { CloudLoader };
