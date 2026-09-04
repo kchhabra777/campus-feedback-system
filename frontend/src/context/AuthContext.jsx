@@ -22,13 +22,21 @@ export const AuthProvider = ({ children }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Set the token provider so every API request gets the latest Clerk JWT
+  // Set the token provider: prefer backend-issued campus_token, fallback to Clerk JWT
   useEffect(() => {
     setTokenProvider(async () => {
-      if (isSignedIn && getToken) {
-        return await getToken();
+      const localToken = localStorage.getItem('campus_token');
+      if (localToken) {
+        return localToken;
       }
-      return localStorage.getItem('campus_token');
+      if (isSignedIn && getToken) {
+        try {
+          return await getToken();
+        } catch (e) {
+          console.warn("Could not fetch Clerk auth token:", e);
+        }
+      }
+      return null;
     });
   }, [isSignedIn, getToken]);
 

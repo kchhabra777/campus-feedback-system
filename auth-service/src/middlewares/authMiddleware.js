@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { verifyToken } from "../utils/jwt.js";
 import prisma from "../lib/prisma.js";
 import { determineRoleFromEmail } from "../utils/roleDetector.js";
@@ -52,7 +53,7 @@ export const requireAuth = async (req, res, next) => {
       }
     }
 
-    // 2. Fallback to Local JWT Bearer Token
+    // 2. Fallback to Local JWT or Clerk JWT Bearer Token
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ error: "Access denied. Authentication token is missing." });
@@ -60,6 +61,7 @@ export const requireAuth = async (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
+    // Attempt internal backend JWT verification
     try {
       const decoded = verifyToken(token);
       if (decoded && decoded.userId) {
@@ -77,7 +79,37 @@ export const requireAuth = async (req, res, next) => {
         }
       }
     } catch (jwtErr) {
-      // Local JWT decode failed
+      // Local JWT signature verify failed; attempt fallback to Clerk JWT
+    }
+
+    // Attempt Clerk JWT payload decoding
+    try {
+      const rawDecoded = jwt.decode(token);
+      if (rawDecoded && (rawDecoded.sub || rawDecoded.email)) {
+        const clerkSub = rawDecoded.sub;
+        const clerkEmail = rawDecoded.email;
+
+        let user = await prisma.user.findFirst({
+          where: {
+            OR: [
+              ...(clerkEmail ? [{ email: clerkEmail.toLowerCase().trim() }] : []),
+              ...(clerkSub ? [{ passwordHash: `CLERK_${clerkSub}` }] : []),
+              ...(clerkSub ? [{ id: clerkSub }] : [])
+            ]
+          },
+          include: {
+            studentProfile: true,
+            teacherProfile: true
+          }
+        });
+
+        if (user) {
+          req.user = user;
+          return next();
+        }
+      }
+    } catch (clerkDecodeErr) {
+      // Ignore decode error
     }
 
     return res.status(401).json({ error: "Invalid or expired session token." });

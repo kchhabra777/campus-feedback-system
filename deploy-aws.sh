@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 set -e
 
 echo "🚀 Starting Campus Feedback System AWS Deployment..."
@@ -25,17 +25,14 @@ EOF
 
 # 3. Write gateway .env
 echo "📦 Configuring gateway .env..."
-if [ ! -f gateway/.env ]; then
-  cat << 'EOF' > gateway/.env
+cat << 'EOF' > gateway/.env
 PORT=8000
 NODE_ENV=production
 AUTH_SERVICE_URL=http://localhost:6001
 FEEDBACK_SERVICE_URL=http://localhost:6002
+CLERK_SECRET_KEY="sk_test_DwHkHkKtXXeg6CUjyLf7tTnxjqDPo2MD07pBVap8mO"
+CLERK_PUBLISHABLE_KEY="pk_test_bWFueS1saW9uZmlzaC03NDE3LmNsZXJrLmFjY291bnRzLmRldiQ"
 EOF
-else
-  sed -i 's|AUTH_SERVICE_URL=.*|AUTH_SERVICE_URL=http://localhost:6001|g' gateway/.env
-  sed -i 's|FEEDBACK_SERVICE_URL=.*|FEEDBACK_SERVICE_URL=http://localhost:6002|g' gateway/.env
-fi
 
 # 4. Install all dependencies and generate Prisma clients
 echo "📦 Installing packages across microservices..."
