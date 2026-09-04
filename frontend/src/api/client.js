@@ -9,14 +9,16 @@ export function setTokenProvider(provider) {
 async function getHeaders(extraHeaders = {}) {
   let token = localStorage.getItem("campus_token");
   
-  if (tokenProvider) {
+  if (!token && tokenProvider) {
     try {
       const dynamicToken = await tokenProvider();
       if (dynamicToken) token = dynamicToken;
     } catch (e) {
       console.warn("Could not fetch auth token:", e);
     }
-  } else if (window.Clerk && window.Clerk.session) {
+  }
+  
+  if (!token && window.Clerk && window.Clerk.session) {
     try {
       const clerkToken = await window.Clerk.session.getToken();
       if (clerkToken) token = clerkToken;

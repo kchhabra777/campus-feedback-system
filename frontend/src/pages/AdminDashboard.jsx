@@ -9,7 +9,7 @@ import { ReviewCard } from '../components/ReviewCard';
 import {
   Activity, TrendingDown, ArrowLeft, Download,
   Users, MessageSquare, Star, ChevronRight, Search, AlertTriangle,
-  UserPlus, UserX, Edit2, Trash2, CheckCircle2, ShieldBan
+  UserPlus, UserX, Edit2, Trash2, CheckCircle2, ShieldBan, RefreshCw
 } from 'lucide-react';
 
 /* ── tiny helpers ── */
@@ -214,12 +214,27 @@ export const AdminDashboard = () => {
     }
   };
 
+  const [studentsLoading, setStudentsLoading] = useState(false);
+
+  const loadStudents = async (silent = false) => {
+    if (!silent) setStudentsLoading(true);
+    try {
+      const res = await api.getStudents();
+      setStudents(res.students || []);
+    } catch (err) {
+      console.error("Failed to load students:", err);
+    } finally {
+      if (!silent) setStudentsLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadData();
   }, []);
 
   useEffect(() => {
     if (activeTab === 'moderation') loadFlags();
+    if (activeTab === 'students') loadStudents();
   }, [activeTab]);
 
   const openDossier = async (teacher, isSilentRefresh = false) => {
@@ -697,12 +712,24 @@ export const AdminDashboard = () => {
         {/* ── Students Tab ── */}
         {activeTab === 'students' && (
           <div className="fade-in">
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <div style={{ position: 'relative' }}>
                 <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                 <input className="form-input" style={{ paddingLeft: '36px', width: '300px', height: '40px' }} placeholder="Search name, roll no, or email…" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
               </div>
-              <div className="badge" style={{ fontSize: '14px' }}><Users size={16}/> {students.length} Students</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <button
+                  type="button"
+                  onClick={() => loadStudents()}
+                  disabled={studentsLoading}
+                  className="btn btn-secondary btn-sm"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <RefreshCw size={14} style={{ animation: studentsLoading ? 'spin 1s linear infinite' : 'none' }} />
+                  <span>{studentsLoading ? 'Loading…' : 'Refresh'}</span>
+                </button>
+                <div className="badge" style={{ fontSize: '14px' }}><Users size={16}/> {students.length} Students</div>
+              </div>
             </div>
 
             <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
@@ -712,7 +739,9 @@ export const AdminDashboard = () => {
                 <span>Status</span>
                 <span>Actions</span>
               </div>
-              {filteredStudents.length === 0 ? (
+              {studentsLoading ? (
+                <div style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>Loading student records…</div>
+              ) : filteredStudents.length === 0 ? (
                 <div style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>No students found.</div>
               ) : (
                 filteredStudents.map((student, idx) => (

@@ -25,6 +25,10 @@ export const AuthProvider = ({ children }) => {
   // Set the token provider: prefer backend-issued campus_token, fallback to Clerk JWT
   useEffect(() => {
     setTokenProvider(async () => {
+      const localToken = localStorage.getItem('campus_token');
+      if (localToken) {
+        return localToken;
+      }
       if (isSignedIn && getToken) {
         try {
           const clerkToken = await getToken();
@@ -32,10 +36,6 @@ export const AuthProvider = ({ children }) => {
         } catch (e) {
           console.warn("Could not fetch Clerk auth token:", e);
         }
-      }
-      const localToken = localStorage.getItem('campus_token');
-      if (localToken) {
-        return localToken;
       }
       return null;
     });
