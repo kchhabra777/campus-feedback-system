@@ -760,7 +760,7 @@ export const AdminDashboard = () => {
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px', color: 'var(--text-secondary)' }}>Official Thapar Email</label>
-                  <input required type="email" className="form-input" value={regForm.email} onChange={e => setRegForm({...regForm, email: e.target.value})} placeholder="jdoe@thapar.edu" />
+                  <input required type="email" className="form-input" value={regForm.email} onChange={e => setRegForm({...regForm, email: e.target.value})} placeholder="bv.raghav@thapar.edu" />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px', color: 'var(--text-secondary)' }}>Department</label>
