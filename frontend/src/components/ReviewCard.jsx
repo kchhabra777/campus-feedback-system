@@ -3,7 +3,6 @@ import { StarRating } from './StarRating';
 import { ThumbsUp, ThumbsDown, MessageSquare, Flag, Send, User, Mail, Award, Tag } from 'lucide-react';
 import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
-import { getTagTheme } from '../lib/tagTheme';
 
 export const ReviewCard = ({ review, onUpdate }) => {
   const { user } = useAuth();
@@ -387,28 +386,25 @@ export const ReviewCard = ({ review, onUpdate }) => {
           marginBottom: '16px',
           paddingTop: '4px'
         }}>
-          {review.tags.filter(t => t !== "None of these fit").map((tag, idx) => {
-            const theme = getTagTheme(tag);
-            return (
-              <span key={idx} style={{ 
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                fontSize: '12px', 
-                fontWeight: 600, 
-                padding: '4px 12px', 
-                borderRadius: '20px', 
-                background: theme.bg,
-                border: `1px solid ${theme.borderSubtle}`,
-                color: theme.color,
-                boxShadow: `0 0 10px ${theme.borderSubtle}`,
-                letterSpacing: '0.01em'
-              }}>
-                <Tag size={11} style={{ opacity: 0.8 }} />
-                #{tag}
-              </span>
-            );
-          })}
+          {review.tags.filter(t => t !== "None of these fit").map((tag, idx) => (
+            <span key={idx} style={{ 
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              fontSize: '12px', 
+              fontWeight: 600, 
+              padding: '4px 12px', 
+              borderRadius: '20px', 
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              color: 'rgba(255, 255, 255, 0.75)',
+              letterSpacing: '0.01em',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+            }}>
+              <Tag size={10} style={{ opacity: 0.6 }} />
+              {tag}
+            </span>
+          ))}
         </div>
       )}
 
