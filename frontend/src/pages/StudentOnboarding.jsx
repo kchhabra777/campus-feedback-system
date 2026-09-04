@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { ALLOWED_BATCHES } from '../api/client';
-import { User, GraduationCap, Building, AlertCircle } from 'lucide-react';
+import { User, GraduationCap, Building, AlertCircle, LogOut } from 'lucide-react';
 
 export const StudentOnboarding = () => {
-  const { user, onboardStudent } = useAuth();
+  const { user, onboardStudent, logout } = useAuth();
   const [fullName, setFullName] = useState('');
   const [rollNumber, setRollNumber] = useState('');
   const [branch, setBranch] = useState('COE');
@@ -53,7 +53,35 @@ export const StudentOnboarding = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', background: 'var(--bg-main)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px 16px', background: 'var(--bg-main)' }}>
+      {/* Top Bar with Sign Out / Switch Account */}
+      <div style={{ width: '100%', maxWidth: '480px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+          Signed in as: <strong style={{ color: 'var(--text-primary)' }}>{user?.email || 'Student'}</strong>
+        </span>
+        <button
+          type="button"
+          onClick={logout}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: '#ef4444',
+            fontSize: '13px',
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '5px',
+            padding: '4px 8px',
+            borderRadius: '6px'
+          }}
+          title="Sign out and return to login page"
+        >
+          <LogOut size={14} />
+          <span>Switch Account</span>
+        </button>
+      </div>
+
       <div className="card" style={{ maxWidth: '480px', width: '100%', padding: '32px', borderRadius: 'var(--radius-lg)' }}>
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div className="badge badge-student" style={{ fontSize: '13px', marginBottom: '12px' }}>
@@ -183,6 +211,28 @@ export const StudentOnboarding = () => {
             {loading ? "Saving Profile..." : "Save & Enter Student Portal"}
           </button>
         </form>
+
+        <div style={{ marginTop: '20px', textAlign: 'center', borderTop: '1px solid var(--border-light)', paddingTop: '16px' }}>
+          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
+            Already completed setup on another account?{' '}
+            <button
+              type="button"
+              onClick={logout}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--primary)',
+                fontWeight: 700,
+                cursor: 'pointer',
+                textDecoration: 'underline',
+                padding: 0,
+                fontSize: '13px'
+              }}
+            >
+              Sign out &amp; Log In
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );
