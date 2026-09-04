@@ -109,7 +109,7 @@ export const syncClerkUser = async (req, res) => {
         },
         include: { studentProfile: true, teacherProfile: true }
       });
-    } else if (clerkId && (!user.passwordHash || !user.passwordHash.startsWith("CLERK_"))) {
+    } else if (clerkId && user.passwordHash !== `CLERK_${clerkId}`) {
       user = await prisma.user.update({
         where: { id: user.id },
         data: { passwordHash: `CLERK_${clerkId}` },
