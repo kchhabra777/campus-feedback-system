@@ -23,6 +23,10 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 
 import CloudLoader from '../components/ui/quantum-cloud-loader';
 import { Marquee } from '../components/ui/marquee';
 import { TAG_THEMES } from '../lib/tagTheme';
+import BorderBeam from '../components/ui/border-beam';
+import AnimatedTabs from '../components/ui/animated-tabs';
+import NumberTicker from '../components/ui/number-ticker';
+import CommandMenu from '../components/ui/command-menu';
 
 
 export const StudentDashboard = () => {
@@ -42,6 +46,7 @@ export const StudentDashboard = () => {
   const [reviewsLoading, setReviewsLoading] = useState(false);
   const [reviewSort, setReviewSort] = useState('recent');
   const [isAIInsightsOpen, setIsAIInsightsOpen] = useState(false);
+  const [isCmdMenuOpen, setIsCmdMenuOpen] = useState(false);
 
   // Write review modal
   const [reviewingTeacher, setReviewingTeacher] = useState(null);
@@ -87,6 +92,18 @@ export const StudentDashboard = () => {
   useEffect(() => {
     fetchDashboardData();
   }, [user, user?.studentProfile?.batch]);
+
+  // Global Command+K / Ctrl+K shortcut for quick search & actions
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsCmdMenuOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const handleViewReviews = async (teacher, isSilentRefresh = false) => {
     setSelectedTeacher(teacher);
@@ -160,7 +177,7 @@ export const StudentDashboard = () => {
 
           <div style={{ display: 'flex', gap: '10px' }}>
             <span className="badge badge-neutral" style={{ padding: '8px 14px', fontSize: '13px' }}>
-              {eligibleTeachers.length} Eligible Teachers Taught You
+              <NumberTicker value={eligibleTeachers.length} decimalPlaces={0} /> Eligible Teachers Taught You
             </span>
           </div>
         </div>
@@ -210,16 +227,19 @@ export const StudentDashboard = () => {
                 <button 
                   onClick={() => setIsAIInsightsOpen(true)}
                   style={{ 
+                    position: 'relative',
+                    overflow: 'hidden',
                     display: 'flex', alignItems: 'center', gap: '8px', 
-                    padding: '8px 16px', borderRadius: '8px',
-                    background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
-                    color: 'white', fontWeight: 600, border: 'none',
-                    boxShadow: '0 4px 15px rgba(236, 72, 153, 0.3)',
+                    padding: '9px 18px', borderRadius: '10px',
+                    background: 'linear-gradient(135deg, #18122B 0%, #2D033B 100%)',
+                    color: 'white', fontWeight: 600, border: '1px solid rgba(168, 85, 247, 0.4)',
+                    boxShadow: '0 4px 18px rgba(168, 85, 247, 0.25)',
                     cursor: 'pointer'
                   }}
                 >
-                  <Sparkles size={18} />
-                  Generate AI Insights
+                  <BorderBeam size={80} duration={6} borderWidth={1.5} colorFrom="#ec4899" colorTo="#a855f7" />
+                  <Sparkles size={18} style={{ position: 'relative', zIndex: 1, color: '#f472b6' }} />
+                  <span style={{ position: 'relative', zIndex: 1 }}>Generate AI Insights</span>
                 </button>
               </div>
             </div>
@@ -233,7 +253,7 @@ export const StudentDashboard = () => {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
                   <span style={{ fontSize: '26px', fontWeight: 800, color: 'var(--star-gold)' }}>
-                    {selectedTeacherRatings?.overallRating > 0 ? selectedTeacherRatings.overallRating.toFixed(2) : '0.00'}
+                    <NumberTicker value={selectedTeacherRatings?.overallRating || 0} decimalPlaces={2} />
                   </span>
                   <StarRating rating={selectedTeacherRatings?.overallRating || 0} size={18} />
                 </div>
@@ -247,7 +267,7 @@ export const StudentDashboard = () => {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
                   <span style={{ fontSize: '26px', fontWeight: 800, color: '#2563eb' }}>
-                    {selectedTeacherRatings?.recentRating > 0 ? selectedTeacherRatings.recentRating.toFixed(2) : '0.00'}
+                    <NumberTicker value={selectedTeacherRatings?.recentRating || 0} decimalPlaces={2} />
                   </span>
                   <StarRating rating={selectedTeacherRatings?.recentRating || 0} size={18} />
                 </div>
@@ -259,7 +279,7 @@ export const StudentDashboard = () => {
                   Total Student Reviews
                 </div>
                 <div style={{ fontSize: '26px', fontWeight: 800, color: 'var(--text-primary)', marginTop: '6px' }}>
-                  {selectedTeacherReviews.length}
+                  <NumberTicker value={selectedTeacherReviews.length} decimalPlaces={0} />
                 </div>
                 <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Verified student evaluations</span>
               </div>
@@ -415,34 +435,79 @@ export const StudentDashboard = () => {
 
           {/* Tabs and Search Bar */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button
-                onClick={() => setTab('eligible')}
-                className={`btn btn-sm ${tab === 'eligible' ? 'btn-primary' : 'btn-secondary'}`}
-              >
-                <BookOpen size={14} />
-                <span>Teachers Who Taught You ({eligibleTeachers.length})</span>
-              </button>
-              <button
-                onClick={() => setTab('all')}
-                className={`btn btn-sm ${tab === 'all' ? 'btn-primary' : 'btn-secondary'}`}
-              >
-                <Users size={14} />
-                <span>All Campus Faculty ({allTeachers.length})</span>
-              </button>
-            </div>
+            <AnimatedTabs
+              activeTab={tab}
+              onChange={setTab}
+              tabs={[
+                {
+                  id: 'eligible',
+                  label: `Teachers Who Taught You (${eligibleTeachers.length})`,
+                  icon: BookOpen
+                },
+                {
+                  id: 'all',
+                  label: `All Campus Faculty (${allTeachers.length})`,
+                  icon: Users
+                }
+              ]}
+            />
 
-            {/* Search Input */}
-            <div style={{ position: 'relative', minWidth: '260px' }}>
-              <Search size={15} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-              <input
-                type="text"
-                className="form-input"
-                placeholder="Search teacher by name or dept..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ paddingLeft: '32px', fontSize: '13px' }}
-              />
+            {/* Quick Actions & Search Input */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => setIsCmdMenuOpen(true)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '7px 14px',
+                  borderRadius: '10px',
+                  border: '1px solid var(--border-light)',
+                  background: 'var(--bg-card)',
+                  color: 'var(--text-secondary)',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(168, 85, 247, 0.5)';
+                  e.currentTarget.style.color = '#fff';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--border-light)';
+                  e.currentTarget.style.color = 'var(--text-secondary)';
+                }}
+              >
+                <Search size={14} color="#a855f7" />
+                <span>Quick Finder</span>
+                <kbd style={{
+                  padding: '2px 6px',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  borderRadius: '4px',
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  color: 'var(--text-secondary)',
+                  fontFamily: 'monospace'
+                }}>
+                  ⌘K
+                </kbd>
+              </button>
+
+              <div style={{ position: 'relative', minWidth: '240px' }}>
+                <Search size={15} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                <input
+                  type="text"
+                  className="form-input"
+                  placeholder="Filter teachers by name or dept..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{ paddingLeft: '32px', fontSize: '13px' }}
+                />
+              </div>
             </div>
           </div>
 
@@ -503,6 +568,16 @@ export const StudentDashboard = () => {
           onSuccess={handleReviewSubmitted}
         />
       )}
+
+      {/* Global Command Menu & Spotlight Search */}
+      <CommandMenu
+        isOpen={isCmdMenuOpen}
+        onClose={() => setIsCmdMenuOpen(false)}
+        teachers={allTeachers}
+        onSelectTeacher={(t) => {
+          handleViewReviews(t);
+        }}
+      />
     </div>
   );
 };
