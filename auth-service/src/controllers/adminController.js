@@ -73,24 +73,74 @@ export const deleteTeacher = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Delete teacher profile and user
-    await prisma.user.delete({
-      where: { id }
+    // 1. Find teacher profile by profile id OR by userId
+    const teacherProfile = await prisma.teacherProfile.findFirst({
+      where: {
+        OR: [
+          { id },
+          { userId: id }
+        ]
+      }
+    });
+
+    const targetUserId = teacherProfile?.userId || id;
+    const profileId = teacherProfile?.id;
+
+    // 2. Cascade delete course offerings if any
+    if (profileId) {
+      await prisma.courseOffering.deleteMany({
+        where: { teacherId: profileId }
+      });
+      await prisma.teacherProfile.deleteMany({
+        where: { id: profileId }
+      });
+    }
+
+    // 3. Cleanup ratings and reviews associated with this teacher
+    try {
+      await prisma.profileRating.deleteMany({
+        where: {
+          OR: [
+            { userId: targetUserId },
+            ...(profileId ? [{ userId: profileId }] : [])
+          ]
+        }
+      });
+      await prisma.review.deleteMany({
+        where: {
+          OR: [
+            { revieweeId: targetUserId },
+            ...(profileId ? [{ revieweeId: profileId }] : [])
+          ]
+        }
+      });
+    } catch (e) {
+      console.warn("Cleanup reviews/ratings note:", e.message);
+    }
+
+    // 4. Delete user record if exists
+    await prisma.user.deleteMany({
+      where: { id: targetUserId }
     });
 
     res.status(200).json({ success: true, message: "Teacher deleted successfully" });
   } catch (error) {
     console.error("Failed to delete teacher:", error);
-    res.status(500).json({ error: "Failed to delete teacher" });
+    res.status(500).json({ error: error.message || "Failed to delete teacher" });
   }
 };
 export const getTeacherCourses = async (req, res) => {
   try {
     const { id } = req.params;
     
-    // Find teacher profile first
-    const teacherProfile = await prisma.teacherProfile.findUnique({
-      where: { userId: id }
+    // Find teacher profile first by userId or profile id
+    const teacherProfile = await prisma.teacherProfile.findFirst({
+      where: {
+        OR: [
+          { userId: id },
+          { id }
+        ]
+      }
     });
     
     if (!teacherProfile) return res.status(404).json({ error: "Teacher profile not found" });
@@ -109,9 +159,14 @@ export const addTeacherCourse = async (req, res) => {
     const { id } = req.params;
     const { courseCode, courseName, batchTaught, branchTaught, academicYear, ltp } = req.body;
     
-    // Find teacher profile first
-    const teacherProfile = await prisma.teacherProfile.findUnique({
-      where: { userId: id }
+    // Find teacher profile first by userId or profile id
+    const teacherProfile = await prisma.teacherProfile.findFirst({
+      where: {
+        OR: [
+          { userId: id },
+          { id }
+        ]
+      }
     });
     
     if (!teacherProfile) return res.status(404).json({ error: "Teacher profile not found" });
@@ -180,8 +235,19 @@ export const updateTeacher = async (req, res) => {
     const { id } = req.params;
     const { fullName, department, designation } = req.body;
     
+    const teacherProfile = await prisma.teacherProfile.findFirst({
+      where: {
+        OR: [
+          { userId: id },
+          { id }
+        ]
+      }
+    });
+
+    if (!teacherProfile) return res.status(404).json({ error: "Teacher profile not found" });
+
     const updated = await prisma.teacherProfile.update({
-      where: { userId: id },
+      where: { id: teacherProfile.id },
       data: { fullName, department, designation }
     });
     res.status(200).json({ message: "Teacher updated", profile: updated });

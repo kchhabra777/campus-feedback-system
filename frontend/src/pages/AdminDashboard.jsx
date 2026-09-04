@@ -318,12 +318,12 @@ export const AdminDashboard = () => {
     if (!teacherToDelete) return;
     setIsDeleting(true);
     try {
-      const teacherId = teacherToDelete.userId || teacherToDelete.id;
+      const teacherId = teacherToDelete.userId || teacherToDelete.user?.id || teacherToDelete.id;
       await api.deleteTeacher(teacherId);
-      setTeachers(prev => prev.filter(t => (t.userId || t.id) !== teacherId));
+      setTeachers(prev => prev.filter(t => (t.userId || t.user?.id || t.id) !== teacherId && t.id !== teacherToDelete.id));
       setTeacherToDelete(null);
     } catch (err) {
-      alert("Failed to delete teacher");
+      alert(err.message || "Failed to delete teacher");
     } finally {
       setIsDeleting(false);
     }
