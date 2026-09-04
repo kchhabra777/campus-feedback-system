@@ -1,6 +1,6 @@
 {
-  "installCommand": "npm install --prefix frontend",
-  "buildCommand": "npm run build --prefix frontend",
+  "installCommand": "cd frontend && npm install",
+  "buildCommand": "cd frontend && node ./node_modules/vite/bin/vite.js build",
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {

@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Campus Honest and Transparent Feedback System (Thapar University)",
   "private": true,
-  "workspaces": [
-    "frontend"
-  ],
   "scripts": {
     "build": "npm install --prefix frontend && npm run build --prefix frontend",
     "dev": "concurrently -n \"AUTH,FEEDBACK,GATEWAY,FRONTEND\" -c \"blue,green,magenta,cyan\" \"npm run dev --prefix auth-service\" \"npm run dev --prefix feedback-microservice\" \"npm run dev --prefix gateway\" \"npm run dev --prefix frontend\"",
