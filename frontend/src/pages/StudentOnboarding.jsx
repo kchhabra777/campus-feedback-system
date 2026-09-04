@@ -5,8 +5,16 @@ import { User, GraduationCap, Building, AlertCircle, LogOut } from 'lucide-react
 
 export const StudentOnboarding = () => {
   const { user, onboardStudent, logout } = useAuth();
-  const [fullName, setFullName] = useState('');
-  const [rollNumber, setRollNumber] = useState('');
+  const [fullName, setFullName] = useState(() => {
+    const saved = localStorage.getItem('signup_fullName');
+    if (saved) localStorage.removeItem('signup_fullName');
+    return saved || '';
+  });
+  const [rollNumber, setRollNumber] = useState(() => {
+    const saved = localStorage.getItem('signup_rollNumber');
+    if (saved) localStorage.removeItem('signup_rollNumber');
+    return saved || '';
+  });
   const [branch, setBranch] = useState('COE');
   const [batch, setBatch] = useState(ALLOWED_BATCHES[0]); // default to 3Q11
   const [yearOfStudy, setYearOfStudy] = useState(batch.startsWith('3') ? 3 : 2);
