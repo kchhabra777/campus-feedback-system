@@ -64,9 +64,10 @@ export const requireAuth = async (req, res, next) => {
     // Attempt internal backend JWT verification
     try {
       const decoded = verifyToken(token);
-      if (decoded && decoded.userId) {
+      const resolvedId = decoded?.userId || decoded?.id;
+      if (decoded && resolvedId) {
         const user = await prisma.user.findUnique({
-          where: { id: decoded.userId },
+          where: { id: resolvedId },
           include: {
             studentProfile: true,
             teacherProfile: true

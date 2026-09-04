@@ -111,7 +111,12 @@ export const syncClerkUser = async (req, res) => {
       });
     }
 
-    const token = generateToken(user);
+    const token = generateToken({
+      userId: user.id,
+      email: user.email,
+      role: user.role,
+      batch: user.detectedBatch
+    });
     return res.status(200).json({ user, token });
   } catch (error) {
     return res.status(500).json({ error: error.message });
