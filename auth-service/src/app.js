@@ -29,4 +29,14 @@ app.use("/profiles", profileRoutes);
 app.use("/courses", courseRoutes);
 app.use("/admin", adminRoutes);
 
+// Catch JSON syntax errors or any unhandled body parsing errors so requests never hang
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+    console.error(`[AUTH-SERVICE] Malformed JSON payload:`, err.message);
+    return res.status(400).json({ error: "Invalid JSON format in request body" });
+  }
+  console.error(`[AUTH-SERVICE ERROR]:`, err.message);
+  res.status(err.status || 500).json({ error: err.message || "Internal server error" });
+});
+
 export default app;
