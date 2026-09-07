@@ -26,13 +26,21 @@ export const createReply = async ({
         }
     }
 
+    const isPrivileged = authorRole === "TEACHER" || authorRole === "ADMIN";
+    const sanitizedAuthorName = isPrivileged 
+        ? (authorName || (authorRole === "TEACHER" ? "Faculty Member" : "Administrator")) 
+        : "Anonymous Student";
+    const sanitizedAuthorBadge = isPrivileged 
+        ? (authorBadge || (authorRole === "TEACHER" ? "Faculty" : "Admin")) 
+        : "Verified Student";
+
     return await prisma.reviewReply.create({
         data: {
             reviewId: Number(reviewId),
             authorId,
             authorRole,
-            authorName,
-            authorBadge,
+            authorName: sanitizedAuthorName,
+            authorBadge: sanitizedAuthorBadge,
             replyText,
             parentReplyId
         },
@@ -94,8 +102,11 @@ export const getRepliesByReview = async (reviewId) => {
     return replies.map((r) => {
         const up = r.votes ? r.votes.filter((v) => v.voteType === "UP").length : 0;
         const down = r.votes ? r.votes.filter((v) => v.voteType === "DOWN").length : 0;
+        const isPrivileged = r.authorRole === "TEACHER" || r.authorRole === "ADMIN";
         return {
             ...r,
+            authorName: isPrivileged ? r.authorName : "Anonymous Student",
+            authorBadge: isPrivileged ? r.authorBadge : "Verified Student",
             upvotes: up,
             downvotes: down
         };

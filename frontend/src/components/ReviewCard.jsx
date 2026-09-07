@@ -133,10 +133,8 @@ export const ReviewCard = ({ review, onUpdate }) => {
         authorBadge = 'Admin';
         authorRole = "ADMIN";
       } else {
-        authorName = user.studentProfile?.fullName
-          ? `${user.studentProfile.fullName} (${user.studentProfile.rollNumber || 'Student'})`
-          : (user.studentProfile?.rollNumber || `Student (${user.studentProfile?.batch || 'BE'})`);
-        authorBadge = `${user.studentProfile?.batch || 'BE'} Student`;
+        authorName = 'Anonymous Student';
+        authorBadge = 'Verified Student';
         authorRole = "STUDENT";
       }
 
@@ -191,6 +189,9 @@ export const ReviewCard = ({ review, onUpdate }) => {
     const isAdminReply = reply.authorRole === 'ADMIN';
     const maxDepth = 4;
     const paddingLeft = depth > 0 ? (depth > maxDepth ? 12 : 24) : 0;
+    const isPrivilegedReply = isTeacherReply || isAdminReply;
+    const displayAuthorName = isPrivilegedReply ? reply.authorName : 'Anonymous Student';
+    const displayAuthorBadge = isPrivilegedReply ? reply.authorBadge : 'Verified Student';
 
     return (
       <div key={reply.replyId} style={{ paddingLeft: `${paddingLeft}px`, marginTop: depth > 0 ? '8px' : '0' }}>
@@ -221,15 +222,15 @@ export const ReviewCard = ({ review, onUpdate }) => {
 
           <div className="reply-meta">
             <span style={isTeacherReply ? { fontWeight: 700, color: 'var(--primary)' } : isAdminReply ? { fontWeight: 700, color: 'var(--text-primary)' } : { fontWeight: 600 }}>
-              {reply.authorName}
+              {displayAuthorName}
             </span>
-            {reply.authorBadge && (
+            {displayAuthorBadge && (
               <span
                 className={`badge ${isTeacherReply ? 'badge-teacher' : 'badge-student'}`}
                 style={isAdminReply ? { backgroundColor: '#2d3748', color: '#fff', fontSize: '11px', padding: '2px 8px' } : { fontSize: '11px', padding: '2px 8px' }}
               >
                 {isTeacherReply ? <Award size={11} /> : isAdminReply ? <User size={11} /> : null}
-                {reply.authorBadge}
+                {displayAuthorBadge}
               </span>
             )}
             <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400, marginLeft: 'auto' }}>
@@ -244,7 +245,7 @@ export const ReviewCard = ({ review, onUpdate }) => {
             {user && (
               <button
                 type="button"
-                onClick={() => setReplyingTo({ id: reply.replyId, name: reply.authorName })}
+                onClick={() => setReplyingTo({ id: reply.replyId, name: displayAuthorName })}
                 className="btn btn-subtle btn-sm"
                 style={{ padding: '2px 8px', fontSize: '11.5px', color: 'var(--text-secondary)' }}
               >
