@@ -17,11 +17,12 @@ export const createReview = async ({
 
     // Atomic transaction enforcing serialized cooldown check + review creation
     const review = await prisma.$transaction(async (tx) => {
-        // Step 1: Check 21-day cooldown threshold
+        // Step 1: Check 21-day cooldown threshold per course
         const lastReview = await tx.review.findFirst({
             where: {
                 reviewerId,
                 revieweeId,
+                ...(courseCode ? { courseCode } : {}),
                 createdAt: { gte: cooldownThreshold }
             },
             orderBy: { createdAt: "desc" }
@@ -30,7 +31,7 @@ export const createReview = async ({
         if (lastReview) {
             const ageInMs = Date.now() - new Date(lastReview.createdAt).getTime();
             const remainingDays = Math.max(1, Math.ceil(COOLDOWN_DAYS - (ageInMs / (1000 * 60 * 60 * 24))));
-            throw new Error(`21-day cooldown active. One review permitted every 21 days.`);
+            throw new Error(`21-day cooldown active. One review permitted per course every 21 days.`);
         }
 
         // Step 2: Insert the review record

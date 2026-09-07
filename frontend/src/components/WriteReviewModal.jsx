@@ -161,7 +161,7 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
         <div className="alert alert-info" style={{ fontSize: '12px', background: '#f8fafc', borderColor: '#e2e8f0', color: 'var(--text-secondary)' }}>
           <Clock size={15} style={{ color: 'var(--primary)' }} />
           <span>
-            <strong>21-Day Cooldown Policy:</strong> You can submit one rating per faculty member every 21 days.
+            <strong>21-Day Cooldown Policy:</strong> You can submit one review per course every 21 days.
           </span>
         </div>
 

@@ -20,11 +20,12 @@ export const createReview = async ({
 }) => {
     const cooldownThreshold = new Date(Date.now() - COOLDOWN_DAYS * 24 * 60 * 60 * 1000);
 
-    // 1. Enforce 21-day cooldown check
+    // 1. Enforce 21-day cooldown check (strictly per course for this faculty member)
     const lastReview = await prisma.review.findFirst({
         where: {
             reviewerId,
             revieweeId,
+            ...(courseCode ? { courseCode } : {}),
             createdAt: {
                 gte: cooldownThreshold
             }
@@ -38,7 +39,8 @@ export const createReview = async ({
         const ageInMs = Date.now() - new Date(lastReview.createdAt).getTime();
         const ageInDays = ageInMs / (1000 * 60 * 60 * 24);
         const remainingDays = Math.max(1, Math.ceil(COOLDOWN_DAYS - ageInDays));
-        throw new Error(`21-day cooldown active. You have already reviewed this faculty member. You can submit another rating in ${remainingDays} day(s).`);
+        const courseNameText = courseCode ? ` for ${courseCode}` : '';
+        throw new Error(`21-day cooldown active. You have already submitted feedback${courseNameText}. You can submit another rating in ${remainingDays} day(s).`);
     }
 
     // 2. Create the review record
