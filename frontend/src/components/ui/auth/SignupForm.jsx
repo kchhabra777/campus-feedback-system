@@ -6,8 +6,6 @@ import {
   ShieldCheck,
   User,
   Mail,
-  Hash,
-  ChevronDown,
   AlertCircle,
   Lock,
 } from 'lucide-react';
@@ -20,8 +18,6 @@ const SignupForm = ({ onSwitchToLogin }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rollNumber, setRollNumber] = useState('');
-  const [role, setRole] = useState('Student');
   const [verificationCode, setVerificationCode] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,8 +67,6 @@ const SignupForm = ({ onSwitchToLogin }) => {
 
     try {
       localStorage.setItem('signup_fullName', fullName.trim());
-      localStorage.setItem('signup_rollNumber', rollNumber.trim());
-      localStorage.setItem('signup_role', role);
 
       await signUp.create({
         emailAddress: fullEmail,
@@ -537,69 +531,6 @@ const SignupForm = ({ onSwitchToLogin }) => {
                     boxSizing: 'border-box',
                   }}>
                     @thapar.edu
-                  </div>
-                </div>
-              </div>
-
-              {/* Roll Number + Role (side by side) */}
-              <div style={{
-                display: 'flex',
-                gap: '10px',
-                marginBottom: '10px',
-              }}>
-                {/* Roll Number / Employee ID */}
-                <div style={{ flex: 1.3 }}>
-                  <label style={labelStyle}>Roll Number / Employee ID</label>
-                  <div style={{ position: 'relative' }}>
-                    <div style={iconBoxStyle}>
-                      <Hash size={15} />
-                    </div>
-                    <input
-                      type="text"
-                      value={rollNumber}
-                      onChange={(e) => setRollNumber(e.target.value)}
-                      placeholder="e.g. 102210001"
-                      style={inputStyle}
-                      onFocus={(e) => Object.assign(e.target.style, inputFocusStyle)}
-                      onBlur={(e) => {
-                        e.target.style.borderColor = '#e2e8f0';
-                        e.target.style.boxShadow = 'none';
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* Role */}
-                <div style={{ flex: 0.7 }}>
-                  <label style={labelStyle}>I am a</label>
-                  <div style={{ position: 'relative' }}>
-                    <div style={iconBoxStyle}>
-                      <User size={15} />
-                    </div>
-                    <select
-                      value={role}
-                      onChange={(e) => setRole(e.target.value)}
-                      style={{
-                        ...inputStyle,
-                        appearance: 'none',
-                        paddingRight: '30px',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <option value="Student">Student</option>
-                      <option value="Teacher">Teacher</option>
-                    </select>
-                    <div style={{
-                      position: 'absolute',
-                      right: '10px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      color: '#94a3b8',
-                      pointerEvents: 'none',
-                      display: 'flex',
-                    }}>
-                      <ChevronDown size={14} />
-                    </div>
                   </div>
                 </div>
               </div>
