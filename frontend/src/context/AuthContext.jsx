@@ -76,20 +76,25 @@ export const AuthProvider = ({ children }) => {
         try {
           if (email) {
             setAuthError('');
+            console.log('[AuthContext] syncUser – calling syncClerkUser for:', email);
             const data = await api.syncClerkUser({
               email,
               fullName: clerkUser.fullName || `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim(),
               clerkId: clerkUser.id
             });
+            console.log('[AuthContext] syncUser – syncClerkUser returned:', { userId: data.user?.id, role: data.user?.role, tokenPresent: !!data.token, tokenLength: data.token?.length });
             setUser(data.user);
             if (data.token) {
               localStorage.setItem('campus_token', data.token);
               localStorage.setItem('campus_user_email', email);
               setToken(data.token);
+              console.log('[AuthContext] syncUser – campus_token STORED in localStorage');
+            } else {
+              console.warn('[AuthContext] syncUser – NO token in response!');
             }
           }
         } catch (err) {
-          console.error("Failed to sync Clerk user with backend:", err);
+          console.error("[AuthContext] syncUser – FAILED:", err.message);
           setAuthError(err.message || "Failed to initialize university profile.");
           localStorage.removeItem('campus_token');
           localStorage.removeItem('campus_user_email');
@@ -138,10 +143,43 @@ export const AuthProvider = ({ children }) => {
   };
 
   const onboardStudent = async (profileData) => {
-    const res = await api.onboardStudent(profileData);
-    const refreshed = await api.getMe();
-    setUser(refreshed.user);
-    return res;
+    const currentToken = localStorage.getItem('campus_token');
+    console.log('[AuthContext] onboardStudent called – campus_token present:', !!currentToken, 'length:', currentToken?.length);
+    
+    try {
+      const res = await api.onboardStudent(profileData);
+      const refreshed = await api.getMe();
+      setUser(refreshed.user);
+      return res;
+    } catch (err) {
+      // If 401, try to re-sync and get a fresh campus_token, then retry once
+      if (err.message?.includes('session token') || err.message?.includes('401') || err.message?.includes('Access denied') || err.message?.includes('expired')) {
+        console.log('[AuthContext] onboardStudent – got auth error, re-syncing token...');
+        const email = clerkUser?.primaryEmailAddress?.emailAddress?.trim().toLowerCase();
+        if (email && isSignedIn) {
+          try {
+            const syncData = await api.syncClerkUser({
+              email,
+              fullName: clerkUser.fullName || `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim(),
+              clerkId: clerkUser.id
+            });
+            if (syncData.token) {
+              localStorage.setItem('campus_token', syncData.token);
+              localStorage.setItem('campus_user_email', email);
+              setToken(syncData.token);
+              console.log('[AuthContext] onboardStudent – token re-synced, retrying...');
+              const res = await api.onboardStudent(profileData);
+              const refreshed = await api.getMe();
+              setUser(refreshed.user);
+              return res;
+            }
+          } catch (syncErr) {
+            console.error('[AuthContext] onboardStudent – re-sync also failed:', syncErr.message);
+          }
+        }
+      }
+      throw err;
+    }
   };
 
   const onboardTeacher = async (profileData) => {

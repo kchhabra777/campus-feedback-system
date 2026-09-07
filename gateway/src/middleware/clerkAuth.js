@@ -11,6 +11,7 @@ const userCache = new Map();
 export const clerkAuthMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    console.log(`[GW-AUTH] ${req.method} ${req.originalUrl} – No Bearer token`);
     return next();
   }
 
@@ -43,9 +44,10 @@ export const clerkAuthMiddleware = async (req, res, next) => {
       if (email) {
         req.headers["x-user-email"] = email;
       }
+      console.log(`[GW-AUTH] ${req.method} ${req.originalUrl} – Clerk verified: sub=${verified.sub}, email=${email || '(none)'}`);
     }
   } catch (err) {
-    // If not a Clerk token, pass through for local JWT fallback
+    console.log(`[GW-AUTH] ${req.method} ${req.originalUrl} – Not a Clerk token (${err.message?.substring(0, 60)}), passing through for local JWT`);
   }
   next();
 };

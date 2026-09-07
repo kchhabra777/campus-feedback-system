@@ -5,9 +5,14 @@ import { determineRoleFromEmail } from "../utils/roleDetector.js";
 
 export const requireAuth = async (req, res, next) => {
   try {
+    const route = `${req.method} ${req.originalUrl || req.url}`;
+    console.log(`[AUTH] ── requireAuth for ${route}`);
+
     // 1. Check if Gateway injected verified Clerk User headers
     const injectedUserId = req.headers["x-user-id"];
     const injectedEmail = req.headers["x-user-email"];
+
+    console.log(`[AUTH]   Strategy 1 – Gateway headers: userId=${injectedUserId || '(none)'}, email=${injectedEmail || '(none)'}`);
 
     if (injectedEmail || injectedUserId) {
       let user = await prisma.user.findFirst({
@@ -26,6 +31,7 @@ export const requireAuth = async (req, res, next) => {
 
       // If user authenticated via Clerk but record doesn't exist in DB yet, initialize on the fly
       if (!user && injectedEmail) {
+        console.log(`[AUTH]   Strategy 1 – user not found, creating on-the-fly for ${injectedEmail}`);
         try {
           const roleInfo = determineRoleFromEmail(injectedEmail);
           user = await prisma.user.create({
@@ -43,28 +49,33 @@ export const requireAuth = async (req, res, next) => {
             }
           });
         } catch (initErr) {
-          console.warn("On-the-fly user creation note:", initErr.message);
+          console.warn("[AUTH]   Strategy 1 – on-the-fly creation error:", initErr.message);
         }
       }
 
       if (user) {
+        console.log(`[AUTH]   ✅ Strategy 1 OK – user=${user.id}, role=${user.role}, email=${user.email}`);
         req.user = user;
         return next();
       }
+      console.log(`[AUTH]   Strategy 1 – headers present but user lookup failed`);
     }
 
     // 2. Fallback to Local JWT or Clerk JWT Bearer Token
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      console.log(`[AUTH]   ❌ No Authorization header present`);
       return res.status(401).json({ error: "Access denied. Authentication token is missing." });
     }
 
     const token = authHeader.split(" ")[1];
+    console.log(`[AUTH]   Bearer token present (length=${token.length}, first20=${token.substring(0, 20)}...)`);
 
     // Attempt internal backend JWT verification
     try {
       const decoded = verifyToken(token);
       const resolvedId = decoded?.userId || decoded?.id;
+      console.log(`[AUTH]   Strategy 2 – Local JWT decoded OK: userId=${resolvedId}, email=${decoded?.email}`);
       if (decoded && resolvedId) {
         const user = await prisma.user.findUnique({
           where: { id: resolvedId },
@@ -75,17 +86,20 @@ export const requireAuth = async (req, res, next) => {
         });
 
         if (user) {
+          console.log(`[AUTH]   ✅ Strategy 2 OK – user=${user.id}, role=${user.role}`);
           req.user = user;
           return next();
         }
+        console.log(`[AUTH]   Strategy 2 – JWT valid but user id=${resolvedId} NOT found in DB`);
       }
     } catch (jwtErr) {
-      // Local JWT signature verify failed; attempt fallback to Clerk JWT
+      console.log(`[AUTH]   Strategy 2 – Local JWT verify failed: ${jwtErr.message}`);
     }
 
     // Attempt Clerk JWT payload decoding
     try {
       const rawDecoded = jwt.decode(token);
+      console.log(`[AUTH]   Strategy 3 – Clerk JWT decode: sub=${rawDecoded?.sub}, email=${rawDecoded?.email}, email_address=${rawDecoded?.email_address}`);
       if (rawDecoded && (rawDecoded.sub || rawDecoded.email || rawDecoded.email_address)) {
         const clerkSub = rawDecoded.sub;
         const clerkEmail = rawDecoded.email || rawDecoded.email_address || rawDecoded.claims?.email;
@@ -106,6 +120,7 @@ export const requireAuth = async (req, res, next) => {
 
         // If user authenticated via Clerk token but DB record doesn't exist yet, initialize on the fly
         if (!user && clerkEmail) {
+          console.log(`[AUTH]   Strategy 3 – user not found, creating on-the-fly for ${clerkEmail}`);
           try {
             const roleInfo = determineRoleFromEmail(clerkEmail);
             user = await prisma.user.create({
@@ -123,21 +138,25 @@ export const requireAuth = async (req, res, next) => {
               }
             });
           } catch (initErr) {
-            console.warn("On-the-fly user creation fallback note:", initErr.message);
+            console.warn("[AUTH]   Strategy 3 – on-the-fly creation error:", initErr.message);
           }
         }
 
         if (user) {
+          console.log(`[AUTH]   ✅ Strategy 3 OK – user=${user.id}, role=${user.role}`);
           req.user = user;
           return next();
         }
+        console.log(`[AUTH]   Strategy 3 – Clerk token decoded but no user found`);
       }
     } catch (clerkDecodeErr) {
-      // Ignore decode error
+      console.log(`[AUTH]   Strategy 3 – Clerk JWT decode error: ${clerkDecodeErr.message}`);
     }
 
+    console.log(`[AUTH]   ❌ ALL strategies failed – returning 401`);
     return res.status(401).json({ error: "Invalid or expired session token." });
   } catch (error) {
+    console.error(`[AUTH]   ❌ Unexpected error in requireAuth:`, error.message);
     return res.status(401).json({ error: "Invalid or expired session token." });
   }
 };
