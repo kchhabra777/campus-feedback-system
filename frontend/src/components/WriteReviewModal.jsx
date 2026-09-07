@@ -1,6 +1,6 @@
 import { getTagTheme } from '../lib/tagTheme';
 import React, { useState, useEffect } from 'react';
-import { StarRating } from './StarRating';
+import { EmojiRatingSlider } from './EmojiRatingSlider';
 import { X, CheckCircle, AlertCircle, Clock } from 'lucide-react';
 import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
@@ -16,14 +16,26 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
   const [error, setError] = useState('');
 
   const ESCAPE_TAG = "None of these fit";
+  const FALLBACK_TAGS = [
+    { id: 13, name: 'Clear Explanations' },
+    { id: 14, name: 'Approachable' },
+    { id: 15, name: 'Engaging Lectures' },
+    { id: 16, name: 'Tough Grader' },
+    { id: 17, name: 'Heavy Workload' }
+  ];
 
   useEffect(() => {
     const loadTags = async () => {
       try {
         const res = await api.getPublicTags();
-        setAvailableTags(res.tags || []);
+        if (res.tags && res.tags.length > 0) {
+          setAvailableTags(res.tags);
+        } else {
+          setAvailableTags(FALLBACK_TAGS);
+        }
       } catch (err) {
-        console.error("Failed to load community tags");
+        console.warn("Could not fetch remote tags, using standard presets:", err);
+        setAvailableTags(FALLBACK_TAGS);
       }
     };
     loadTags();
@@ -173,13 +185,11 @@ export const WriteReviewModal = ({ teacher, onClose, onSuccess }) => {
           )}
 
           <div className="form-group">
-            <label className="form-label">Overall Rating (1 to 5 Stars)</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '6px 0' }}>
-              <StarRating rating={rating} size={28} interactive={true} onRatingChange={setRating} />
-              <span style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-primary)' }}>
-                {rating}.0 / 5.0
-              </span>
-            </div>
+            <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <span>Overall Rating (1 to 5 Stars)</span>
+              <span style={{ fontSize: '12px', fontWeight: 'normal', color: 'var(--text-muted)' }}>Slide or tap emoji</span>
+            </label>
+            <EmojiRatingSlider rating={rating} onRatingChange={setRating} />
           </div>
 
           <div className="form-group">

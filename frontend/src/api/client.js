@@ -6,13 +6,44 @@ export function setTokenProvider(provider) {
   tokenProvider = provider;
 }
 
+export function isTokenExpired(token) {
+  if (!token) return true;
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return false;
+    const base64Url = parts[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    const payload = JSON.parse(jsonPayload);
+    // 30-second buffer to prevent edge-case race conditions
+    if (payload.exp && Date.now() >= payload.exp * 1000 - 30000) {
+      return true;
+    }
+    return false;
+  } catch (e) {
+    return false;
+  }
+}
+
 async function getHeaders(extraHeaders = {}) {
   let token = localStorage.getItem("campus_token");
+  
+  // Immediately discard expired local tokens
+  if (token && isTokenExpired(token)) {
+    localStorage.removeItem("campus_token");
+    localStorage.removeItem("campus_user_email");
+    token = null;
+  }
   
   if (!token && tokenProvider) {
     try {
       const dynamicToken = await tokenProvider();
-      if (dynamicToken) token = dynamicToken;
+      if (dynamicToken && !isTokenExpired(dynamicToken)) token = dynamicToken;
     } catch (e) {
       console.warn("Could not fetch auth token:", e);
     }
@@ -47,6 +78,11 @@ async function request(endpoint, options = {}) {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
+    // If unauthorized / token invalid, clear stale credentials
+    if (response.status === 401) {
+      localStorage.removeItem("campus_token");
+      localStorage.removeItem("campus_user_email");
+    }
     const errorMsg = data.error || data.message || `Request failed with status ${response.status}`;
     throw new Error(errorMsg);
   }

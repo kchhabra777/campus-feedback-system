@@ -86,9 +86,9 @@ export const requireAuth = async (req, res, next) => {
     // Attempt Clerk JWT payload decoding
     try {
       const rawDecoded = jwt.decode(token);
-      if (rawDecoded && (rawDecoded.sub || rawDecoded.email)) {
+      if (rawDecoded && (rawDecoded.sub || rawDecoded.email || rawDecoded.email_address)) {
         const clerkSub = rawDecoded.sub;
-        const clerkEmail = rawDecoded.email;
+        const clerkEmail = rawDecoded.email || rawDecoded.email_address || rawDecoded.claims?.email;
 
         let user = await prisma.user.findFirst({
           where: {
@@ -103,6 +103,29 @@ export const requireAuth = async (req, res, next) => {
             teacherProfile: true
           }
         });
+
+        // If user authenticated via Clerk token but DB record doesn't exist yet, initialize on the fly
+        if (!user && clerkEmail) {
+          try {
+            const roleInfo = determineRoleFromEmail(clerkEmail);
+            user = await prisma.user.create({
+              data: {
+                email: roleInfo.email,
+                passwordHash: `CLERK_${clerkSub || 'MANAGED'}`,
+                role: roleInfo.role,
+                detectedBatch: roleInfo.batch,
+                isEmailVerified: true,
+                isProfileComplete: false
+              },
+              include: {
+                studentProfile: true,
+                teacherProfile: true
+              }
+            });
+          } catch (initErr) {
+            console.warn("On-the-fly user creation fallback note:", initErr.message);
+          }
+        }
 
         if (user) {
           req.user = user;

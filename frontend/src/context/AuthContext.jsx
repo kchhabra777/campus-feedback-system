@@ -64,6 +64,15 @@ export const AuthProvider = ({ children }) => {
           return;
         }
 
+        // Clear old cached token if switching users on the same device/browser
+        const storedEmail = localStorage.getItem('campus_user_email');
+        if (storedEmail && email && storedEmail !== email) {
+          localStorage.removeItem('campus_token');
+          localStorage.removeItem('campus_user_email');
+          setToken(null);
+          setUser(null);
+        }
+
         try {
           if (email) {
             setAuthError('');
@@ -75,12 +84,15 @@ export const AuthProvider = ({ children }) => {
             setUser(data.user);
             if (data.token) {
               localStorage.setItem('campus_token', data.token);
+              localStorage.setItem('campus_user_email', email);
               setToken(data.token);
             }
           }
         } catch (err) {
           console.error("Failed to sync Clerk user with backend:", err);
           setAuthError(err.message || "Failed to initialize university profile.");
+          localStorage.removeItem('campus_token');
+          localStorage.removeItem('campus_user_email');
           if (clerk) {
             try {
               await clerk.signOut();
@@ -141,6 +153,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     localStorage.removeItem('campus_token');
+    localStorage.removeItem('campus_user_email');
     setToken(null);
     setUser(null);
     setAuthError('');
