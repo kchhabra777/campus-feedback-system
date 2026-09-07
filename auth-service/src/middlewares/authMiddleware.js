@@ -19,8 +19,7 @@ export const requireAuth = async (req, res, next) => {
         where: {
           OR: [
             ...(injectedEmail ? [{ email: injectedEmail.toLowerCase().trim() }] : []),
-            ...(injectedUserId ? [{ passwordHash: `CLERK_${injectedUserId}` }] : []),
-            ...(injectedUserId ? [{ id: injectedUserId }] : [])
+            ...(injectedUserId ? [{ passwordHash: `CLERK_${injectedUserId}` }] : [])
           ]
         },
         include: {
@@ -100,7 +99,13 @@ export const requireAuth = async (req, res, next) => {
     try {
       const rawDecoded = jwt.decode(token);
       console.log(`[AUTH]   Strategy 3 – Clerk JWT decode: sub=${rawDecoded?.sub}, email=${rawDecoded?.email}, email_address=${rawDecoded?.email_address}`);
-      if (rawDecoded && (rawDecoded.sub || rawDecoded.email || rawDecoded.email_address)) {
+      
+      // Ensure we don't accidentally accept unverified campus tokens here.
+      // Clerk tokens typically have 'azp' or 'iss' ending with clerk.accounts.dev or clerk.com.
+      // Or we can just check if it has a 'sub' claim starting with 'user_', which campus tokens don't.
+      const isClerkToken = rawDecoded && typeof rawDecoded.sub === 'string' && rawDecoded.sub.startsWith('user_');
+
+      if (isClerkToken && (rawDecoded.sub || rawDecoded.email || rawDecoded.email_address)) {
         const clerkSub = rawDecoded.sub;
         const clerkEmail = rawDecoded.email || rawDecoded.email_address || rawDecoded.claims?.email;
 
@@ -108,8 +113,7 @@ export const requireAuth = async (req, res, next) => {
           where: {
             OR: [
               ...(clerkEmail ? [{ email: clerkEmail.toLowerCase().trim() }] : []),
-              ...(clerkSub ? [{ passwordHash: `CLERK_${clerkSub}` }] : []),
-              ...(clerkSub ? [{ id: clerkSub }] : [])
+              ...(clerkSub ? [{ passwordHash: `CLERK_${clerkSub}` }] : [])
             ]
           },
           include: {
