@@ -1,0 +1,4234 @@
+{
+  "teachers": [
+    {
+      "code": "ASB",
+      "fullName": "Prof. Ashima Singh",
+      "email": "asb@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Professor"
+    },
+    {
+      "code": "ANP",
+      "fullName": "Prof. Anupam Sharma",
+      "email": "anp@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Associate Professor"
+    },
+    {
+      "code": "PRM-RA",
+      "fullName": "Instructor PRM-RA",
+      "email": "prmra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "JEE-RA",
+      "fullName": "Instructor JEE-RA",
+      "email": "jeera@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "NIK-RA",
+      "fullName": "Instructor NIK-RA",
+      "email": "nikra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "KML",
+      "fullName": "Prof. Karminder Singh",
+      "email": "kml@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "HJS-RA",
+      "fullName": "Instructor HJS-RA",
+      "email": "hjsra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ABY-RA",
+      "fullName": "Instructor ABY-RA",
+      "email": "abyra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "MNV-RA",
+      "fullName": "Instructor MNV-RA",
+      "email": "mnvra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "GAU-RA",
+      "fullName": "Instructor GAU-RA",
+      "email": "gaura@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "AMR-RA",
+      "fullName": "Instructor AMR-RA",
+      "email": "amrra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "YAD",
+      "fullName": "Prof. Yadwinder Singh",
+      "email": "yad@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SHK-RA",
+      "fullName": "Instructor SHK-RA",
+      "email": "shkra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "SKH-RA",
+      "fullName": "Instructor SKH-RA",
+      "email": "skhra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ANY-RA",
+      "fullName": "Instructor ANY-RA",
+      "email": "anyra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "NRD-RA",
+      "fullName": "Instructor NRD-RA",
+      "email": "nrdra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "KAK-RA",
+      "fullName": "Instructor KAK-RA",
+      "email": "kakra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "DIM-RA",
+      "fullName": "Instructor DIM-RA",
+      "email": "dimra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ABK",
+      "fullName": "Prof. Abhishek Kumar",
+      "email": "abk@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "APB",
+      "fullName": "Prof. APB",
+      "email": "apb@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SKK",
+      "fullName": "Prof. Sukhminder",
+      "email": "skk@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "MCL",
+      "fullName": "Prof. M.C. Lohani",
+      "email": "mcl@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "JHS-RA",
+      "fullName": "Instructor JHS-RA",
+      "email": "jhsra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "CHN",
+      "fullName": "Prof. CHN",
+      "email": "chn@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "NIS",
+      "fullName": "Prof. Nishu",
+      "email": "nis@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "KML-RA",
+      "fullName": "Instructor KML-RA",
+      "email": "kmlra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "CHC-RA",
+      "fullName": "Instructor CHC-RA",
+      "email": "chcra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "KRT-TA",
+      "fullName": "Instructor KRT-TA",
+      "email": "krtta@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "NF1",
+      "fullName": "Faculty NF-1",
+      "email": "nf1@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SUR",
+      "fullName": "Prof. Suresh",
+      "email": "sur@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "DEG-RA",
+      "fullName": "Instructor DEG-RA",
+      "email": "degra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "RTS",
+      "fullName": "Prof. RTS",
+      "email": "rts@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "YAS",
+      "fullName": "Prof. Yashwant Singh",
+      "email": "yas@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Associate Professor"
+    },
+    {
+      "code": "SMR",
+      "fullName": "Prof. Seema Bawa",
+      "email": "smr@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Professor"
+    },
+    {
+      "code": "JAB",
+      "fullName": "Prof. Jasmeet Singh",
+      "email": "jab@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "NDK-RA",
+      "fullName": "Instructor NDK-RA",
+      "email": "ndkra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "MMK",
+      "fullName": "Prof. M.M. Kundu",
+      "email": "mmk@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "DBD",
+      "fullName": "Prof. Debaldatta",
+      "email": "dbd@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "TAG",
+      "fullName": "Prof. Tarun Agrawal",
+      "email": "tag@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Associate Professor"
+    },
+    {
+      "code": "AAS",
+      "fullName": "Prof. Aastha",
+      "email": "aas@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "VPS",
+      "fullName": "Prof. VPS",
+      "email": "vps@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "PTK-RA",
+      "fullName": "Instructor PTK-RA",
+      "email": "ptkra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "AMY-RA",
+      "fullName": "Instructor AMY-RA",
+      "email": "amyra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "RKG",
+      "fullName": "Prof. Rajesh Kumar Goel",
+      "email": "rkg@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Professor"
+    },
+    {
+      "code": "AMR",
+      "fullName": "Prof. AMR",
+      "email": "amr@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SJ",
+      "fullName": "Prof. Sanjeev Jain",
+      "email": "sj@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SAT-RF",
+      "fullName": "Instructor SAT-RF",
+      "email": "satrf@thapar.edu",
+      "department": "Engineering Department",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ASH-RF",
+      "fullName": "Instructor ASH-RF",
+      "email": "ashrf@thapar.edu",
+      "department": "Engineering Department",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "RGB",
+      "fullName": "Prof. R.G. Babbar",
+      "email": "rgb@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "AMO",
+      "fullName": "Prof. Amit Ojha",
+      "email": "amo@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "KPR",
+      "fullName": "Prof. KPR",
+      "email": "kpr@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "MAN",
+      "fullName": "Prof. MAN",
+      "email": "man@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "JHB",
+      "fullName": "Prof. JHB",
+      "email": "jhb@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SAL",
+      "fullName": "Prof. SAL",
+      "email": "sal@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "ROS",
+      "fullName": "Prof. ROS",
+      "email": "ros@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "ST",
+      "fullName": "Prof. ST",
+      "email": "st@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SAM",
+      "fullName": "Prof. SAM",
+      "email": "sam@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "PRK-RA",
+      "fullName": "Instructor PRK-RA",
+      "email": "prkra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ANT-CRA",
+      "fullName": "Prof. ANT-CRA",
+      "email": "antcra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "KNK-RA",
+      "fullName": "Instructor KNK-RA",
+      "email": "knkra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "GS",
+      "fullName": "Prof. GS",
+      "email": "gs@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "MKB",
+      "fullName": "Prof. Mukesh",
+      "email": "mkb@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "JS",
+      "fullName": "Prof. JS",
+      "email": "js@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "ISN-RA",
+      "fullName": "Instructor ISN-RA",
+      "email": "isnra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "SAK-CRA",
+      "fullName": "Prof. SAK-CRA",
+      "email": "sakcra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SHV",
+      "fullName": "Prof. SHV",
+      "email": "shv@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "AMT",
+      "fullName": "Prof. AMT",
+      "email": "amt@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SEM-CRA",
+      "fullName": "Prof. SEM-CRA",
+      "email": "semcra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "ANS",
+      "fullName": "Prof. ANS",
+      "email": "ans@thapar.edu",
+      "department": "Engineering Department",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SHI-RA",
+      "fullName": "Instructor SHI-RA",
+      "email": "shira@thapar.edu",
+      "department": "Engineering Department",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "MHK",
+      "fullName": "Prof. Meenakshi",
+      "email": "mhk@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "NIT-RA",
+      "fullName": "Instructor NIT-RA",
+      "email": "nitra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "NRA-RA",
+      "fullName": "Instructor NRA-RA",
+      "email": "nrara@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "DAM-RA",
+      "fullName": "Instructor DAM-RA",
+      "email": "damra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ISN-RAGUK-RA",
+      "fullName": "Instructor ISN-RAGUK-RA",
+      "email": "isnragukra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "GUK-RA",
+      "fullName": "Instructor GUK-RA",
+      "email": "gukra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "JSC-RA",
+      "fullName": "Instructor JSC-RA",
+      "email": "jscra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "SHM-RA",
+      "fullName": "Instructor SHM-RA",
+      "email": "shmra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "VJY",
+      "fullName": "Prof. VJY",
+      "email": "vjy@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "ABK-RA",
+      "fullName": "Instructor ABK-RA",
+      "email": "abkra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ALK-RA",
+      "fullName": "Instructor ALK-RA",
+      "email": "alkra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "SOR",
+      "fullName": "Prof. Sorabh",
+      "email": "sor@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "MJU",
+      "fullName": "Prof. Maninder",
+      "email": "mju@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SAU",
+      "fullName": "Prof. Saurabh",
+      "email": "sau@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "KAG-RF",
+      "fullName": "Instructor KAG-RF",
+      "email": "kagrf@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "KUA-RA",
+      "fullName": "Instructor KUA-RA",
+      "email": "kuara@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ARU-RA",
+      "fullName": "Instructor ARU-RA",
+      "email": "arura@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ASH",
+      "fullName": "Prof. ASH",
+      "email": "ash@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "MNV",
+      "fullName": "Prof. MNV",
+      "email": "mnv@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SHI",
+      "fullName": "Prof. Shikha",
+      "email": "shi@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "JBD",
+      "fullName": "Prof. J.B. Dahiya",
+      "email": "jbd@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "MNK",
+      "fullName": "Prof. MNK",
+      "email": "mnk@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "ANU-RA",
+      "fullName": "Instructor ANU-RA",
+      "email": "anura@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "AA",
+      "fullName": "Prof. Anshul Agarwal",
+      "email": "aa@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "ASA",
+      "fullName": "Prof. A.S. Arora",
+      "email": "asa@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SHS",
+      "fullName": "Prof. SHS",
+      "email": "shs@thapar.edu",
+      "department": "Engineering Department",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "DET",
+      "fullName": "Prof. DET",
+      "email": "det@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "ABH-RA",
+      "fullName": "Instructor ABH-RA",
+      "email": "abhra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ABD",
+      "fullName": "Prof. Abid",
+      "email": "abd@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "MNS",
+      "fullName": "Prof. MNS",
+      "email": "mns@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "RTA-RA",
+      "fullName": "Instructor RTA-RA",
+      "email": "rtara@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ARZ-RF",
+      "fullName": "Instructor ARZ-RF",
+      "email": "arzrf@thapar.edu",
+      "department": "Engineering Department",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "SND-RF",
+      "fullName": "Instructor SND-RF",
+      "email": "sndrf@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "AKN-RA",
+      "fullName": "Instructor AKN-RA",
+      "email": "aknra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "AKS-RA",
+      "fullName": "Instructor AKS-RA",
+      "email": "aksra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "KNP-RA",
+      "fullName": "Instructor KNP-RA",
+      "email": "knpra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "SAN-RA",
+      "fullName": "Instructor SAN-RA",
+      "email": "sanra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "NF2",
+      "fullName": "Faculty NF-2",
+      "email": "nf2@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "SND-RA",
+      "fullName": "Instructor SND-RA",
+      "email": "sndra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "SHW-RA",
+      "fullName": "Instructor SHW-RA",
+      "email": "shwra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "KAG-RA",
+      "fullName": "Instructor KAG-RA",
+      "email": "kagra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "APK-RA",
+      "fullName": "Instructor APK-RA",
+      "email": "apkra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "SNJ-RF",
+      "fullName": "Instructor SNJ-RF",
+      "email": "snjrf@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "DPK-RA",
+      "fullName": "Instructor DPK-RA",
+      "email": "dpkra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ARUA-RA",
+      "fullName": "Instructor ARUA-RA",
+      "email": "aruara@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "HDK-RA",
+      "fullName": "Instructor HDK-RA",
+      "email": "hdkra@thapar.edu",
+      "department": "Computer Science & Engineering",
+      "designation": "Teaching Associate / Research Scholar"
+    },
+    {
+      "code": "ARN",
+      "fullName": "Prof. ARN",
+      "email": "arn@thapar.edu",
+      "department": "Engineering Department",
+      "designation": "Assistant Professor"
+    },
+    {
+      "code": "PLK-RF",
+      "fullName": "Instructor PLK-RF",
+      "email": "plkrf@thapar.edu",
+      "department": "Engineering Department",
+      "designation": "Teaching Associate / Research Scholar"
+    }
+  ],
+  "offerings": [
+    {
+      "teacherCode": "ASB",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C1, 3C11, 3C12, 3C13, 3C14, 3C15, 3C16, 3C17, 3C18, 3C6, 3C61, 3C62, 3C63, 3C64, 3C65, 3C66, 3C67, 3C68, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ANP",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C2, 3C21, 3C22, 3C23, 3C24, 3C25, 3C26, 3C27, 3C28, 3C4, 3C41, 3C42, 3C43, 3C44, 3C45, 3C46, 3C47, 3C48",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "PRM-RA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C11, 3C16, 3C1A, 3C1F, 3C31, 3C3A, 3C53, 3C5C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JEE-RA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C32, 3C34, 3C3B, 3C3D, 3C54, 3C5D, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "NIK-RA",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C33, 3C3C, 3C75, 3C7E, 3P11, 3P12, 3P1A, 3P1B, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KML",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C4, 3C41, 3C42, 3C43, 3C44, 3C45, 3C46, 3C47, 3C48, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "HJS-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C51, 3C5A, 3C75, 3C7E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ABY-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C52, 3C5B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MNV-RA",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C41, 3C4A, 3C53, 3C5C, 3C65, 3C6E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GAU-RA",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C23, 3C2C, 3C35, 3C3E, 3C54, 3C5D, 3C61, 3C63, 3C6A, 3C6C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMR-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C17, 3C1G, 3C35, 3C3E, 3C55, 3C5E, 3P13, 3P1C, 3Q35, 3Q3E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "YAD",
+      "courseCode": "UCS510",
+      "courseName": "Database Management Systems",
+      "batchTaught": "3C1, 3C11, 3C12, 3C13, 3C14, 3C15, 3C16, 3C17, 3C18, 3C6, 3C61, 3C62, 3C63, 3C64, 3C65, 3C66, 3C67, 3C68, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SHK-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C44, 3C4D, 3C811, 3C812, 3C81A, 3C81B, 3P11, 3P1A, 3Q12, 3Q1B",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SKH-RA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C15, 3C1E, 3C21, 3C2A, 3C811, 3C81A, 3Q13, 3Q15, 3Q1C, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANY-RA",
+      "courseCode": "UCS420",
+      "courseName": "Computer Graphics",
+      "batchTaught": "3P12, 3P14, 3P1B, 3P1D, 3Q21, 3Q25, 3Q2A, 3Q2E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "NRD-RA",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C42, 3C4B, 3Q11, 3Q1A, 3Q23, 3Q2C, 3Q35, 3Q3E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KAK-RA",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C18, 3C1H, 3C51, 3C5A, 3C72, 3C7B, 3Q21, 3Q24, 3Q2A, 3Q2D",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DIM-RA",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C21, 3C2A, 3C63, 3C6C, 3Q13, 3Q1C, 3Q25, 3Q2E, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ABK",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C1, 3C11, 3C12, 3C13, 3C14, 3C15, 3C16, 3C17, 3C18, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "APB",
+      "courseCode": "UCS421",
+      "courseName": "Artificial Intelligence",
+      "batchTaught": "3C1, 3C11, 3C12, 3C13, 3C14, 3C15, 3C16, 3C17, 3C18, 3C2, 3C21, 3C22, 3C23, 3C24, 3C25, 3C26, 3C27, 3C28, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SKK",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3Q22, 3Q2B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MCL",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C22, 3C2B, 3C64, 3C6D, 3Q33, 3Q3C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JHS-RA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C23, 3C2C, 3C812, 3C81B, 3P11, 3P1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "CHN",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C25, 3C2E, 3C74, 3C7D, 3Q14, 3Q15, 3Q1D, 3Q1E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "NIS",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C3, 3C31, 3C32, 3C33, 3C34, 3C35, 3C36, 3C37, 3C38, 3C5, 3C51, 3C52, 3C53, 3C54, 3C55, 3C56, 3C57, 3C58",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "KML-RA",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C15, 3C1E, 3C42, 3C43, 3C4B, 3C4C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "CHC-RA",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C17, 3C1G, 3C35, 3C3E, 3C43, 3C4C, 3C54, 3C5D, 3C812, 3C81B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KRT-TA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C45, 3C4E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "NF1",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C5, 3C51, 3C52, 3C53, 3C54, 3C55, 3C56, 3C57, 3C58, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SUR",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C44, 3C4D, 3C64, 3C6D",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DEG-RA",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C11, 3C1A, 3C24, 3C2D, 3C65, 3C6E, 3Q32, 3Q34, 3Q3B, 3Q3D",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "RTS",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C12, 3C1B, 3C73, 3C7C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "YAS",
+      "courseCode": "UCS510",
+      "courseName": "Database Management Systems",
+      "batchTaught": "3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SMR",
+      "courseCode": "UCS421",
+      "courseName": "Artificial Intelligence",
+      "batchTaught": "3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "JAB",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C3, 3C31, 3C32, 3C33, 3C34, 3C35, 3C36, 3C37, 3C38, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "NDK-RA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3Q34, 3Q3D",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MMK",
+      "courseCode": "UCS420",
+      "courseName": "Computer Graphics",
+      "batchTaught": "3Q23, 3Q2C, 3Q31, 3Q35, 3Q3A, 3Q3E, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DBD",
+      "courseCode": "UCS421",
+      "courseName": "Artificial Intelligence",
+      "batchTaught": "3C5, 3C51, 3C52, 3C53, 3C54, 3C55, 3C56, 3C57, 3C58, 3C6, 3C61, 3C62, 3C63, 3C64, 3C65, 3C66, 3C67, 3C68, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "TAG",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C3, 3C31, 3C32, 3C33, 3C34, 3C35, 3C36, 3C37, 3C38, 3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "AAS",
+      "courseCode": "UCS510",
+      "courseName": "Database Management Systems",
+      "batchTaught": "3C5, 3C51, 3C52, 3C53, 3C54, 3C55, 3C56, 3C57, 3C58, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ASB",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C12, 3C1B, 3C43, 3C4C, 3Q21, 3Q2A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ABK",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C12, 3C17, 3C1B, 3C1G",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "NIS",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C18, 3C1H, 3C34, 3C3D, 3C44, 3C4D",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SKK",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C2, 3C21, 3C22, 3C23, 3C24, 3C25, 3C26, 3C27, 3C28, 3C3, 3C31, 3C32, 3C33, 3C34, 3C35, 3C36, 3C37, 3C38",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "VPS",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3C41, 3C43, 3C4A, 3C4C, 3C51, 3C5A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PTK-RA",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C21, 3C2A, 3C51, 3C5A, 3P11, 3P1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "VPS",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3C41, 3C43, 3C4A, 3C4C, 3C51, 3C5A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PTK-RA",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C21, 3C2A, 3C51, 3C5A, 3P11, 3P1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMY-RA",
+      "courseCode": "UCS420",
+      "courseName": "Computer Graphics",
+      "batchTaught": "3Q14, 3Q1D",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "RKG",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C15, 3C1E, 3Q21, 3Q2A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JAB",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C32, 3C3B, 3C41, 3C4A, 3C73, 3C7C, 3Q22, 3Q2B",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMR",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C6, 3C61, 3C62, 3C63, 3C64, 3C65, 3C66, 3C67, 3C68, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SJ",
+      "courseCode": "UAI502",
+      "courseName": "Deep Learning Applications",
+      "batchTaught": "3X12, 3X13, 3X14, 3X15, 3X1B, 3X1C, 3X1D, 3X1E",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAT-RF",
+      "courseCode": "UAI501",
+      "courseName": "Foundations of AI",
+      "batchTaught": "3X13, 3X14, 3X1C, 3X1D",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ASH-RF",
+      "courseCode": "UAI504",
+      "courseName": "Reinforcement Learning",
+      "batchTaught": "3X11, 3X15, 3X1A, 3X1E",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SUR",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C6, 3C61, 3C62, 3C63, 3C64, 3C65, 3C66, 3C67, 3C68",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "RGB",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C44, 3C4D, 3C51, 3C5A, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMO",
+      "courseCode": "UCS420",
+      "courseName": "Computer Graphics",
+      "batchTaught": "3Q11, 3Q1A, 3Q24, 3Q2D, 3Q32, 3Q34, 3Q3B, 3Q3D",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KPR",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C6, 3C61, 3C62, 3C63, 3C64, 3C65, 3C66, 3C67, 3C68",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "MAN",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C41, 3C43, 3C4A, 3C4C, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3C811, 3C81A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JHB",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAL",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MAN",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C811, 3C81A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JHB",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C41, 3C4A, 3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAL",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C41, 3C4A, 3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C41, 3C4A, 3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MAN",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C811, 3C81A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JHB",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C41, 3C4A, 3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAL",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C41, 3C4A, 3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C41, 3C4A, 3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MAN",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3C1, 3C11, 3C12, 3C13, 3C14, 3C15, 3C16, 3C17, 3C18, 3C2, 3C21, 3C22, 3C23, 3C24, 3C25, 3C26, 3C27, 3C28, 3C3, 3C31, 3C32, 3C33, 3C34, 3C35, 3C36, 3C37, 3C38, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78, 3X1, 3X11, 3X12, 3X13, 3X14, 3X15, 3X16, 3X17, 3X18",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "JHB",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3C1, 3C11, 3C12, 3C13, 3C14, 3C15, 3C16, 3C17, 3C18, 3C2, 3C21, 3C22, 3C23, 3C24, 3C25, 3C26, 3C27, 3C28, 3C3, 3C31, 3C32, 3C33, 3C34, 3C35, 3C36, 3C37, 3C38, 3C4, 3C41, 3C42, 3C43, 3C44, 3C45, 3C46, 3C47, 3C48, 3C5, 3C51, 3C52, 3C53, 3C54, 3C55, 3C56, 3C57, 3C58, 3C6, 3C61, 3C62, 3C63, 3C64, 3C65, 3C66, 3C67, 3C68, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78, 3P1, 3P11, 3P12, 3P13, 3P14, 3P15, 3P16, 3P17, 3P18, 3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38, LEET",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SAL",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3C1, 3C11, 3C12, 3C13, 3C14, 3C15, 3C16, 3C17, 3C18, 3C2, 3C21, 3C22, 3C23, 3C24, 3C25, 3C26, 3C27, 3C28, 3C3, 3C31, 3C32, 3C33, 3C34, 3C35, 3C36, 3C37, 3C38, 3C4, 3C41, 3C42, 3C43, 3C44, 3C45, 3C46, 3C47, 3C48, 3C5, 3C51, 3C52, 3C53, 3C54, 3C55, 3C56, 3C57, 3C58, 3C6, 3C61, 3C62, 3C63, 3C64, 3C65, 3C66, 3C67, 3C68, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78, 3P1, 3P11, 3P12, 3P13, 3P14, 3P15, 3P16, 3P17, 3P18, 3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38, 3X1, 3X11, 3X12, 3X13, 3X14, 3X15, 3X16, 3X17, 3X18, LEET",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3C1, 3C11, 3C12, 3C13, 3C14, 3C15, 3C16, 3C17, 3C18, 3C2, 3C21, 3C22, 3C23, 3C24, 3C25, 3C26, 3C27, 3C28, 3C3, 3C31, 3C32, 3C33, 3C34, 3C35, 3C36, 3C37, 3C38, 3C4, 3C41, 3C42, 3C43, 3C44, 3C45, 3C46, 3C47, 3C48, 3C5, 3C51, 3C52, 3C53, 3C54, 3C55, 3C56, 3C57, 3C58, 3C6, 3C61, 3C62, 3C63, 3C64, 3C65, 3C66, 3C67, 3C68, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78, 3P1, 3P11, 3P12, 3P13, 3P14, 3P15, 3P16, 3P17, 3P18, 3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38, 3X1, 3X11, 3X12, 3X13, 3X14, 3X15, 3X16, 3X17, 3X18, LEET",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ST",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A, 3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JHB",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAL",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ST",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ST",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ST",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3C5, 3C51, 3C52, 3C53, 3C54, 3C55, 3C56, 3C57, 3C58, 3C6, 3C61, 3C62, 3C63, 3C64, 3C65, 3C66, 3C67, 3C68, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78, 3P1, 3P11, 3P12, 3P13, 3P14, 3P15, 3P16, 3P17, 3P18, 3X1, 3X11, 3X12, 3X13, 3X14, 3X15, 3X16, 3X17, 3X18, LEET",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "MAN",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C811, 3C81A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ST",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAM",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C15, 3C1E, 3C64, 3C6D, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANT-CRA",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C31, 3C3A, 3C71, 3C7A, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KNK-RA",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GS",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MKB",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JHB",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAL",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JS",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C43, 3C4A, 3C4C, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q2A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAM",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C15, 3C1E, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANT-CRA",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C31, 3C3A, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KNK-RA",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GS",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MKB",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JS",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAM",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C15, 3C1E, 3C64, 3C6D, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANT-CRA",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C31, 3C3A, 3C71, 3C7A, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KNK-RA",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GS",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MKB",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JHB",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAL",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JS",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C43, 3C4A, 3C4C, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAM",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C15, 3C1E, 3C64, 3C6D, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANT-CRA",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C31, 3C3A, 3C71, 3C7A, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KNK-RA",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GS",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MKB",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JHB",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAL",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JS",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAM",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C64, 3C6D, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANT-CRA",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C71, 3C7A, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KNK-RA",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GS",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MKB",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JS",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C41, 3C43, 3C4A, 3C4C, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAM",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C15, 3C1E, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANT-CRA",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C31, 3C3A, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KNK-RA",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GS",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A, 3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MKB",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JHB",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAL",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JS",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAM",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C15, 3C1E, 3C64, 3C6D, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANT-CRA",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C31, 3C3A, 3C71, 3C7A, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KNK-RA",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GS",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MKB",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JHB",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAL",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JS",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q2A, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAM",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANT-CRA",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KNK-RA",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GS",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MKB",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JS",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAM",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANT-CRA",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KNK-RA",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GS",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q23, 3Q2A, 3Q2C, 3Q31, 3Q3A, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MKB",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JS",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAM",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ANT-CRA",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "KNK-RA",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3P1, 3P11, 3P12, 3P13, 3P14, 3P15, 3P16, 3P17, 3P18, 3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38, LEET",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "GS",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3P1, 3P11, 3P12, 3P13, 3P14, 3P15, 3P16, 3P17, 3P18, 3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38, 3X1, 3X11, 3X12, 3X13, 3X14, 3X15, 3X16, 3X17, 3X18, LEET",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "MKB",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3P1, 3P11, 3P12, 3P13, 3P14, 3P15, 3P16, 3P17, 3P18, 3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3X1, 3X11, 3X12, 3X13, 3X14, 3X15, 3X16, 3X17, 3X18, LEET",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "JS",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3P1, 3P11, 3P12, 3P13, 3P14, 3P15, 3P16, 3P17, 3P18, 3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SAM",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C15, 3C1E, 3C64, 3C6D, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANT-CRA",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C31, 3C3A, 3C71, 3C7A, 3Q11, 3Q1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KNK-RA",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GS",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MKB",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JHB",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAL",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JS",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C43, 3C4A, 3C4C, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q11, 3Q15, 3Q1A, 3Q1E, 3Q21, 3Q2A, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RA",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C31, 3C33, 3C3A, 3C3C, 3C71, 3C73, 3C7A, 3C7C, 3Q15, 3Q1E, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAK-CRA",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C33, 3C3C, 3C73, 3C7C, 3Q15, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RA",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C31, 3C33, 3C3A, 3C3C, 3Q15, 3Q1E, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAK-CRA",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C33, 3C3C, 3Q15, 3Q1E, 3Q21, 3Q2A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RA",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C31, 3C33, 3C3A, 3C3C, 3C71, 3C73, 3C7A, 3C7C, 3Q15, 3Q1E, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAK-CRA",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C33, 3C3C, 3C73, 3C7C, 3Q15, 3Q1E, 3Q21, 3Q2A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RA",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C31, 3C33, 3C3A, 3C3C, 3C71, 3C73, 3C7A, 3C7C, 3Q15, 3Q1E, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAK-CRA",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C33, 3C3C, 3C73, 3C7C, 3Q15, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RA",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C71, 3C73, 3C7A, 3C7C, 3Q15, 3Q1E, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAK-CRA",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C73, 3C7C, 3Q15, 3Q1E, 3Q21, 3Q2A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RA",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C31, 3C33, 3C3A, 3C3C, 3Q15, 3Q1E, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAK-CRA",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C33, 3C3C, 3Q15, 3Q1E, 3Q21, 3Q2A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RA",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C31, 3C33, 3C3A, 3C3C, 3C71, 3C73, 3C7A, 3C7C, 3Q15, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAK-CRA",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C33, 3C3C, 3C73, 3C7C, 3Q15, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RA",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3Q15, 3Q1E, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAK-CRA",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3Q15, 3Q1E, 3Q21, 3Q2A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RA",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3Q15, 3Q1E, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAK-CRA",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3Q15, 3Q1E, 3Q21, 3Q2A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RA",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SAK-CRA",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ISN-RA",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C31, 3C33, 3C3A, 3C3C, 3C71, 3C73, 3C7A, 3C7C, 3Q15, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAK-CRA",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C33, 3C3C, 3C73, 3C7C, 3Q15, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHV",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C11, 3C1A, 3Q23, 3Q2C",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHV",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C11, 3C1A, 3Q23, 3Q2C",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHV",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3Q23, 3Q2C",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHV",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C11, 3C1A, 3Q23, 3Q2C",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHV",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3Q23, 3Q2C",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHV",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3Q23, 3Q2C",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHV",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "AMT",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C41, 3C4A, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMT",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMT",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C41, 3C4A, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMT",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMT",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C41, 3C4A, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMT",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMT",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMT",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMT",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ST",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "VPS",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PTK-RA",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C21, 3C2A, 3P11, 3P1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ST",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "VPS",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ST",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PTK-RA",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C21, 3C2A, 3P11, 3P1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "VPS",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C41, 3C43, 3C4A, 3C4C, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PTK-RA",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3P11, 3P1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "VPS",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ST",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PTK-RA",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C21, 3C2A, 3P11, 3P1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "VPS",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ST",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A, 3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A, 3X11, 3X1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PTK-RA",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C21, 3C2A, 3P11, 3P1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "VPS",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PTK-RA",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3P11, 3P1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "VPS",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PTK-RA",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3P11, 3P1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "VPS",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3P1, 3P11, 3P12, 3P13, 3P14, 3P15, 3P16, 3P17, 3P18, LEET",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "PTK-RA",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3P1, 3P11, 3P12, 3P13, 3P14, 3P15, 3P16, 3P17, 3P18",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "VPS",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3C41, 3C43, 3C4A, 3C4C, 3C811, 3C81A, 3P11, 3P13, 3P1A, 3P1C",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ST",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C11, 3C15, 3C1A, 3C1E, 3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3P11, 3P13, 3P1A, 3P1C",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PTK-RA",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C21, 3C2A, 3P11, 3P1A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SEM-CRA",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C23, 3C2C, 3C61, 3C64, 3C6A, 3C6D, 3P13, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SEM-CRA",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C23, 3C2C, 3P13, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SEM-CRA",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C23, 3C2C, 3C61, 3C64, 3C6A, 3C6D, 3P13, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SEM-CRA",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C23, 3C2C, 3C61, 3C64, 3C6A, 3C6D, 3P13, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SEM-CRA",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C61, 3C64, 3C6A, 3C6D, 3P13, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SEM-CRA",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C23, 3C2C, 3P13, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SEM-CRA",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C23, 3C2C, 3C61, 3C64, 3C6A, 3C6D, 3P13, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SEM-CRA",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3P13, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SEM-CRA",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3P13, 3P1C, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SEM-CRA",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3P1, 3P11, 3P12, 3P13, 3P14, 3P15, 3P16, 3P17, 3P18, LEET",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SEM-CRA",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C23, 3C2C, 3C61, 3C64, 3C6A, 3C6D, 3P13, 3P1C",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANS",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C11, 3C1A, 3C61, 3C6A, 3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MAN",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C41, 3C43, 3C4A, 3C4C, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3C811, 3C81A, 3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHI-RA",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANS",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C11, 3C1A, 3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHI-RA",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANS",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C11, 3C1A, 3C61, 3C6A, 3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MAN",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3C811, 3C81A, 3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHI-RA",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANS",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C61, 3C6A, 3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHI-RA",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANS",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C11, 3C1A, 3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MAN",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHI-RA",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANS",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C11, 3C1A, 3C61, 3C6A, 3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MAN",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHI-RA",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANS",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHI-RA",
+      "courseCode": "UCS668",
+      "courseName": "Quantum Computing",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANS",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHI-RA",
+      "courseCode": "UCS550",
+      "courseName": "Internet of Things & Embedded Systems",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANS",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3X1, 3X11, 3X12, 3X13, 3X14, 3X15, 3X16, 3X17, 3X18",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SHI-RA",
+      "courseCode": "UCS539L(Upto 04:20 PM)",
+      "courseName": "UCS539L(Upto 04:20 PM) Course",
+      "batchTaught": "3X1, 3X11, 3X12, 3X13, 3X14, 3X15, 3X16, 3X17, 3X18",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS539",
+      "courseName": "Cloud Computing",
+      "batchTaught": "3C11, 3C1A, 3C21, 3C2A, 3C31, 3C3A, 3C41, 3C4A, 3C51, 3C5A, 3C61, 3C6A, 3C71, 3C7A, 3C811, 3C81A, 3P11, 3P1A, 3Q11, 3Q1A, 3Q21, 3Q2A, 3Q31, 3Q3A, 3X11, 3X12, 3X1A, 3X1B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MHK",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C14, 3C1D, 3C24, 3C2D, 3C32, 3C3B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "NIT-RA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C41, 3C4A, 3C55, 3C5E, 3C75, 3C7E, 3Q25, 3Q2E, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "NRA-RA",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C62, 3C6B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DAM-RA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C42, 3C4B, 3C52, 3C5B, 3C62, 3C64, 3C6B, 3C6D, 3P14, 3P1D",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "YAD",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ISN-RAGUK-RA",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3Q21, 3Q2A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RAGUK-RA",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3Q21, 3Q2A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ISN-RAGUK-RA",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3Q21, 3Q2A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GUK-RA",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GUK-RA",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JSC-RA",
+      "courseCode": "UCS420",
+      "courseName": "Computer Graphics",
+      "batchTaught": "3P11, 3P13, 3P1A, 3P1C, 3Q13, 3Q15, 3Q1C, 3Q1E, 3Q33, 3Q3C",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "APB",
+      "courseCode": "UCS510",
+      "courseName": "Database Management Systems",
+      "batchTaught": "3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "AMO",
+      "courseCode": "UCS420",
+      "courseName": "Computer Graphics",
+      "batchTaught": "3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "PRK-RA",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C13, 3C14, 3C1C, 3C1D, 3C21, 3C24, 3C2A, 3C2D, 3C71, 3C7A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHM-RA",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C16, 3C1F, 3C53, 3C5C, 3C71, 3C7A, 3C811, 3C81A, 3P13, 3P1C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "VJY",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C25, 3C2E, 3C65, 3C6E, 3C72, 3C7B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ABK-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C31, 3C3A, 3C43, 3C4C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANP",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C16, 3C1F, 3C25, 3C2E, 3C51, 3C5A, 3C72, 3C7B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ALK-RA",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C11, 3C1A, 3C33, 3C3C, 3C74, 3C75, 3C7D, 3C7E, 3C812, 3C81B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SOR",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C24, 3C2D, 3C63, 3C6C, 3Q12, 3Q1B",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MJU",
+      "courseCode": "UCS510",
+      "courseName": "Database Management Systems",
+      "batchTaught": "3C2, 3C21, 3C22, 3C23, 3C24, 3C25, 3C26, 3C27, 3C28, 3C4, 3C41, 3C42, 3C43, 3C44, 3C45, 3C46, 3C47, 3C48",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SAU",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C4, 3C41, 3C42, 3C43, 3C44, 3C45, 3C46, 3C47, 3C48",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "MCL",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C4, 3C41, 3C42, 3C43, 3C44, 3C45, 3C46, 3C47, 3C48, 3C5, 3C51, 3C52, 3C53, 3C54, 3C55, 3C56, 3C57, 3C58",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "KAG-RF",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3P12, 3P1B",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KML",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C74, 3C7D, 3P13, 3P1C, 3Q35, 3Q3E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KUA-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C16, 3C1F, 3C72, 3C7B, 3P14, 3P1D",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ARU-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C33, 3C3C, 3C62, 3C6B, 3Q41, 3Q4A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ASB",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "CHN",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C2, 3C21, 3C22, 3C23, 3C24, 3C25, 3C26, 3C27, 3C28, 3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ASH",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C33, 3C3C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMR",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C41, 3C4A, 3C61, 3C63, 3C6A, 3C6C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MNV",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C45, 3C4E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHI",
+      "courseCode": "UCS510",
+      "courseName": "Database Management Systems",
+      "batchTaught": "3C3, 3C31, 3C32, 3C33, 3C34, 3C35, 3C36, 3C37, 3C38, 3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "MMK",
+      "courseCode": "UCS420",
+      "courseName": "Computer Graphics",
+      "batchTaught": "3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "RKG",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C1, 3C11, 3C12, 3C13, 3C14, 3C15, 3C16, 3C17, 3C18, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "VJY",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C2, 3C21, 3C22, 3C23, 3C24, 3C25, 3C26, 3C27, 3C28, 3C5, 3C51, 3C52, 3C53, 3C54, 3C55, 3C56, 3C57, 3C58",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "RKG",
+      "courseCode": "UCS421",
+      "courseName": "Artificial Intelligence",
+      "batchTaught": "3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "JBD",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "MNK",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C1, 3C11, 3C12, 3C13, 3C14, 3C15, 3C16, 3C17, 3C18, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ANU-RA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C14, 3C1D, 3C22, 3C2B, 3Q31, 3Q3A, 3X12, 3X15, 3X1B, 3X1E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAU",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C13, 3C1C, 3C23, 3C2C, 3C61, 3C6A, 3Q33, 3Q3C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ASA",
+      "courseCode": "UAI501",
+      "courseName": "Foundations of AI",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHS",
+      "courseCode": "UAI504",
+      "courseName": "Reinforcement Learning",
+      "batchTaught": "3X13, 3X1C",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "RGB",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SHV",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C11, 3C1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANS",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C11, 3C1A, 3C61, 3C6A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHV",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C11, 3C1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHV",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C11, 3C1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ANS",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C11, 3C1A, 3C61, 3C6A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SHV",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C11, 3C1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DET",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C15, 3C1E, 3C43, 3C4C, 3C811, 3C81A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DET",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C15, 3C1E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DET",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C15, 3C1E, 3C43, 3C4C, 3C811, 3C81A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DET",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C15, 3C1E, 3C811, 3C81A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DET",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C15, 3C1E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DET",
+      "courseCode": "UCS542",
+      "courseName": "Deep Learning Architectures",
+      "batchTaught": "3C15, 3C1E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DET",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C15, 3C1E, 3C43, 3C4C, 3C811, 3C81A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GUK-RA",
+      "courseCode": "UCS531",
+      "courseName": "Cloud Infrastructure & Virtualization",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GUK-RA",
+      "courseCode": "UCS532",
+      "courseName": "Cyber Forensics & Incident Handling",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GUK-RA",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GUK-RA",
+      "courseCode": "UMC513",
+      "courseName": "Mobile Application Development",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "GUK-RA",
+      "courseCode": "UCS537",
+      "courseName": "Natural Language Processing",
+      "batchTaught": "3C21, 3C23, 3C2A, 3C2C, 3C31, 3C33, 3C3A, 3C3C, 3C41, 3C4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SOR",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3Q12, 3Q1B",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ABH-RA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C18, 3C1H, 3C61, 3C6A, 3C73, 3C7C, 3Q14, 3Q1D, 3Q24, 3Q2D",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ABD",
+      "courseCode": "UCS510",
+      "courseName": "Database Management Systems",
+      "batchTaught": "3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "MNS",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C52, 3C5B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "RTA-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C53, 3C5C, 3C71, 3C7A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KPR",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C22, 3C2B, 3C55, 3C5E, 3C64, 3C6D, 3C811, 3C81A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ASB",
+      "courseCode": "USC503",
+      "courseName": "USC503 Course",
+      "batchTaught": "3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ARZ-RF",
+      "courseCode": "UAI504",
+      "courseName": "Reinforcement Learning",
+      "batchTaught": "3X12, 3X14, 3X1B, 3X1D",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SND-RF",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C11, 3C1A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "TAG",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C17, 3C1G, 3C35, 3C3E, 3Q22, 3Q2B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AKN-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C18, 3C1H, 3C65, 3C6E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AKS-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C13, 3C1C, 3Q13, 3Q1C, 3Q23, 3Q2C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "KNP-RA",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C15, 3C1E, 3C31, 3C34, 3C3A, 3C3D, 3C52, 3C55, 3C5B, 3C5E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "JBD",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3Q11, 3Q1A, 3Q25, 3Q2E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SAN-RA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C71, 3C7A, 3P12, 3P1B, 3Q23, 3Q2C, 3Q32, 3Q3B, 3X13, 3X1C",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "NF2",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C14, 3C1D, 3C22, 3C2B, 3C45, 3C4E, 3P14, 3P1D",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SND-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C54, 3C5D",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "YAS",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C32, 3C3B, 3C62, 3C6B, 3C73, 3C7C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS539",
+      "courseName": "Cloud Computing",
+      "batchTaught": "3C1, 3C11, 3C12, 3C13, 3C14, 3C15, 3C16, 3C17, 3C18, 3C2, 3C21, 3C22, 3C23, 3C24, 3C25, 3C26, 3C27, 3C28, 3C3, 3C31, 3C32, 3C33, 3C34, 3C35, 3C36, 3C37, 3C38, 3C4, 3C41, 3C42, 3C43, 3C44, 3C45, 3C46, 3C47, 3C48, 3C5, 3C51, 3C52, 3C53, 3C54, 3C55, 3C56, 3C57, 3C58, 3C6, 3C61, 3C62, 3C63, 3C64, 3C65, 3C66, 3C67, 3C68, 3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78, 3Q1, 3Q11, 3Q12, 3Q13, 3Q14, 3Q15, 3Q16, 3Q17, 3Q18, 3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28, 3Q3, 3Q31, 3Q32, 3Q33, 3Q34, 3Q35, 3Q36, 3Q37, 3Q38",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "SHW-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C34, 3C3D, 3Q14, 3Q1D, 3Q24, 3Q2D",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MNK",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "AA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3Q2, 3Q21, 3Q22, 3Q23, 3Q24, 3Q25, 3Q26, 3Q27, 3Q28",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "RKG",
+      "courseCode": "UCS615",
+      "courseName": "Advanced Computer Networks",
+      "batchTaught": "3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "KAG-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C25, 3C2E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "APK-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C74, 3C7D",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MNK",
+      "courseCode": "UCS553",
+      "courseName": "Information Security & Technologies",
+      "batchTaught": "3C12, 3C1B",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ROS",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3C13, 3C1C",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "SNJ-RF",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3C42, 3C45, 3C4B, 3C4E",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AKN-RA",
+      "courseCode": "UCS420",
+      "courseName": "Computer Graphics",
+      "batchTaught": "3Q12, 3Q1B, 3Q22, 3Q2B",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DPK-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3Q15, 3Q1E",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ARUA-RA",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3Q32, 3Q3B",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "HDK-RA",
+      "courseCode": "UCS503",
+      "courseName": "Software Engineering",
+      "batchTaught": "3Q33, 3Q3C, 3X14, 3X1D",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "ARN",
+      "courseCode": "UAI502",
+      "courseName": "Deep Learning Applications",
+      "batchTaught": "3X11, 3X1A",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "PLK-RF",
+      "courseCode": "UAI501",
+      "courseName": "Foundations of AI",
+      "batchTaught": "3X12, 3X15, 3X1B, 3X1E",
+      "branchTaught": "AI AND MACHINE LEARNING",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "YAD",
+      "courseCode": "UCS421",
+      "courseName": "Artificial Intelligence",
+      "batchTaught": "3C7, 3C71, 3C72, 3C73, 3C74, 3C75, 3C76, 3C77, 3C78",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "L"
+    },
+    {
+      "teacherCode": "ARN",
+      "courseCode": "UML501",
+      "courseName": "Machine Learning",
+      "batchTaught": "3Q31, 3Q3A",
+      "branchTaught": "COMPUTER SCIENCE AND ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MAN",
+      "courseCode": "UCS548",
+      "courseName": "Blockchain Technologies",
+      "batchTaught": "3C41, 3C43, 3C4A, 3C4C, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3C811, 3C81A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "AMT",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C41, 3C4A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "MAN",
+      "courseCode": "UCS551",
+      "courseName": "Software Quality & Testing",
+      "batchTaught": "3C41, 3C43, 3C4A, 3C4C, 3C61, 3C64, 3C6A, 3C6D, 3C71, 3C73, 3C7A, 3C7C, 3C811, 3C81A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    },
+    {
+      "teacherCode": "DET",
+      "courseCode": "UCS534",
+      "courseName": "Big Data Analytics",
+      "batchTaught": "3C43, 3C4C, 3C811, 3C81A",
+      "branchTaught": "COMPUTER ENGG",
+      "academicYear": "2026-2027 ODD",
+      "ltp": "P"
+    }
+  ]
+}

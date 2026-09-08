@@ -50,9 +50,20 @@ export const onboardTeacher = async (req, res) => {
   }
 };
 
+let allTeachersCache = null;
+let allTeachersCacheTime = 0;
+const TEACHERS_CACHE_TTL = 60 * 1000;
+
 export const listTeachers = async (req, res) => {
   try {
+    if (allTeachersCache && Date.now() - allTeachersCacheTime < TEACHERS_CACHE_TTL) {
+      return res.status(200).json({ teachers: allTeachersCache });
+    }
+
     const teachers = await getAllTeachers();
+    allTeachersCache = teachers;
+    allTeachersCacheTime = Date.now();
+
     return res.status(200).json({ teachers });
   } catch (error) {
     return res.status(500).json({ error: "Failed to fetch teachers" });

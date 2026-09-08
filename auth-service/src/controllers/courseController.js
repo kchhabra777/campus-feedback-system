@@ -79,6 +79,9 @@ export const getMyOfferings = async (req, res) => {
   }
 };
 
+const eligibleTeachersCache = new Map();
+const ELIGIBLE_CACHE_TTL = 60 * 1000;
+
 export const getEligibleTeachers = async (req, res) => {
   try {
     let batch = req.query.batch;
@@ -99,7 +102,15 @@ export const getEligibleTeachers = async (req, res) => {
       branch = branch || req.user?.studentProfile?.branch || "COE";
     }
 
+    const cacheKey = `${(batch || "").toUpperCase()}_${(branch || "").toUpperCase()}`;
+    const cached = eligibleTeachersCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < ELIGIBLE_CACHE_TTL) {
+      return res.status(200).json({ teachers: cached.data });
+    }
+
     const teachers = await getEligibleTeachersForStudent({ batch, branch });
+    eligibleTeachersCache.set(cacheKey, { data: teachers, timestamp: Date.now() });
+
     return res.status(200).json({ teachers });
   } catch (error) {
     return res.status(500).json({ error: error.message || "Failed to fetch eligible teachers" });

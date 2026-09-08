@@ -17,9 +17,63 @@ export const StudentOnboarding = () => {
   });
   const [branch, setBranch] = useState('COE');
   const [batch, setBatch] = useState(ALLOWED_BATCHES[0]); // default to 3Q11
-  const [yearOfStudy, setYearOfStudy] = useState(batch.startsWith('3') ? 3 : 2);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [autoDetectedNotice, setAutoDetectedNotice] = useState('');
+
+  const handleRollNumberChange = (newRoll) => {
+    setRollNumber(newRoll);
+    const clean = newRoll.trim();
+    if (clean.length >= 8) {
+      // Automatic Thapar batch detection: 10 + YY + DD + SSS
+      const dept = clean.slice(4, 6);
+      const serial = parseInt(clean.slice(-3), 10) || 1;
+      let detectedBranch = branch;
+      let letter = "Q"; // default CSE
+      let branchName = "Computer Science & Engineering (CSE)";
+
+      if (dept === "03") {
+        detectedBranch = "COE";
+        letter = "C";
+        branchName = "Computer Engineering (COE)";
+      } else if (dept === "17" || dept === "01") {
+        detectedBranch = "CSE";
+        letter = "Q";
+        branchName = "Computer Science & Engineering (CSE)";
+      } else if (dept === "04") {
+        detectedBranch = "ECE";
+        letter = "F";
+        branchName = "Electronics & Communication (ECE)";
+      } else if (dept === "15") {
+        detectedBranch = "ENC";
+        letter = "O";
+        branchName = "Electronics & Computer (ENC)";
+      } else if (dept === "05") {
+        detectedBranch = "ELE";
+        letter = "D";
+        branchName = "Electrical Engineering (EE)";
+      } else if (dept === "06") {
+        detectedBranch = "MEC";
+        letter = "H";
+        branchName = "Mechanical Engineering (ME)";
+      } else if (dept === "18") {
+        detectedBranch = "VLSI";
+        letter = "V";
+        branchName = "VLSI Design";
+      }
+      
+      const sub = Math.min(Math.max(Math.ceil(serial / 30), 1), 5);
+      const year = clean.slice(2, 4) === "24" ? "3" : "2";
+      const autoBatch = `${year}${letter}1${sub}`;
+
+      if (ALLOWED_BATCHES.includes(autoBatch)) {
+        setBatch(autoBatch);
+        setBranch(detectedBranch);
+        setYearOfStudy(Number(year));
+        setAutoDetectedNotice(`✨ Automatically designated to Batch ${autoBatch} (${branchName}) from your roll number.`);
+      }
+    } else {
+      setAutoDetectedNotice('');
+    }
+  };
 
   const handleBatchChange = (newBatch) => {
     setBatch(newBatch);
@@ -132,14 +186,29 @@ export const StudentOnboarding = () => {
               className="form-input"
               placeholder="e.g. 1024170003"
               value={rollNumber}
-              onChange={(e) => setRollNumber(e.target.value)}
+              onChange={(e) => handleRollNumberChange(e.target.value)}
               required
               pattern="\d{10}"
               title="Must be 10 numeric digits"
             />
-            <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>
-              Must be exactly 10 digits as issued on your Thapar ID card.
-            </span>
+            {autoDetectedNotice ? (
+              <div style={{
+                marginTop: '6px',
+                padding: '6px 10px',
+                borderRadius: '6px',
+                background: 'rgba(16, 185, 129, 0.1)',
+                border: '1px solid rgba(16, 185, 129, 0.25)',
+                color: '#10b981',
+                fontSize: '12px',
+                fontWeight: 600
+              }}>
+                {autoDetectedNotice}
+              </div>
+            ) : (
+              <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>
+                Must be exactly 10 digits as issued on your Thapar ID card.
+              </span>
+            )}
           </div>
 
           {/* Branch */}
