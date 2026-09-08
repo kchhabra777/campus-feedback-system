@@ -184,7 +184,82 @@ COURSE_NAMES = {
     "UVD501": "Digital VLSI Design",
     "UVD515": "Semiconductor Device Physics",
     "UTA024": "Engineering Design Project",
-    "UTA025": "Innovation & Entrepreneurship"
+    "UTA025": "Innovation & Entrepreneurship",
+
+    # 4th Year Electives & Capstone
+    "UCS802": "Capstone Project",
+    "UCS701": "High Performance Computing",
+    "UCS742": "Deep Learning Systems",
+    "UCS743": "Advanced Computer Vision",
+    "UCS745": "Big Data Analytics",
+    "UCS748": "Information Security Engineering",
+    "UCS750": "Computer Vision",
+    "UCS751": "Simulation and Modeling",
+    "UCS752": "Natural Language Processing",
+    "UCS754": "Blockchain Technologies",
+    "UCS758": "Cloud Computing Systems",
+    "UCS760": "Deep Learning Architectures",
+    "UCS762": "Reinforcement Learning",
+    "UCS772": "Quantum Computing",
+    "UMC743": "Mobile Application Development",
+    "UHU005": "Humanities for Engineers",
+    "UHU006": "Ethics & Professional Values",
+    "UHU007": "Indian Constitution & Society",
+    "UHU047": "Emotional Intelligence & Interpersonal Skills",
+    "UHU048": "Professional Ethics & Law",
+    "UHU049": "Foreign Language & Cross-Cultural Communication",
+    "URA731": "Robotics Capstone Project",
+    "URA751": "Mechatronics & Mobile Robotics",
+    "URA753": "Autonomous Mobile Robotics",
+    "ULC603": "Industrial Electronics & Applications",
+    "ULC701": "Optical Communication Systems",
+    "ULC703": "Satellite & Wireless Systems",
+    "UEE801": "Electric Vehicles & Power Drives",
+    "UME801": "Product Design & Development",
+    "UME741": "Computational Fluid Dynamics",
+    "UME742": "Composite Materials",
+    "UME743": "Finite Element Methods",
+    "UME744": "Renewable Energy Systems",
+    "UME751": "Advanced Manufacturing Processes",
+    "UME752": "Supply Chain Management",
+    "UME754": "Total Quality Management",
+    "UEE743": "Smart Grids & Energy Systems",
+    "UEE744": "Power System Operation & Control",
+    "UCT701": "Business Analytics",
+    "UCT703": "Financial Computing",
+    "UCT721": "E-Business Systems",
+    "UCT723": "Cloud Infrastructure for Business",
+    "UCT732": "Enterprise Architecture & Design",
+    "UBT610": "Gene Therapy & Genomics",
+    "UBT802": "Environmental Biotechnology",
+    "UBT832": "Biosensors & Bioinstrumentation",
+    "UBT837": "Stem Cell Biology",
+    "UBT839": "Cancer Biology",
+    "UBT844": "Marine Biotechnology",
+    "UBT846": "Vaccine Technology",
+    "UEC630": "Cryptography & Network Security",
+    "UEC634": "Image Processing & Computer Vision",
+    "UEC640": "VLSI Design",
+    "UEC642": "Embedded System Design",
+    "UEC719": "Wireless Cellular Communications",
+    "UEC720": "Microwave & Radar Engineering",
+    "UEC752": "IoT Architectures & Protocols",
+    "UEC823": "Software Defined Radio",
+    "UVD701": "Analog & Mixed Signal CMOS Design",
+    "UVD714": "Low Power VLSI Design",
+    "UEI712": "Modern Control Systems",
+    "UEI733": "Analytical Instrumentation",
+    "UEI735": "Virtual Instrumentation",
+    "UEI743": "Biomedical Signal Processing",
+    "UEI744": "Industrial Process Automation",
+    "UEI801": "Instrumentation Capstone Project",
+    "UEI831": "Advanced Medical Imaging",
+    "UMA601": "Advanced Numerical Methods",
+    "UTD004": "Design Thinking & Innovation",
+    "UCS002": "Employability Skills",
+    "UHU016": "Indian Constitution & Society",
+    "UHU018": "Organizational Behavior",
+    "UMA069": "Optimization Techniques"
 }
 
 def is_room_or_noise(val):
@@ -355,7 +430,21 @@ def parse_ug_file(filename):
             prac_name = prac_row[c].strip() if c < len(prac_row) else ""
             branch_name = branches[c] if c < len(branches) else "ENGINEERING"
 
-            for crs in matched_courses:
+            clean_teachers = []
+            for t_raw in teachers:
+                t_c = t_raw.strip().replace("Prof.", "").replace("Dr.", "").strip()
+                if t_c and len(t_c) >= 2 and not is_room_or_noise(t_c):
+                    clean_teachers.append(t_c)
+
+            if not clean_teachers:
+                continue
+
+            if len(matched_courses) > 1 and len(matched_courses) == len(clean_teachers):
+                pairs = list(zip(matched_courses, clean_teachers))
+            else:
+                pairs = [(crs, t) for crs in matched_courses for t in clean_teachers]
+
+            for crs, t_clean in pairs:
                 ltp = crs[-1] if crs[-1] in ["L", "T", "P"] else "L"
                 base_code = crs[:-1] if crs[-1] in ["L", "T", "P"] else crs
                 course_name = COURSE_NAMES.get(base_code, f"{base_code} Course")
@@ -373,20 +462,15 @@ def parse_ug_file(filename):
                         for exp_b in expand_batches(b):
                             expanded_batch_set.add(exp_b)
 
-                for t_raw in teachers:
-                    t_clean = t_raw.strip().replace("Prof.", "").replace("Dr.", "").strip()
-                    if not t_clean or len(t_clean) < 2 or is_room_or_noise(t_clean):
-                        continue
-
-                    for b_code in expanded_batch_set:
-                        results.append({
-                            "teacherCode": t_clean,
-                            "courseCode": base_code,
-                            "courseName": course_name,
-                            "batchTaught": b_code,
-                            "branchTaught": branch_name,
-                            "ltp": ltp
-                        })
+                for b_code in expanded_batch_set:
+                    results.append({
+                        "teacherCode": t_clean,
+                        "courseCode": base_code,
+                        "courseName": course_name,
+                        "batchTaught": b_code,
+                        "branchTaught": branch_name,
+                        "ltp": ltp
+                    })
 
     return results
 
