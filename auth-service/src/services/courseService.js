@@ -1,31 +1,6 @@
 import prisma from "../lib/prisma.js";
 
-export const ALLOWED_BATCHES = [
-  "3Q11", "3Q12", "3Q13", "3Q14", "3Q15",
-  "3Q21", "3Q22", "3Q23", "3Q24", "3Q25",
-  "3Q31", "3Q32", "3Q33", "3Q34", "3Q35",
-  "3P11", "3P12", "3P13", "3P14", "3Q41",
-  "3C11", "3C12", "3C13", "3C14", "3C15", "3C16", "3C17", "3C18",
-  "3C21", "3C22", "3C23", "3C24", "3C25",
-  "3C31", "3C32", "3C33", "3C34", "3C35",
-  "3C41", "3C42", "3C43", "3C44", "3C45",
-  "3C51", "3C52", "3C53", "3C54", "3C55",
-  "3C61", "3C62", "3C63", "3C64", "3C65",
-  "3C71", "3C72", "3C73", "3C74", "3C75",
-  "3X11", "3X12", "3X13", "3X14", "3X15",
-  "3E11", "3E12", "3D11", "3D12", "3D13",
-  "3H11", "3H12", "3H13", "3H21", "3H22", "3H23",
-  "3I11", "3I12", "3I13", "3W11", "3W12", "3W13", "3W14",
-  "3A11", "3A12", "3G11", "3G12", "3G13", "3G14",
-  "3B11", "3B12", "3B13", "3U11",
-  "3S11", "3S12", "3S13", "3S14", "3S15",
-  "3J11", "3R11", "3R12", "3R13",
-  "3O11", "3O12", "3O13", "3O14", "3O21", "3O22", "3O23", "3O24", "3O31", "3O32", "3O33", "3O34",
-  "3F11", "3F12", "3F13", "3F14", "3F21", "3F22", "3F23", "3F31", "3F32", "3F33",
-  "3V11", "3V12", "3V13",
-  "2Q11", "2Q12", "2Q13", "2Q14", "2Q15",
-  "4Q11", "4Q12", "1Q11", "1Q12", "ALL"
-];
+export { ALLOWED_BATCHES } from "./batches.js";
 
 export const addCourseOffering = async ({
   teacherUserId,
@@ -88,6 +63,7 @@ export const updateCourseOffering = async ({
     throw new Error("Unauthorized: You can only edit your own course offerings.");
   }
 
+  invalidateOfferingsCache();
   return await prisma.courseOffering.update({
     where: { id: offeringId },
     data: {
@@ -125,6 +101,7 @@ export const deleteCourseOffering = async ({ offeringId, teacherUserId }) => {
     where: { id: offeringId }
   });
 
+  invalidateOfferingsCache();
   return { success: true, message: "Course offering deleted successfully." };
 };
 
@@ -137,25 +114,40 @@ export const getTeacherOfferings = async (teacherUserId) => {
   return teacher?.offerings || [];
 };
 
+let cachedAllOfferings = null;
+let lastOfferingsFetchTime = 0;
+const OFFERINGS_CACHE_TTL = 60 * 1000;
+
+export const invalidateOfferingsCache = () => {
+  cachedAllOfferings = null;
+  lastOfferingsFetchTime = 0;
+};
+
 export const getEligibleTeachersForStudent = async ({ batch, branch }) => {
   const normalizedBatch = batch ? batch.trim().toUpperCase() : "";
   const normalizedBranch = branch ? branch.trim().toUpperCase() : "";
 
-  // Find all offerings
-  const allOfferings = await prisma.courseOffering.findMany({
-    include: {
-      teacher: {
-        include: {
-          user: {
-            select: {
-              id: true,
-              email: true
+  // Use cached offerings if fresh (< 60s)
+  const now = Date.now();
+  if (!cachedAllOfferings || now - lastOfferingsFetchTime > OFFERINGS_CACHE_TTL) {
+    cachedAllOfferings = await prisma.courseOffering.findMany({
+      include: {
+        teacher: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true
+              }
             }
           }
         }
       }
-    }
-  });
+    });
+    lastOfferingsFetchTime = now;
+  }
+
+  const allOfferings = cachedAllOfferings;
 
   const BRANCH_ALIASES = {
     "COE": ["COMPUTER ENGG", "COMPUTER ENGINEERING"],

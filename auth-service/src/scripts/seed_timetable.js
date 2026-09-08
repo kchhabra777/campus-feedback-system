@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function seedTimetable() {
-  console.log("🚀 Starting Thapar Timetable Database Seeding...");
+  console.log("🚀 Starting Thapar Timetable Database Seeding (High Performance)...");
 
   const dataPath = path.join(__dirname, "timetable_data.json");
   if (!fs.existsSync(dataPath)) {
@@ -19,111 +19,187 @@ async function seedTimetable() {
   const data = JSON.parse(raw);
 
   const { teachers, offerings } = data;
-  console.log(`📊 Found ${teachers.length} teachers and ${offerings.length} course offerings.`);
+  console.log(`📊 Found ${teachers.length} teachers and ${offerings.length} course offerings in JSON.`);
 
-  // 1. Seed / Upsert Teachers
+  // 1. Fetch existing users and teacher profiles in a single query
+  console.log("📥 Loading existing faculty from database...");
+  const existingTeachers = await prisma.user.findMany({
+    where: { role: "TEACHER" },
+    include: { teacherProfile: true }
+  });
+
+  const userByEmail = new Map(existingTeachers.map((u) => [u.email, u]));
   const teacherProfileMap = new Map(); // teacherCode -> TeacherProfile.id
 
-  console.log("👨‍🏫 Upserting Teacher Profiles...");
+  // Map already existing profiles
   for (const t of teachers) {
-    try {
-      let user = await prisma.user.findUnique({
-        where: { email: t.email },
-        include: { teacherProfile: true }
-      });
+    const existing = userByEmail.get(t.email);
+    if (existing && existing.teacherProfile) {
+      teacherProfileMap.set(t.code, existing.teacherProfile.id);
+    }
+  }
 
-      if (!user) {
-        user = await prisma.user.create({
-          data: {
-            email: t.email,
-            passwordHash: "PENDING",
-            role: "TEACHER",
-            isEmailVerified: true,
-            isProfileComplete: true,
-            teacherProfile: {
-              create: {
+  const missingTeachers = teachers.filter((t) => !teacherProfileMap.has(t.code));
+  console.log(`👨‍🏫 Found ${teacherProfileMap.size} existing teachers in DB, need to create ${missingTeachers.length} new teachers.`);
+
+  // Create missing teachers in concurrent chunks of 20
+  const CHUNK_SIZE = 20;
+  for (let i = 0; i < missingTeachers.length; i += CHUNK_SIZE) {
+    const chunk = missingTeachers.slice(i, i + CHUNK_SIZE);
+    await Promise.all(
+      chunk.map(async (t) => {
+        try {
+          let user = userByEmail.get(t.email);
+          if (!user) {
+            user = await prisma.user.create({
+              data: {
+                email: t.email,
+                passwordHash: "PENDING",
+                role: "TEACHER",
+                isEmailVerified: true,
+                isProfileComplete: true,
+                teacherProfile: {
+                  create: {
+                    fullName: t.fullName,
+                    department: t.department,
+                    designation: t.designation
+                  }
+                }
+              },
+              include: { teacherProfile: true }
+            });
+            userByEmail.set(t.email, user);
+          } else if (!user.teacherProfile) {
+            const profile = await prisma.teacherProfile.create({
+              data: {
+                userId: user.id,
                 fullName: t.fullName,
                 department: t.department,
                 designation: t.designation
               }
-            }
-          },
-          include: { teacherProfile: true }
-        });
-      } else if (!user.teacherProfile) {
-        const profile = await prisma.teacherProfile.create({
-          data: {
-            userId: user.id,
-            fullName: t.fullName,
-            department: t.department,
-            designation: t.designation
+            });
+            user.teacherProfile = profile;
           }
-        });
-        user.teacherProfile = profile;
-      }
-
-      teacherProfileMap.set(t.code, user.teacherProfile.id);
-    } catch (err) {
-      console.warn(`⚠️ Warning with teacher ${t.code} (${t.email}):`, err.message);
+          if (user.teacherProfile) {
+            teacherProfileMap.set(t.code, user.teacherProfile.id);
+          }
+        } catch (err) {
+          console.warn(`⚠️ Warning creating teacher ${t.code}:`, err.message);
+        }
+      })
+    );
+    if ((i + CHUNK_SIZE) % 100 === 0 || i + CHUNK_SIZE >= missingTeachers.length) {
+      console.log(`   Upserted ${Math.min(i + CHUNK_SIZE, missingTeachers.length)} / ${missingTeachers.length} teachers...`);
     }
   }
 
-  console.log(`✅ Upserted ${teacherProfileMap.size} teacher profiles in database.`);
+  console.log(`✅ Ready with ${teacherProfileMap.size} total faculty members.`);
 
-  // 2. Seed / Upsert Course Offerings
-  console.log("📚 Upserting Course Offerings...");
-  let insertedOfferings = 0;
+  // 2. Fetch all existing course offerings in 1 query
+  console.log("📥 Loading existing course offerings from database...");
+  const existingOfferings = await prisma.courseOffering.findMany();
+  const offeringKeyMap = new Map(); // key: teacherId_courseCode_ltp -> existingOffering
+
+  for (const off of existingOfferings) {
+    const key = `${off.teacherId}_${off.courseCode}_${off.ltp || "L"}`;
+    offeringKeyMap.set(key, off);
+  }
+
+  console.log(`📚 Found ${existingOfferings.length} existing offerings in DB. Processing incoming offerings...`);
+
+  const offeringsToCreate = [];
+  const offeringsToUpdate = [];
+  const newOfferingsMap = new Map();
 
   for (const off of offerings) {
     const teacherId = teacherProfileMap.get(off.teacherCode);
-    if (!teacherId) {
-      continue;
-    }
+    if (!teacherId) continue;
 
-    try {
-      // Check if offering already exists for this teacher, courseCode, and ltp
-      const existing = await prisma.courseOffering.findFirst({
-        where: {
-          teacherId,
-          courseCode: off.courseCode,
-          ltp: off.ltp
+    const key = `${teacherId}_${off.courseCode}_${off.ltp || "L"}`;
+    const existing = offeringKeyMap.get(key);
+
+    if (existing) {
+      const existingBatches = new Set((existing.batchTaught || "").split(",").map((b) => b.trim().toUpperCase()).filter(Boolean));
+      const incomingBatches = (off.batchTaught || "").split(",").map((b) => b.trim().toUpperCase()).filter(Boolean);
+      let hasNewBatch = false;
+      for (const b of incomingBatches) {
+        if (!existingBatches.has(b)) {
+          existingBatches.add(b);
+          hasNewBatch = true;
         }
-      });
-
-      if (existing) {
-        // Merge batches
-        const existingBatches = new Set(existing.batchTaught.split(",").map((b) => b.trim().toUpperCase()));
-        off.batchTaught.split(",").forEach((b) => existingBatches.add(b.trim().toUpperCase()));
-        const mergedBatchStr = Array.from(existingBatches).join(", ");
-
-        await prisma.courseOffering.update({
-          where: { id: existing.id },
-          data: {
-            batchTaught: mergedBatchStr,
-            courseName: off.courseName,
-            branchTaught: off.branchTaught
-          }
-        });
-      } else {
-        await prisma.courseOffering.create({
-          data: {
-            teacherId,
-            courseCode: off.courseCode,
-            courseName: off.courseName,
-            batchTaught: off.batchTaught,
-            branchTaught: off.branchTaught,
-            academicYear: off.academicYear,
-            ltp: off.ltp
-          }
+      }
+      if (hasNewBatch) {
+        existing.batchTaught = Array.from(existingBatches).join(", ");
+        offeringsToUpdate.push({
+          id: existing.id,
+          batchTaught: existing.batchTaught,
+          courseName: off.courseName,
+          branchTaught: off.branchTaught
         });
       }
-      insertedOfferings++;
-    } catch (err) {
-      console.warn(`⚠️ Warning with offering ${off.courseCode} for ${off.teacherCode}:`, err.message);
+    } else if (newOfferingsMap.has(key)) {
+      const target = newOfferingsMap.get(key);
+      const batchSet = new Set((target.batchTaught || "").split(",").map((b) => b.trim().toUpperCase()).filter(Boolean));
+      (off.batchTaught || "").split(",").forEach((b) => {
+        if (b.trim()) batchSet.add(b.trim().toUpperCase());
+      });
+      target.batchTaught = Array.from(batchSet).join(", ");
+    } else {
+      const newOff = {
+        teacherId,
+        courseCode: off.courseCode,
+        courseName: off.courseName,
+        batchTaught: off.batchTaught || "ALL",
+        branchTaught: off.branchTaught || "ALL",
+        academicYear: off.academicYear || "2026-2027 ODD",
+        ltp: off.ltp || "L"
+      };
+      offeringsToCreate.push(newOff);
+      newOfferingsMap.set(key, newOff);
     }
   }
 
-  console.log(`✅ Successfully processed ${insertedOfferings} course offerings!`);
+  console.log(`📝 To Create: ${offeringsToCreate.length} new offerings | To Update: ${offeringsToUpdate.length} offerings.`);
+
+  // Create in bulk chunks of 100 using createMany
+  if (offeringsToCreate.length > 0) {
+    console.log("⚡ Executing bulk inserts for new offerings...");
+    const BULK_CHUNK = 100;
+    for (let i = 0; i < offeringsToCreate.length; i += BULK_CHUNK) {
+      const chunk = offeringsToCreate.slice(i, i + BULK_CHUNK);
+      await prisma.courseOffering.createMany({
+        data: chunk,
+        skipDuplicates: true
+      });
+      if ((i + BULK_CHUNK) % 500 === 0 || i + BULK_CHUNK >= offeringsToCreate.length) {
+        console.log(`   Inserted ${Math.min(i + BULK_CHUNK, offeringsToCreate.length)} / ${offeringsToCreate.length} offerings...`);
+      }
+    }
+  }
+
+  // Update in parallel chunks of 25
+  if (offeringsToUpdate.length > 0) {
+    console.log("⚡ Executing updates for existing offerings...");
+    const UPDATE_CHUNK = 25;
+    for (let i = 0; i < offeringsToUpdate.length; i += UPDATE_CHUNK) {
+      const chunk = offeringsToUpdate.slice(i, i + UPDATE_CHUNK);
+      await Promise.all(
+        chunk.map((item) =>
+          prisma.courseOffering.update({
+            where: { id: item.id },
+            data: {
+              batchTaught: item.batchTaught,
+              courseName: item.courseName,
+              branchTaught: item.branchTaught
+            }
+          })
+        )
+      );
+      if ((i + UPDATE_CHUNK) % 250 === 0 || i + UPDATE_CHUNK >= offeringsToUpdate.length) {
+        console.log(`   Updated ${Math.min(i + UPDATE_CHUNK, offeringsToUpdate.length)} / ${offeringsToUpdate.length} offerings...`);
+      }
+    }
+  }
 
   const totalTeachersInDB = await prisma.teacherProfile.count();
   const totalOfferingsInDB = await prisma.courseOffering.count();

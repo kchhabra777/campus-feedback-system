@@ -19,13 +19,16 @@ export const StudentOnboarding = () => {
   const [batch, setBatch] = useState(ALLOWED_BATCHES[0]); // default to 3Q11
   const [autoDetectedNotice, setAutoDetectedNotice] = useState('');
 
-  const handleRollNumberChange = (newRoll) => {
-    setRollNumber(newRoll);
-    const clean = newRoll.trim();
+  const handleRollNumberChange = (val) => {
+    const clean = val.replace(/\D/g, '');
+    setRollNumber(clean);
+
     if (clean.length >= 8) {
       // Automatic Thapar batch detection: 10 + YY + DD + SSS
+      const yrCode = clean.slice(2, 4);
       const dept = clean.slice(4, 6);
       const serial = parseInt(clean.slice(-3), 10) || 1;
+      
       let detectedBranch = branch;
       let letter = "Q"; // default CSE
       let branchName = "Computer Science & Engineering (CSE)";
@@ -58,18 +61,35 @@ export const StudentOnboarding = () => {
         detectedBranch = "VLSI";
         letter = "V";
         branchName = "VLSI Design";
+      } else if (dept === "08") {
+        detectedBranch = "CHE";
+        letter = "B";
+        branchName = "Chemical Engineering (CHE)";
+      } else if (dept === "09") {
+        detectedBranch = "CIV";
+        letter = "A";
+        branchName = "Civil Engineering (CIV)";
+      } else if (dept === "10") {
+        detectedBranch = "BT";
+        letter = "U";
+        branchName = "Biotechnology (BT)";
       }
       
-      const sub = Math.min(Math.max(Math.ceil(serial / 30), 1), 5);
-      const year = clean.slice(2, 4) === "24" ? "3" : "2";
-      const autoBatch = `${year}${letter}1${sub}`;
+      let year = 3;
+      if (yrCode === "25" || yrCode === "26") year = 1;
+      else if (yrCode === "24") year = 2;
+      else if (yrCode === "23") year = 3;
+      else if (yrCode === "22") year = 4;
 
-      if (ALLOWED_BATCHES.includes(autoBatch)) {
-        setBatch(autoBatch);
-        setBranch(detectedBranch);
-        setYearOfStudy(Number(year));
-        setAutoDetectedNotice(`✨ Automatically designated to Batch ${autoBatch} (${branchName}) from your roll number.`);
-      }
+      const sub = Math.min(Math.max(Math.ceil((serial % 50) / 10) || 1, 1), 8);
+      const autoBatch = year === 1 
+        ? (serial % 2 === 0 ? `1B1${sub}` : `1A1${sub}`)
+        : `${year}${letter}1${sub}`;
+
+      setBatch(autoBatch);
+      setBranch(detectedBranch);
+      setYearOfStudy(year);
+      setAutoDetectedNotice(`✨ Automatically designated to Batch ${autoBatch} (${branchName}, Year ${year}) from your roll number.`);
     } else {
       setAutoDetectedNotice('');
     }
@@ -77,11 +97,10 @@ export const StudentOnboarding = () => {
 
   const handleBatchChange = (newBatch) => {
     setBatch(newBatch);
-    if (newBatch.startsWith('3')) {
-      setYearOfStudy(3);
-    } else if (newBatch.startsWith('2')) {
-      setYearOfStudy(2);
-    }
+    if (newBatch.startsWith('4')) setYearOfStudy(4);
+    else if (newBatch.startsWith('3')) setYearOfStudy(3);
+    else if (newBatch.startsWith('2')) setYearOfStudy(2);
+    else if (newBatch.startsWith('1')) setYearOfStudy(1);
   };
 
   const handleSubmit = async (e) => {
@@ -234,32 +253,33 @@ export const StudentOnboarding = () => {
             </select>
           </div>
 
-          {/* Batch Group (Allowed List: 3Q11-3Q15, 2Q11-2Q15) */}
+          {/* Batch Group / Sub-group */}
           <div className="form-group">
             <label className="form-label">Batch Group / Sub-group *</label>
-            <select
-              className="form-select"
+            <input
+              type="text"
+              list="batch-list"
+              className="form-input"
+              placeholder="e.g. 3Q11, 3C11, 2C11, 1A11, 4C11"
               value={batch}
-              onChange={(e) => handleBatchChange(e.target.value)}
+              onChange={(e) => handleBatchChange(e.target.value.toUpperCase().trim())}
               required
-            >
-              <optgroup label="3rd Year (3Q Batches)">
-                <option value="3Q11">3Q11</option>
-                <option value="3Q12">3Q12</option>
-                <option value="3Q13">3Q13</option>
-                <option value="3Q14">3Q14</option>
-                <option value="3Q15">3Q15</option>
-              </optgroup>
-              <optgroup label="2nd Year (2Q Batches)">
-                <option value="2Q11">2Q11</option>
-                <option value="2Q12">2Q12</option>
-                <option value="2Q13">2Q13</option>
-                <option value="2Q14">2Q14</option>
-                <option value="2Q15">2Q15</option>
-              </optgroup>
-            </select>
+            />
+            <datalist id="batch-list">
+              <option value="3Q11" />
+              <option value="3Q12" />
+              <option value="3Q13" />
+              <option value="3C11" />
+              <option value="3C12" />
+              <option value="2Q11" />
+              <option value="2C11" />
+              <option value="1A11" />
+              <option value="1B11" />
+              <option value="4C11" />
+              <option value="4Q11" />
+            </datalist>
             <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>
-              Select your active assigned campus batch group.
+              Auto-designated from your roll number, or enter your tutorial/practical subgroup.
             </span>
           </div>
 
