@@ -304,7 +304,7 @@ const SignupForm = ({ onSwitchToLogin }) => {
         }}>
           {isVerifying
             ? 'Enter the verification code sent to your email.'
-            : 'Join the Faculty Feedback System and be part of a better campus.'}
+            : 'Join RateProf and be part of a better, transparent campus.'}
         </p>
 
         {/* Error Display */}

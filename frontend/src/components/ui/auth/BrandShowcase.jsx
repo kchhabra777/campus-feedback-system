@@ -122,7 +122,7 @@ const BrandShowcase = () => {
             textTransform: 'uppercase',
             marginBottom: '10px',
           }}>
-            FACULTY FEEDBACK SYSTEM
+            RATEPROF • FACULTY FEEDBACK PLATFORM
           </div>
 
           <h1 style={{

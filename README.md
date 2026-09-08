@@ -1,4 +1,4 @@
-﻿# Campus Feedback System
+# RateProf (Campus Feedback System)
 
 ![TIET Logo](assets/tiet-logo-full.png){ width=260px }
 
@@ -20,7 +20,8 @@
 
 ## 🌐 Live Production Deployments
 
-- **Frontend Web Application (Vercel)**: [https://campus-feedback-system.vercel.app](https://campus-feedback-system.vercel.app)
+- **Production Web Application**: [https://www.rateprof.tech](https://www.rateprof.tech) (also [https://rateprof.tech](https://rateprof.tech))
+- **Frontend Backup (Vercel)**: [https://campus-feedback-system.vercel.app](https://campus-feedback-system.vercel.app)
 - **API Gateway (Render)**: [https://campus-feedback-system.onrender.com](https://campus-feedback-system.onrender.com)
 - **Documentation (GitHub Pages)**: [https://kchhabra777.github.io/campus-feedback-system](https://kchhabra777.github.io/campus-feedback-system)
 - **Database**: Serverless PostgreSQL Cluster on Neon Cloud

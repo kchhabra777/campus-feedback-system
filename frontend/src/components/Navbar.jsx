@@ -17,7 +17,7 @@ export const Navbar = ({ currentView, setCurrentView }) => {
             style={{ height: '46px', width: 'auto', objectFit: 'contain', display: 'block' }}
           />
           <div>
-            <div className="brand-title">Faculty Feedback</div>
+            <div className="brand-title">RateProf</div>
             <div className="brand-subtitle">Transparent &amp; Honest Campus Reviews</div>
           </div>
         </div>
