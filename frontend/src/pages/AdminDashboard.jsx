@@ -70,6 +70,8 @@ export const AdminDashboard = () => {
   const [ratingsMap, setRatingsMap] = useState({});
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [facultyPage, setFacultyPage] = useState(1);
+  const FACULTY_PER_PAGE = 25;
 
   // Dossier State
   const [selectedTeacher, setSelectedTeacher] = useState(null);
@@ -156,29 +158,26 @@ export const AdminDashboard = () => {
   const [teacherToDelete, setTeacherToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  useEffect(() => { loadData(); }, []);
-
   const loadData = async () => {
     setLoading(true);
     try {
-      const [resTeachers, resStudents] = await Promise.all([
+      const [resTeachers, resStudents, resSummary] = await Promise.all([
         api.getAllTeachers().catch(() => ({ teachers: [] })),
-        api.getStudents().catch(() => ({ students: [] }))
+        api.getStudents().catch(() => ({ students: [] })),
+        api.getRatingsSummary().catch(() => null)
       ]);
 
       const tList = resTeachers.teachers || [];
       setStudents(resStudents.students || []);
 
-      const ratings = {};
-      let totalR = 0, totalSum = 0, ratedCount = 0;
+      let ratings = {};
+      let totalR = 0;
+      let cAvg = '—';
 
-      for (const t of tList) {
-        const id = t.userId || t.user?.id || t.id;
-        try {
-          const r = await api.getTeacherRatings(id);
-          ratings[id] = r;
-          if (r.totalReviews > 0) { totalR += r.totalReviews; totalSum += r.overallRating; ratedCount++; }
-        } catch { ratings[id] = { overallRating: 0, recentRating: 0, totalReviews: 0 }; }
+      if (resSummary && resSummary.ratings) {
+        ratings = resSummary.ratings;
+        totalR = resSummary.totalReviews || 0;
+        cAvg = resSummary.campusAvg || '—';
       }
 
       tList.sort((a, b) => {
@@ -194,9 +193,9 @@ export const AdminDashboard = () => {
       setTeachers(tList);
       setRatingsMap(ratings);
       setTotalReviews(totalR);
-      setCampusAvg(ratedCount > 0 ? (totalSum / ratedCount).toFixed(2) : '—');
+      setCampusAvg(cAvg);
     } catch (err) {
-      console.error(err);
+      console.error("Failed to load admin data:", err);
     } finally {
       setLoading(false);
     }
@@ -374,6 +373,12 @@ export const AdminDashboard = () => {
     t.department?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const totalFacultyPages = Math.ceil(filteredTeachers.length / FACULTY_PER_PAGE) || 1;
+  const paginatedTeachers = filteredTeachers.slice(
+    (facultyPage - 1) * FACULTY_PER_PAGE,
+    facultyPage * FACULTY_PER_PAGE
+  );
+
   const filteredStudents = students.filter(s =>
     !searchQuery ||
     s.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -404,7 +409,7 @@ export const AdminDashboard = () => {
           <h2 style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)' }}>Admin Panel</h2>
         </div>
         
-        <button className={`admin-nav-item ${activeTab === 'faculty' ? 'active' : ''}`} onClick={() => { setActiveTab('faculty'); setSelectedTeacher(null); setSearchQuery(''); }}>
+        <button className={`admin-nav-item ${activeTab === 'faculty' ? 'active' : ''}`} onClick={() => { setActiveTab('faculty'); setSelectedTeacher(null); setSearchQuery(''); setFacultyPage(1); }}>
           <Users size={18} />
           Faculty Leaderboard
         </button>
@@ -472,7 +477,7 @@ export const AdminDashboard = () => {
                   style={{ paddingLeft: '36px', width: '280px', fontSize: '14px', height: '40px' }}
                   placeholder="Search faculty or dept…"
                   value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
+                  onChange={e => { setSearchQuery(e.target.value); setFacultyPage(1); }}
                 />
               </div>
             </div>
@@ -490,14 +495,14 @@ export const AdminDashboard = () => {
               {filteredTeachers.length === 0 ? (
                 <div style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>No matching faculty found.</div>
               ) : (
-                filteredTeachers.map((teacher, idx) => {
+                paginatedTeachers.map((teacher, idx) => {
                   const id = teacher.userId || teacher.user?.id || teacher.id;
                   const r = ratingsMap[id] || { overallRating: 0, totalReviews: 0 };
                   const needsAttention = r.totalReviews > 0 && r.overallRating < 3;
 
                   return (
                     <div key={id}
-                      style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr auto auto', padding: '16px 20px', borderBottom: idx < filteredTeachers.length - 1 ? '1px solid var(--border-light)' : 'none', alignItems: 'center', gap: '16px', transition: 'background 0.12s', cursor: 'pointer', background: needsAttention ? 'rgba(239,68,68,0.04)' : 'transparent' }}
+                      style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr auto auto', padding: '16px 20px', borderBottom: idx < paginatedTeachers.length - 1 ? '1px solid var(--border-light)' : 'none', alignItems: 'center', gap: '16px', transition: 'background 0.12s', cursor: 'pointer', background: needsAttention ? 'rgba(239,68,68,0.04)' : 'transparent' }}
                       onMouseEnter={e => e.currentTarget.style.background = needsAttention ? 'rgba(239,68,68,0.08)' : 'var(--bg-card-subtle)'}
                       onMouseLeave={e => e.currentTarget.style.background = needsAttention ? 'rgba(239,68,68,0.04)' : 'transparent'}
                       onClick={() => openDossier(teacher)}
@@ -522,6 +527,45 @@ export const AdminDashboard = () => {
                     </div>
                   );
                 })
+              )}
+
+              {/* Pagination controls */}
+              {filteredTeachers.length > FACULTY_PER_PAGE && (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '14px 20px',
+                  borderTop: '1px solid var(--border-light)',
+                  background: 'var(--bg-card-subtle)',
+                  fontSize: '13px',
+                  color: 'var(--text-muted)'
+                }}>
+                  <div>
+                    Showing {(facultyPage - 1) * FACULTY_PER_PAGE + 1}–{Math.min(facultyPage * FACULTY_PER_PAGE, filteredTeachers.length)} of {filteredTeachers.length} faculty
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <button
+                      className="btn btn-subtle btn-sm"
+                      style={{ border: '1px solid var(--border-light)', padding: '6px 12px' }}
+                      disabled={facultyPage === 1}
+                      onClick={() => setFacultyPage(p => Math.max(1, p - 1))}
+                    >
+                      Previous
+                    </button>
+                    <span style={{ fontWeight: 600, color: 'var(--text-primary)', padding: '0 6px' }}>
+                      Page {facultyPage} of {totalFacultyPages}
+                    </span>
+                    <button
+                      className="btn btn-subtle btn-sm"
+                      style={{ border: '1px solid var(--border-light)', padding: '6px 12px' }}
+                      disabled={facultyPage >= totalFacultyPages}
+                      onClick={() => setFacultyPage(p => Math.min(totalFacultyPages, p + 1))}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           </div>

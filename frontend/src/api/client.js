@@ -178,6 +178,7 @@ export const api = {
   getTeacherTagStats: (teacherId) => request(`/reviews/teachers/${teacherId}/tags`),
   getTeacherAISummary: (teacherId) => request(`/reviews/teachers/${teacherId}/ai-summary`),
   getTeacherRatings: (teacherId) => request(`/ratings/${teacherId}`),
+  getRatingsSummary: () => request("/ratings/batch/summary"),
   voteReview: (reviewId, voteType, userId) => request(`/reviews/${reviewId}/vote`, {
     method: "POST",
     body: JSON.stringify({ user: { userId }, vote: { type: voteType } })

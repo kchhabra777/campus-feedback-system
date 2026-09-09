@@ -96,23 +96,29 @@ export const StudentDashboard = () => {
       const eligibleRes = await api.getEligibleTeachers(studentBatch, studentBranch).catch(() => ({ teachers: [] }));
       setEligibleTeachers(eligibleRes.teachers || []);
 
-      // 2. Fetch all teachers
-      const allRes = await api.getAllTeachers().catch(() => ({ teachers: [] }));
+      // 2. Fetch all teachers and ratings summary in parallel
+      const [allRes, summaryRes] = await Promise.all([
+        api.getAllTeachers().catch(() => ({ teachers: [] })),
+        api.getRatingsSummary().catch(() => null)
+      ]);
       
       const allT = allRes.teachers || [];
-      const ratMap = {};
-      
-      const limitedT = allT.slice(0, 15);
-      await Promise.all(limitedT.map(async (t) => {
-        const id = t.userId || t.user?.id || t.id;
-        try {
-          const r = await api.getTeacherRatings(id);
-          ratMap[id] = r.rating || { overallRating: 0, recentRating: 0, totalReviews: 0 };
-        } catch {
-          ratMap[id] = { overallRating: 0, recentRating: 0, totalReviews: 0 };
-        }
-      }));
-      setTeacherRatingsMap(ratMap);
+      if (summaryRes?.ratings) {
+        setTeacherRatingsMap(summaryRes.ratings);
+      } else {
+        const ratMap = {};
+        const limitedT = allT.slice(0, 15);
+        await Promise.all(limitedT.map(async (t) => {
+          const id = t.userId || t.user?.id || t.id;
+          try {
+            const r = await api.getTeacherRatings(id);
+            ratMap[id] = r.rating || { overallRating: 0, recentRating: 0, totalReviews: 0 };
+          } catch {
+            ratMap[id] = { overallRating: 0, recentRating: 0, totalReviews: 0 };
+          }
+        }));
+        setTeacherRatingsMap(ratMap);
+      }
       setAllTeachers(allT);
     } catch (err) {
       console.error("Fetch dashboard data error:", err);
