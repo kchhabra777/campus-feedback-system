@@ -17,14 +17,30 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, ca
       spotlight={true} 
       style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
-        <div>
-          <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
-            {teacher.fullName}
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px', marginBottom: '14px' }}>
+        <img
+          src={teacher.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.fullName || teacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`}
+          alt={teacher.fullName}
+          style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '2px solid var(--border-light)' }}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.fullName || teacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`;
+          }}
+        />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <span>{teacher.fullName}</span>
+            {teacher.code && !teacher.fullName.includes(teacher.code) && (
+              <span className="badge badge-neutral" style={{ fontSize: '10.5px', padding: '1px 6px' }}>
+                {teacher.code}
+              </span>
+            )}
           </h3>
-          <div style={{ fontSize: '13px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
+          <div style={{ fontSize: '12.5px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
             <Award size={13} />
-            <span>{teacher.designation || 'Faculty'} · {teacher.department}</span>
+            <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {teacher.designation || 'Faculty'} · {teacher.department}
+            </span>
           </div>
         </div>
       </div>

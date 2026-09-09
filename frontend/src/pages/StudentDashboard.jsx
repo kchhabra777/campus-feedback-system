@@ -30,7 +30,7 @@ import CommandMenu from '../components/ui/command-menu';
 
 
 export const StudentDashboard = () => {
-  const { user } = useAuth();
+  const { user, onboardStudent } = useAuth();
   const [tab, setTab] = useState('eligible'); // 'eligible' | 'all'
   const [eligibleTeachers, setEligibleTeachers] = useState([]);
   const [allTeachers, setAllTeachers] = useState([]);
@@ -51,11 +51,43 @@ export const StudentDashboard = () => {
   // Write review modal
   const [reviewingTeacher, setReviewingTeacher] = useState(null);
 
+  // Change batch modal
   const studentBatch = user?.studentProfile?.batch || user?.detectedBatch || '3Q11';
   const rawBranch = user?.studentProfile?.branch || 'COE';
   const branchMatch = rawBranch.match(/\(([^)]+)\)/);
   const studentBranch = branchMatch ? branchMatch[1] : rawBranch;
   const studentRollNo = user?.studentProfile?.rollNumber || '';
+
+  const [isChangeBatchOpen, setIsChangeBatchOpen] = useState(false);
+  const [newBatchInput, setNewBatchInput] = useState(studentBatch);
+  const [newBranchInput, setNewBranchInput] = useState(studentBranch);
+  const [updatingBatch, setUpdatingBatch] = useState(false);
+  const [batchUpdateMsg, setBatchUpdateMsg] = useState('');
+
+  const handleUpdateBatchSubmit = async (e) => {
+    e.preventDefault();
+    if (!newBatchInput) return;
+    setUpdatingBatch(true);
+    try {
+      await onboardStudent({
+        fullName: user?.studentProfile?.fullName || '',
+        rollNumber: studentRollNo,
+        branch: newBranchInput,
+        batch: newBatchInput,
+        yearOfStudy: user?.studentProfile?.yearOfStudy || (newBatchInput.startsWith('4') ? 4 : newBatchInput.startsWith('3') ? 3 : newBatchInput.startsWith('2') ? 2 : 1)
+      });
+      setBatchUpdateMsg('✨ Batch successfully updated! Refreshing teachers...');
+      setTimeout(() => {
+        setIsChangeBatchOpen(false);
+        setBatchUpdateMsg('');
+        fetchDashboardData();
+      }, 700);
+    } catch (err) {
+      alert(err.message || 'Failed to update batch');
+    } finally {
+      setUpdatingBatch(false);
+    }
+  };
 
   const fetchDashboardData = async () => {
     setLoading(true);
@@ -170,8 +202,21 @@ export const StudentDashboard = () => {
                 Roll: {studentRollNo}
               </span>
             </div>
-            <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-              Batch <strong>{studentBatch}</strong> • Branch <strong>{studentBranch}</strong> • Year <strong>{user?.studentProfile?.yearOfStudy || 1}</strong>
+            <div style={{ fontSize: '14px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <span>Batch <strong>{studentBatch}</strong> • Branch <strong>{studentBranch}</strong> • Year <strong>{user?.studentProfile?.yearOfStudy || 1}</strong></span>
+              <button
+                onClick={() => {
+                  setNewBatchInput(studentBatch);
+                  setNewBranchInput(studentBranch);
+                  setBatchUpdateMsg('');
+                  setIsChangeBatchOpen(true);
+                }}
+                className="btn btn-secondary btn-sm"
+                style={{ padding: '2px 8px', fontSize: '11.5px', height: '24px' }}
+                title="Change batch if your tutorial/lab was reshuffled"
+              >
+                Change Batch
+              </button>
             </div>
           </div>
 
@@ -198,22 +243,40 @@ export const StudentDashboard = () => {
           {/* Teacher Profile Summary Banner */}
           <div className="card" style={{ marginBottom: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
-              <div>
-                <h2 style={{ fontSize: '24px', fontWeight: 800 }}>{selectedTeacher.fullName}</h2>
-                <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                  {selectedTeacher.designation} • {selectedTeacher.department}
-                </div>
-                
-                {/* Courses Tags */}
-                {selectedTeacher.courses && selectedTeacher.courses.length > 0 && (
-                  <div style={{ marginTop: '10px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                    {selectedTeacher.courses.map((course, idx) => (
-                      <span key={idx} className="badge badge-neutral" style={{ fontSize: '11px', padding: '4px 8px', background: 'var(--bg-card-hover)', border: '1px solid var(--border-light)', color: 'var(--text-primary)' }}>
-                        {course.courseCode} ({course.batchTaught})
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <img
+                  src={selectedTeacher.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedTeacher.fullName || selectedTeacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`}
+                  alt={selectedTeacher.fullName}
+                  style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '2px solid var(--border-light)' }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedTeacher.fullName || selectedTeacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`;
+                  }}
+                />
+                <div>
+                  <h2 style={{ fontSize: '24px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                    <span>{selectedTeacher.fullName}</span>
+                    {selectedTeacher.code && !selectedTeacher.fullName.includes(selectedTeacher.code) && (
+                      <span className="badge badge-neutral" style={{ fontSize: '12px', padding: '2px 8px' }}>
+                        {selectedTeacher.code}
                       </span>
-                    ))}
+                    )}
+                  </h2>
+                  <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                    {selectedTeacher.designation} • {selectedTeacher.department}
                   </div>
-                )}
+                  
+                  {/* Courses Tags */}
+                  {selectedTeacher.courses && selectedTeacher.courses.length > 0 && (
+                    <div style={{ marginTop: '10px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                      {selectedTeacher.courses.map((course, idx) => (
+                        <span key={idx} className="badge badge-neutral" style={{ fontSize: '11px', padding: '4px 8px', background: 'var(--bg-card-hover)', border: '1px solid var(--border-light)', color: 'var(--text-primary)' }}>
+                          {course.courseCode} ({course.batchTaught})
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div style={{ display: 'flex', gap: '12px' }}>
@@ -578,6 +641,106 @@ export const StudentDashboard = () => {
           handleViewReviews(t);
         }}
       />
+
+      {/* Change Batch & Section Modal */}
+      {isChangeBatchOpen && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9999,
+          background: 'rgba(0,0,0,0.65)',
+          backdropFilter: 'blur(4px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '16px'
+        }}>
+          <div className="card" style={{ maxWidth: '440px', width: '100%', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '8px' }}>
+              Update Batch / Section
+            </h3>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '16px', lineHeight: '1.4' }}>
+              If your tutorial or lab subgroup was reshuffled, or your branch changed, update it here. Your dashboard and eligible teachers will refresh immediately.
+            </p>
+
+            <form onSubmit={handleUpdateBatchSubmit}>
+              <div className="form-group" style={{ marginBottom: '14px' }}>
+                <label className="form-label">Batch Group / Subgroup *</label>
+                <input
+                  type="text"
+                  list="change-batch-list"
+                  className="form-input"
+                  placeholder="e.g. 3Q12, 3C11, 2C11, 1A11"
+                  value={newBatchInput}
+                  onChange={(e) => setNewBatchInput(e.target.value.toUpperCase().trim())}
+                  required
+                />
+                <datalist id="change-batch-list">
+                  <option value="3Q11" />
+                  <option value="3Q12" />
+                  <option value="3Q13" />
+                  <option value="3C11" />
+                  <option value="3C12" />
+                  <option value="2Q11" />
+                  <option value="2C11" />
+                  <option value="1A11" />
+                  <option value="1B11" />
+                  <option value="4C11" />
+                  <option value="4Q11" />
+                </datalist>
+                <span style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', display: 'block' }}>
+                  Enter your official tutorial/lab sub-group (e.g. 3Q11, 3C11, 2C11, 1A11, 4C11).
+                </span>
+              </div>
+
+              <div className="form-group" style={{ marginBottom: '18px' }}>
+                <label className="form-label">Engineering Branch *</label>
+                <select
+                  className="form-select"
+                  value={newBranchInput}
+                  onChange={(e) => setNewBranchInput(e.target.value)}
+                  required
+                >
+                  <option value="COE">Computer Engineering (COE)</option>
+                  <option value="CSE">Computer Science & Engineering (CSE)</option>
+                  <option value="COPC">Computer Science - Patiala (COPC)</option>
+                  <option value="ENC">Electronics & Computer (ENC)</option>
+                  <option value="ECE">Electronics & Communication (ECE)</option>
+                  <option value="ELE">Electrical Engineering (EE)</option>
+                  <option value="MEC">Mechanical Engineering (ME)</option>
+                  <option value="CE">Civil Engineering (CE)</option>
+                  <option value="CHE">Chemical Engineering (CHE)</option>
+                  <option value="BT">Biotechnology (BT)</option>
+                </select>
+              </div>
+
+              {batchUpdateMsg && (
+                <div style={{ marginBottom: '14px', fontSize: '12.5px', color: '#10b981', fontWeight: 600 }}>
+                  {batchUpdateMsg}
+                </div>
+              )}
+
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                <button
+                  type="button"
+                  disabled={updatingBatch}
+                  onClick={() => setIsChangeBatchOpen(false)}
+                  className="btn btn-secondary btn-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={updatingBatch}
+                  className="btn btn-primary btn-sm"
+                >
+                  {updatingBatch ? 'Updating...' : 'Save & Refresh Teachers'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
