@@ -79,10 +79,12 @@ export const StudentOnboarding = () => {
       }
       
       let year = 3;
-      if (yrCode === "25" || yrCode === "26") year = 1;
-      else if (yrCode === "24") year = 2;
-      else if (yrCode === "23") year = 3;
-      else if (yrCode === "22") year = 4;
+      if (yrCode === "26") year = 1;
+      else if (yrCode === "25") year = 2;
+      else if (yrCode === "24") year = 3;
+      else if (yrCode === "23") year = 4;
+      else if (parseInt(yrCode, 10) < 23) year = 4;
+      else year = 1;
 
       const sub = Math.min(Math.max(Math.ceil((serial % 50) / 10) || 1, 1), 8);
       const autoBatch = year === 1 
