@@ -275,5 +275,10 @@ export const api = {
   }),
   rejectTeacherSuggestion: (id) => request(`/admin/teacher-suggestions/${id}/reject`, {
     method: "POST"
+  }),
+  getSemesterStats: () => request("/admin/semester-stats"),
+  rolloverSemester: (data) => request("/admin/rollover-semester", {
+    method: "POST",
+    body: JSON.stringify(data)
   })
 };

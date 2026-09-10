@@ -66,9 +66,10 @@ model CourseOffering {
   batchTaught  String
   branchTaught String
   academicYear String
-  createdAt    DateTime       @default(now())
-  ltp          String?        @default("L")
-  teacher      TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  createdAt         DateTime       @default(now())
+  ltp               String?        @default("L")
+  isCurrentSemester Boolean        @default(true)
+  teacher           TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }
 
 model Review {

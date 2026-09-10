@@ -17,7 +17,9 @@ import {
   toggleStudentCR,
   getTeacherSuggestions,
   approveTeacherSuggestion,
-  rejectTeacherSuggestion
+  rejectTeacherSuggestion,
+  rolloverSemester,
+  getSemesterStats
 } from "../controllers/adminController.js";
 import { requireAuth } from "../middlewares/authMiddleware.js";
 import { requireRole } from "../middlewares/roleMiddleware.js";
@@ -25,6 +27,9 @@ import { requireRole } from "../middlewares/roleMiddleware.js";
 const router = express.Router();
 
 router.use(requireAuth, requireRole("ADMIN"));
+
+router.get("/semester-stats", getSemesterStats);
+router.post("/rollover-semester", rolloverSemester);
 
 router.get("/tags", getCommunityTags);
 router.post("/tags", addCommunityTag);

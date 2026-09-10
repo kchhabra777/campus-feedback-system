@@ -1,0 +1,7 @@
+﻿User-agent: *
+Allow: /
+Allow: /teacher/
+Allow: /roadmap
+Disallow: /api/
+
+Sitemap: https://www.rateprof.tech/sitemap.xml

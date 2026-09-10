@@ -17,9 +17,11 @@ import {
   MessageSquarePlus,
   Info,
   Crown,
-  ExternalLink
+  ExternalLink,
+  Share2
 } from 'lucide-react';
 import { Sparkles } from 'lucide-react';
+import { updatePageSEO, buildTeacherSchema } from '../utils/seo';
 import { SuggestTeacherModal } from '../components/SuggestTeacherModal';
 import { TeacherAIInsights } from '../components/TeacherAIInsights';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
@@ -172,11 +174,19 @@ export const StudentDashboard = () => {
       const rObj = ratingRes?.rating || ratingRes || {};
       const reviewsList = reviewsRes.reviews || [];
       setSelectedTeacherReviews(reviewsList);
-      setSelectedTeacherTags(tagsRes || null);
-      setSelectedTeacherRatings({
+      const newRatings = {
         overallRating: Number(rObj.overallRating) || 0,
         recentRating: Number(rObj.recentRating) || 0,
         totalReviews: Number(rObj.totalReviews) || reviewsList.length
+      };
+      setSelectedTeacherRatings(newRatings);
+
+      // Dynamically update SEO and Rich Results Schema
+      updatePageSEO({
+        title: `${teacher.fullName} Reviews, Ratings & Courses | RateProf`,
+        description: `Read verified student feedback, ratings, and course allocations for ${teacher.fullName} (${teacher.department}) at Thapar University.`,
+        url: `https://www.rateprof.tech/teacher/${encodeURIComponent(teacher.id || teacher.userId)}`,
+        schema: buildTeacherSchema(teacher, newRatings)
       });
     } catch (err) {
       console.error("Fetch reviews error:", err);
@@ -345,7 +355,19 @@ export const StudentDashboard = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '12px' }}>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => {
+                    const publicUrl = `${window.location.origin}/teacher/${encodeURIComponent(selectedTeacher.id || selectedTeacher.userId)}`;
+                    navigator.clipboard.writeText(publicUrl);
+                    alert(`Public Profile Link copied to clipboard!\n${publicUrl}\nYou can share this in your batch WhatsApp group or Reddit.`);
+                  }}
+                  className="btn btn-secondary"
+                  title="Copy shareable link for batch WhatsApp groups & Reddit"
+                >
+                  <Share2 size={16} />
+                  <span>Share Profile</span>
+                </button>
                 <button
                   onClick={() => setReviewingTeacher(selectedTeacher)}
                   className="btn btn-primary"

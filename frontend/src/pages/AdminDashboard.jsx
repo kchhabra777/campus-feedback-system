@@ -10,7 +10,7 @@ import {
   Activity, TrendingDown, ArrowLeft, Download,
   Users, MessageSquare, Star, ChevronRight, Search, AlertTriangle,
   UserPlus, UserX, Edit2, Trash2, CheckCircle2, ShieldBan, RefreshCw,
-  Crown, Check, X as XIcon
+  Crown, Check, X as XIcon, Calendar, Upload, Layers
 } from 'lucide-react';
 
 /* ── tiny helpers ── */
@@ -295,6 +295,91 @@ export const AdminDashboard = () => {
 
   const pendingSuggestionsCount = suggestions.filter(s => s.status === 'PENDING').length;
 
+  // ── Semester Lifecycle & Rollover State ──
+  const [semesterStats, setSemesterStats] = useState(null);
+  const [semesterStatsLoading, setSemesterStatsLoading] = useState(false);
+  const [rolloverYear, setRolloverYear] = useState('2026-2027 EVEN');
+  const [rolloverFileText, setRolloverFileText] = useState('');
+  const [rolloverArchivePrev, setRolloverArchivePrev] = useState(true);
+  const [rolloverLoading, setRolloverLoading] = useState(false);
+  const [rolloverResult, setRolloverResult] = useState(null);
+
+  const loadSemesterStats = async () => {
+    setSemesterStatsLoading(true);
+    try {
+      const res = await api.getSemesterStats();
+      setSemesterStats(res);
+      if (res?.currentSemester) {
+        // Suggest the alternate semester
+        if (res.currentSemester.includes('ODD')) {
+          setRolloverYear(res.currentSemester.replace('ODD', 'EVEN'));
+        } else if (res.currentSemester.includes('EVEN')) {
+          // Increment year and set to ODD
+          setRolloverYear('2027-2028 ODD');
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load semester stats:", err);
+    } finally {
+      setSemesterStatsLoading(false);
+    }
+  };
+
+  const handleExecuteRollover = async (e) => {
+    e.preventDefault();
+    if (!rolloverYear.trim()) {
+      alert("Please specify the target semester name (e.g., 2026-2027 EVEN)");
+      return;
+    }
+
+    let parsedOfferings = [];
+    if (rolloverFileText.trim()) {
+      try {
+        if (rolloverFileText.trim().startsWith('[') || rolloverFileText.trim().startsWith('{')) {
+          const parsed = JSON.parse(rolloverFileText);
+          parsedOfferings = Array.isArray(parsed) ? parsed : (parsed.offerings || []);
+        } else {
+          // CSV Parser (teacherCode/name, courseCode, courseName, batchTaught, branchTaught)
+          const lines = rolloverFileText.trim().split('\n');
+          parsedOfferings = lines.map(line => {
+            const parts = line.split(',').map(s => s.trim());
+            return {
+              teacherIdentifier: parts[0] || '',
+              courseCode: parts[1] || 'GEN',
+              courseName: parts[2] || parts[1] || 'General Course',
+              batchTaught: parts[3] || 'ALL',
+              branchTaught: parts[4] || 'ALL'
+            };
+          }).filter(o => o.teacherIdentifier);
+        }
+      } catch (err) {
+        alert("Failed to parse timetable data: " + err.message + "\nPlease provide valid CSV or JSON.");
+        return;
+      }
+    }
+
+    if (!window.confirm(`Are you sure you want to roll over campus to ${rolloverYear}?\n${rolloverArchivePrev ? "Previous semester course offerings will be safely archived." : ""}`)) {
+      return;
+    }
+
+    setRolloverLoading(true);
+    setRolloverResult(null);
+    try {
+      const res = await api.rolloverSemester({
+        newAcademicYear: rolloverYear.trim(),
+        offerings: parsedOfferings,
+        archivePrevious: rolloverArchivePrev
+      });
+      setRolloverResult(res);
+      await loadSemesterStats();
+      await loadData();
+    } catch (err) {
+      alert("Rollover failed: " + err.message);
+    } finally {
+      setRolloverLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadData();
     loadSuggestions(true);
@@ -304,6 +389,7 @@ export const AdminDashboard = () => {
     if (activeTab === 'moderation') loadFlags();
     if (activeTab === 'students') loadStudents();
     if (activeTab === 'suggestions') loadSuggestions();
+    if (activeTab === 'semester') loadSemesterStats();
   }, [activeTab]);
 
   const openDossier = async (teacher, isSilentRefresh = false) => {
@@ -517,6 +603,11 @@ export const AdminDashboard = () => {
           <Activity size={18} />
           Community Tags
         </button>
+
+        <button className={`admin-nav-item ${activeTab === 'semester' ? 'active' : ''}`} onClick={() => { setActiveTab('semester'); setSelectedTeacher(null); }}>
+          <Calendar size={18} />
+          Semester Rollover
+        </button>
       </aside>
 
 
@@ -531,6 +622,7 @@ export const AdminDashboard = () => {
             {activeTab === 'register' && "Register New Teacher"}
             {activeTab === 'moderation' && "Moderation Queue"}
             {activeTab === 'tags' && "Community Tags"}
+            {activeTab === 'semester' && "Semester Lifecycle & Timetable Rollover"}
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>
             {activeTab === 'faculty' && "View ratings, reviews, and remove faculty accounts."}
@@ -539,6 +631,7 @@ export const AdminDashboard = () => {
             {activeTab === 'register' && "Create an account for a faculty member. They will set their password via email OTP."}
             {activeTab === 'moderation' && "Review and resolve flagged content reported by students."}
             {activeTab === 'tags' && "Manage positive and constructive community tags."}
+            {activeTab === 'semester' && "Manage 6-month semester transitions. Archive previous allocations and bulk import new courses & batches."}
           </p>
         </div>
 
@@ -1249,6 +1342,136 @@ export const AdminDashboard = () => {
                     </div>
                   ))
               )}
+            </div>
+          </div>
+        )}
+
+        {/* ── Semester Lifecycle & Rollover Tab ── */}
+        {activeTab === 'semester' && (
+          <div className="fade-in">
+            {/* Status overview cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+              <StatCard
+                icon={Calendar}
+                label="Active Semester"
+                value={semesterStats?.currentSemester || "2026-2027 ODD"}
+                sub="Current live teaching session"
+                accent="#3b82f6"
+              />
+              <StatCard
+                icon={Layers}
+                label="Active Offerings"
+                value={semesterStats?.activeOfferings || 0}
+                sub="Courses active this semester"
+                accent="#10b981"
+              />
+              <StatCard
+                icon={Activity}
+                label="Archived Offerings"
+                value={semesterStats?.archivedOfferings || 0}
+                sub="Preserved historical records"
+                accent="#8b5cf6"
+              />
+            </div>
+
+            {/* Rollover Result Alert */}
+            {rolloverResult && (
+              <div style={{ padding: '16px 20px', borderRadius: '10px', background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: '15px' }}>{rolloverResult.message}</div>
+                  <div style={{ fontSize: '13px', marginTop: '4px' }}>
+                    Archived: {rolloverResult.details?.archivedPreviousOfferings || 0} previous courses | 
+                    Created: {rolloverResult.details?.newOfferingsCreated || 0} new course allocations.
+                  </div>
+                </div>
+                <button onClick={() => setRolloverResult(null)} className="btn btn-secondary btn-sm">Dismiss</button>
+              </div>
+            )}
+
+            {/* Transition Form Card */}
+            <div className="card" style={{ padding: '32px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>
+                <div>
+                  <h2 style={{ fontSize: '20px', fontWeight: 800, margin: 0 }}>Initiate 6-Month Semester Transition</h2>
+                  <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                    Roll over the campus to a new academic term (e.g. July Odd → January Even). Past reviews and ratings are preserved.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={loadSemesterStats}
+                  disabled={semesterStatsLoading}
+                  className="btn btn-secondary btn-sm"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <RefreshCw size={14} style={{ animation: semesterStatsLoading ? 'spin 1s linear infinite' : 'none' }} />
+                  <span>Refresh Stats</span>
+                </button>
+              </div>
+
+              <form onSubmit={handleExecuteRollover} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, marginBottom: '6px', color: 'var(--text-primary)' }}>
+                    Target Academic Semester Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    className="form-input"
+                    value={rolloverYear}
+                    onChange={e => setRolloverYear(e.target.value)}
+                    placeholder="e.g. 2026-2027 EVEN or 2027-2028 ODD"
+                    style={{ maxWidth: '400px' }}
+                  />
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px', display: 'block' }}>
+                    This label tags all course allocations and student eligibility queries.
+                  </span>
+                </div>
+
+                <div style={{ padding: '16px', background: 'var(--bg-card-subtle)', borderRadius: '10px', border: '1px solid var(--border-light)' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 600, fontSize: '14px' }}>
+                    <input
+                      type="checkbox"
+                      checked={rolloverArchivePrev}
+                      onChange={e => setRolloverArchivePrev(e.target.checked)}
+                      style={{ width: '16px', height: '16px', accentColor: 'var(--primary)' }}
+                    />
+                    <span>Archive previous semester allocations (Recommended)</span>
+                  </label>
+                  <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '6px 0 0 26px' }}>
+                    Marks active allocations as previous term records. Historical reviews remain linked to the professor and their courses.
+                  </p>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, marginBottom: '6px', color: 'var(--text-primary)' }}>
+                    Timetable Allocations (Paste CSV or JSON format) — Optional
+                  </label>
+                  <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+                    CSV format per line: <code>TeacherCodeOrName, CourseCode, CourseName, BatchTaught, BranchTaught</code><br />
+                    Example: <code>AMH, UCS415, Design and Analysis of Algorithms, 3C1, COE</code>
+                  </p>
+                  <textarea
+                    className="form-input"
+                    rows={8}
+                    value={rolloverFileText}
+                    onChange={e => setRolloverFileText(e.target.value)}
+                    placeholder="AMH, UCS415, Design and Analysis of Algorithms, 3C1, COE&#10;TA20, UCS414, Computer Networks, 3C2, COE&#10;..."
+                    style={{ fontFamily: 'monospace', fontSize: '12.5px', resize: 'vertical' }}
+                  />
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginTop: '8px' }}>
+                  <button
+                    type="submit"
+                    disabled={rolloverLoading}
+                    className="btn btn-primary"
+                    style={{ padding: '10px 24px', fontWeight: 700 }}
+                  >
+                    {rolloverLoading ? 'Executing Semester Transition…' : `Activate ${rolloverYear}`}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}

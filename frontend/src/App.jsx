@@ -11,10 +11,24 @@ import { TeacherDashboard } from './pages/TeacherDashboard';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { Navbar } from './components/Navbar';
 import { Roadmap } from './pages/Roadmap';
+import { PublicTeacherProfile } from './pages/PublicTeacherProfile';
 
 export function App() {
   const { user, loading } = useAuth();
   const [currentView, setCurrentView] = useState('home');
+
+  // Handle public teacher profiles (e.g. /teacher/123 or /teacher/dr-anjula-mehto)
+  const teacherMatch = window.location.pathname.match(/^\/teacher\/([^/]+)/);
+  if (teacherMatch) {
+    const teacherIdentifier = decodeURIComponent(teacherMatch[1]);
+    return (
+      <PublicTeacherProfile
+        teacherId={teacherIdentifier}
+        onBack={() => window.location.href = '/'}
+        onLoginClick={() => window.location.href = '/'}
+      />
+    );
+  }
 
   if (window.location.pathname === '/roadmap') {
     return <Roadmap onBack={() => window.location.href = '/'} />;

@@ -426,3 +426,126 @@ export const rejectTeacherSuggestion = async (req, res) => {
     res.status(500).json({ error: "Failed to reject suggestion" });
   }
 };
+
+/**
+ * 6-Month Semester Rollover & Timetable Ingestion Engine
+ * Non-destructive: Archives past semester offerings (isCurrentSemester: false)
+ * and ingests new semester offerings with full batch/course mappings.
+ */
+export const rolloverSemester = async (req, res) => {
+  try {
+    const { newAcademicYear, offerings = [], archivePrevious = true } = req.body;
+
+    if (!newAcademicYear || !newAcademicYear.trim()) {
+      return res.status(400).json({ error: "New academic semester name is required (e.g. 2026-2027 EVEN)" });
+    }
+
+    const targetYear = newAcademicYear.trim();
+
+    // 1. Archive previous active semester if requested
+    let archivedCount = 0;
+    if (archivePrevious) {
+      const archiveRes = await prisma.courseOffering.updateMany({
+        where: { isCurrentSemester: true },
+        data: { isCurrentSemester: false }
+      });
+      archivedCount = archiveRes.count;
+    }
+
+    // 2. Process incoming course offerings
+    let createdCount = 0;
+    let matchedTeachersCount = 0;
+
+    if (Array.isArray(offerings) && offerings.length > 0) {
+      // Map all existing teachers by code or name
+      const teachers = await prisma.teacherProfile.findMany({
+        include: { user: true }
+      });
+
+      const teacherMap = new Map();
+      teachers.forEach(t => {
+        teacherMap.set(t.fullName.toLowerCase().trim(), t.id);
+        if (t.user?.email) {
+          const prefix = t.user.email.split('@')[0].toLowerCase();
+          teacherMap.set(prefix, t.id);
+        }
+      });
+
+      const offeringsToInsert = [];
+
+      for (const off of offerings) {
+        let teacherId = off.teacherId;
+
+        // Auto-match teacher by code or name if teacherId not directly provided
+        if (!teacherId && off.teacherIdentifier) {
+          const ident = off.teacherIdentifier.toLowerCase().trim();
+          teacherId = teacherMap.get(ident);
+        }
+
+        if (teacherId) {
+          matchedTeachersCount++;
+          offeringsToInsert.push({
+            teacherId,
+            courseCode: (off.courseCode || 'GEN').toUpperCase().trim(),
+            courseName: (off.courseName || off.courseCode || 'General Course').trim(),
+            batchTaught: (off.batchTaught || 'ALL').toUpperCase().trim(),
+            branchTaught: (off.branchTaught || 'ALL').toUpperCase().trim(),
+            academicYear: targetYear,
+            ltp: off.ltp || 'L',
+            isCurrentSemester: true
+          });
+        }
+      }
+
+      if (offeringsToInsert.length > 0) {
+        const createRes = await prisma.courseOffering.createMany({
+          data: offeringsToInsert,
+          skipDuplicates: true
+        });
+        createdCount = createRes.count;
+      }
+    }
+
+    invalidateTeachersCache();
+
+    return res.status(200).json({
+      success: true,
+      message: `Successfully rolled over to ${targetYear}!`,
+      details: {
+        newAcademicYear: targetYear,
+        archivedPreviousOfferings: archivedCount,
+        newOfferingsCreated: createdCount,
+        teachersMatched: matchedTeachersCount
+      }
+    });
+  } catch (error) {
+    console.error("Semester rollover failed:", error);
+    return res.status(500).json({ error: "Failed to perform semester rollover: " + error.message });
+  }
+};
+
+export const getSemesterStats = async (req, res) => {
+  try {
+    const [currentCount, archivedCount, activeSemesters] = await Promise.all([
+      prisma.courseOffering.count({ where: { isCurrentSemester: true } }),
+      prisma.courseOffering.count({ where: { isCurrentSemester: false } }),
+      prisma.courseOffering.findMany({
+        where: { isCurrentSemester: true },
+        select: { academicYear: true },
+        distinct: ['academicYear']
+      })
+    ]);
+
+    const activeSemName = activeSemesters.length > 0 ? activeSemesters[0].academicYear : '2026-2027 ODD';
+
+    return res.status(200).json({
+      currentSemester: activeSemName,
+      activeOfferings: currentCount,
+      archivedOfferings: archivedCount
+    });
+  } catch (error) {
+    console.error("Failed to fetch semester stats:", error);
+    return res.status(500).json({ error: "Failed to fetch semester stats" });
+  }
+};
+
