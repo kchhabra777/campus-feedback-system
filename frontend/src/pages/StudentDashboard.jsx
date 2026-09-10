@@ -859,16 +859,33 @@ export const StudentDashboard = () => {
                   onChange={(e) => setNewBranchInput(e.target.value)}
                   required
                 >
-                  <option value="COE">Computer Engineering (COE)</option>
-                  <option value="CSE">Computer Science & Engineering (CSE)</option>
-                  <option value="COPC">Computer Science - Patiala (COPC)</option>
-                  <option value="ENC">Electronics & Computer (ENC)</option>
-                  <option value="ECE">Electronics & Communication (ECE)</option>
-                  <option value="ELE">Electrical Engineering (EE)</option>
-                  <option value="MEC">Mechanical Engineering (ME)</option>
-                  <option value="CE">Civil Engineering (CE)</option>
-                  <option value="CHE">Chemical Engineering (CHE)</option>
-                  <option value="BT">Biotechnology (BT)</option>
+                  <optgroup label="💻 Computer / AI">
+                    <option value="COE">Computer Engineering (COE)</option>
+                    <option value="COPC">Computer Science & Engineering – Patiala (COPC)</option>
+                    <option value="COSE">Computer Science & Engineering – Dera Bassi (COSE)</option>
+                    <option value="COBS">Computer Science & Business Systems (COBS)</option>
+                    <option value="DSAI">Artificial Intelligence & Data Science (DSAI)</option>
+                    <option value="AIML">Artificial Intelligence & Machine Learning (AIML)</option>
+                    <option value="RAI">Robotics & Artificial Intelligence (RAI)</option>
+                    <option value="ENC">Electronics & Computer Engineering (ENC)</option>
+                    <option value="EEC">Electrical & Computer Engineering (EEC)</option>
+                  </optgroup>
+                  <optgroup label="⚡ Electronics / Electrical">
+                    <option value="ECE">Electronics & Communication Engineering (ECE)</option>
+                    <option value="EVD">Electronics Engineering – VLSI Design & Technology (EVD)</option>
+                    <option value="ELE">Electrical Engineering (ELE)</option>
+                    <option value="EIC">Electronics (Instrumentation & Control) Engineering (EIC)</option>
+                  </optgroup>
+                  <optgroup label="⚙️ Core Engineering">
+                    <option value="ME">Mechanical Engineering</option>
+                    <option value="MEC">Mechatronics Engineering</option>
+                    <option value="CE">Civil Engineering</option>
+                    <option value="CHE">Chemical Engineering</option>
+                  </optgroup>
+                  <optgroup label="🧬 Bio / Other">
+                    <option value="BT">Biotechnology</option>
+                    <option value="BME">Biomedical Engineering</option>
+                  </optgroup>
                 </select>
               </div>
 

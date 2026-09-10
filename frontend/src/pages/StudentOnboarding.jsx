@@ -33,49 +33,49 @@ export const StudentOnboarding = () => {
       const serial = parseInt(clean.slice(-3), 10) || 1;
       
       let detectedBranch = branch;
-      let letter = "Q"; // default CSE
-      let branchName = "Computer Science & Engineering (CSE)";
+      let letter = "Q"; // default
+      let branchName = "Computer Science & Engineering – Patiala (COPC)";
 
       if (dept === "03") {
         detectedBranch = "COE";
         letter = "C";
         branchName = "Computer Engineering (COE)";
       } else if (dept === "17" || dept === "01") {
-        detectedBranch = "CSE";
+        detectedBranch = "COPC";
         letter = "Q";
-        branchName = "Computer Science & Engineering (CSE)";
+        branchName = "Computer Science & Engineering – Patiala (COPC)";
       } else if (dept === "04") {
         detectedBranch = "ECE";
         letter = "F";
-        branchName = "Electronics & Communication (ECE)";
+        branchName = "Electronics & Communication Engineering (ECE)";
       } else if (dept === "15") {
         detectedBranch = "ENC";
         letter = "O";
-        branchName = "Electronics & Computer (ENC)";
+        branchName = "Electronics & Computer Engineering (ENC)";
       } else if (dept === "05") {
         detectedBranch = "ELE";
         letter = "D";
-        branchName = "Electrical Engineering (EE)";
+        branchName = "Electrical Engineering (ELE)";
       } else if (dept === "06") {
-        detectedBranch = "MEC";
+        detectedBranch = "ME";
         letter = "H";
-        branchName = "Mechanical Engineering (ME)";
+        branchName = "Mechanical Engineering";
       } else if (dept === "18") {
-        detectedBranch = "VLSI";
+        detectedBranch = "EVD";
         letter = "V";
-        branchName = "VLSI Design";
+        branchName = "Electronics Engineering – VLSI Design & Technology (EVD)";
       } else if (dept === "08") {
         detectedBranch = "CHE";
         letter = "B";
-        branchName = "Chemical Engineering (CHE)";
+        branchName = "Chemical Engineering";
       } else if (dept === "09") {
-        detectedBranch = "CIV";
+        detectedBranch = "CE";
         letter = "A";
-        branchName = "Civil Engineering (CIV)";
+        branchName = "Civil Engineering";
       } else if (dept === "10") {
         detectedBranch = "BT";
         letter = "U";
-        branchName = "Biotechnology (BT)";
+        branchName = "Biotechnology";
       }
       
       let year = 3;
@@ -244,17 +244,33 @@ export const StudentOnboarding = () => {
               onChange={(e) => setBranch(e.target.value)}
               required
             >
-              <option value="COE">Computer Engineering (COE)</option>
-              <option value="CSE">Computer Science & Engineering (CSE)</option>
-              <option value="COPC">Computer Science & Engineering - Patiala (COPC)</option>
-              <option value="COSE">Software Engineering (COSE)</option>
-              <option value="ENC">Electronics & Computer (ENC)</option>
-              <option value="ECE">Electronics & Communication (ECE)</option>
-              <option value="EE">Electrical Engineering (EE)</option>
-              <option value="ME">Mechanical Engineering (ME)</option>
-              <option value="CE">Civil Engineering (CE)</option>
-              <option value="CHE">Chemical Engineering (CHE)</option>
-              <option value="BT">Biotechnology (BT)</option>
+              <optgroup label="💻 Computer / AI">
+                <option value="COE">Computer Engineering (COE)</option>
+                <option value="COPC">Computer Science & Engineering – Patiala (COPC)</option>
+                <option value="COSE">Computer Science & Engineering – Dera Bassi (COSE)</option>
+                <option value="COBS">Computer Science & Business Systems (COBS)</option>
+                <option value="DSAI">Artificial Intelligence & Data Science (DSAI)</option>
+                <option value="AIML">Artificial Intelligence & Machine Learning (AIML)</option>
+                <option value="RAI">Robotics & Artificial Intelligence (RAI)</option>
+                <option value="ENC">Electronics & Computer Engineering (ENC)</option>
+                <option value="EEC">Electrical & Computer Engineering (EEC)</option>
+              </optgroup>
+              <optgroup label="⚡ Electronics / Electrical">
+                <option value="ECE">Electronics & Communication Engineering (ECE)</option>
+                <option value="EVD">Electronics Engineering – VLSI Design & Technology (EVD)</option>
+                <option value="ELE">Electrical Engineering (ELE)</option>
+                <option value="EIC">Electronics (Instrumentation & Control) Engineering (EIC)</option>
+              </optgroup>
+              <optgroup label="⚙️ Core Engineering">
+                <option value="ME">Mechanical Engineering</option>
+                <option value="MEC">Mechatronics Engineering</option>
+                <option value="CE">Civil Engineering</option>
+                <option value="CHE">Chemical Engineering</option>
+              </optgroup>
+              <optgroup label="🧬 Bio / Other">
+                <option value="BT">Biotechnology</option>
+                <option value="BME">Biomedical Engineering</option>
+              </optgroup>
             </select>
           </div>
 
