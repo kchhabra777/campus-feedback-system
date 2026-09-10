@@ -15,9 +15,12 @@ import {
   Clock,
   TrendingUp,
   MessageSquarePlus,
-  Info
+  Info,
+  Crown,
+  ExternalLink
 } from 'lucide-react';
 import { Sparkles } from 'lucide-react';
+import { SuggestTeacherModal } from '../components/SuggestTeacherModal';
 import { TeacherAIInsights } from '../components/TeacherAIInsights';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
 import CloudLoader from '../components/ui/quantum-cloud-loader';
@@ -51,12 +54,25 @@ export const StudentDashboard = () => {
   // Write review modal
   const [reviewingTeacher, setReviewingTeacher] = useState(null);
 
+  // Suggest teacher name modal
+  const [suggestTeacher, setSuggestTeacher] = useState(null);
+  const [suggestionToast, setSuggestionToast] = useState(null);
+
   // Change batch modal
   const studentBatch = user?.studentProfile?.batch || user?.detectedBatch || '3Q11';
   const rawBranch = user?.studentProfile?.branch || 'COE';
   const branchMatch = rawBranch.match(/\(([^)]+)\)/);
   const studentBranch = branchMatch ? branchMatch[1] : rawBranch;
   const studentRollNo = user?.studentProfile?.rollNumber || '';
+
+  const isStudentCR = Boolean(user?.studentProfile?.isCR);
+  const unverifiedBatchFaculty = eligibleTeachers.filter(t => 
+    Boolean(
+      t.fullName?.startsWith("Teacher (") ||
+      t.code === t.fullName ||
+      /^[A-Z0-9]{2,5}$/.test(t.fullName?.trim() || '')
+    )
+  );
 
   const [isChangeBatchOpen, setIsChangeBatchOpen] = useState(false);
   const [newBatchInput, setNewBatchInput] = useState(studentBatch);
@@ -251,7 +267,12 @@ export const StudentDashboard = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
                 <img
-                  src={selectedTeacher.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedTeacher.fullName || selectedTeacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`}
+                  src={
+                    selectedTeacher.avatarUrl ||
+                    (selectedTeacher.fullName?.toLowerCase().includes('anjula') || selectedTeacher.code?.toUpperCase() === 'AMH'
+                      ? '/anjula-mehto.png'
+                      : `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedTeacher.fullName || selectedTeacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`)
+                  }
                   alt={selectedTeacher.fullName}
                   style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '2px solid var(--border-light)' }}
                   onError={(e) => {
@@ -280,6 +301,45 @@ export const StudentDashboard = () => {
                           {course.courseCode} ({course.batchTaught})
                         </span>
                       ))}
+                    </div>
+                  )}
+
+                  {/* Special Academic & Research Details for Dr. Anjula Mehto */}
+                  {(selectedTeacher.fullName?.toLowerCase().includes('anjula') || selectedTeacher.code?.toUpperCase() === 'AMH') && (
+                    <div style={{ marginTop: '12px', padding: '12px 14px', background: 'var(--bg-card-subtle)', borderRadius: '8px', border: '1px solid var(--border-light)', maxWidth: '750px' }}>
+                      <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>
+                        Specialization: <span style={{ fontWeight: 500, color: 'var(--text-secondary)' }}>Wireless Sensor Networks (WSNs), Internet of Things (IoT), Machine Learning</span>
+                      </div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+                        <strong>Education:</strong> Ph.D. (ABV-IIITM Gwalior, 2021) • M.Tech (MANIT Bhopal) • B.E. (UIT-RGPV Bhopal)
+                      </div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                        <a 
+                          href="mailto:anjula.mehto@thapar.edu" 
+                          className="badge badge-neutral"
+                          style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 8px', fontSize: '11.5px', color: 'var(--primary)' }}
+                        >
+                          ✉️ anjula.mehto@thapar.edu
+                        </a>
+                        <a 
+                          href="https://scholar.google.com/citations?user=kAS_U9YAAAAJ&hl=en&oi=ao" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="badge badge-neutral"
+                          style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 8px', fontSize: '11.5px', color: '#2563eb' }}
+                        >
+                          <ExternalLink size={12} /> Google Scholar (h-index / Citations)
+                        </a>
+                        <a 
+                          href="https://www.linkedin.com/in/dr-anjula-mehto-29b64396/" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="badge badge-neutral"
+                          style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 8px', fontSize: '11.5px', color: '#0077b5' }}
+                        >
+                          <ExternalLink size={12} /> LinkedIn Profile
+                        </a>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -502,6 +562,74 @@ export const StudentDashboard = () => {
             </Marquee>
           </div>
 
+          {/* CR Portal Banner if student is CR */}
+          {isStudentCR && (
+            <div className="card" style={{
+              marginBottom: '20px',
+              padding: '18px 22px',
+              background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(217, 119, 6, 0.03) 100%)',
+              border: '1px solid rgba(245, 158, 11, 0.3)',
+              borderRadius: 'var(--radius-md)',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '16px',
+              boxShadow: '0 4px 16px rgba(245, 158, 11, 0.08)'
+            }}>
+              <div style={{
+                width: '42px', height: '42px', borderRadius: '50%',
+                background: '#fef3c7', color: '#b45309',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <Crown size={22} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                  <h3 style={{ fontSize: '16px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                    Batch {studentBatch} Class Representative Portal
+                  </h3>
+                  <span className="badge badge-warning" style={{ fontSize: '11px', background: '#fef3c7', color: '#b45309', border: '1px solid #fde68a' }}>
+                    CR Role Active
+                  </span>
+                </div>
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '6px 0 12px 0' }}>
+                  {unverifiedBatchFaculty.length > 0
+                    ? `You have ${unverifiedBatchFaculty.length} faculty teaching batch ${studentBatch} who currently only have timetable initials/codes. Verify their full names below so your batchmates can review them!`
+                    : `Awesome job! All faculty teaching batch ${studentBatch} have verified names.`}
+                </p>
+
+                {unverifiedBatchFaculty.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {unverifiedBatchFaculty.map(t => (
+                      <button
+                        key={t.id || t.userId}
+                        type="button"
+                        onClick={() => setSuggestTeacher(t)}
+                        className="btn btn-sm"
+                        style={{
+                          background: 'var(--bg-card)',
+                          border: '1px solid rgba(245, 158, 11, 0.4)',
+                          color: 'var(--text-primary)',
+                          fontSize: '12px',
+                          fontWeight: 600,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          padding: '5px 10px',
+                          borderRadius: '8px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <span>Identify: <strong>{t.fullName}</strong></span>
+                        <span style={{ color: '#d97706', fontSize: '11px' }}>→ Fill</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Tabs and Search Bar */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>
             <AnimatedTabs
@@ -611,6 +739,8 @@ export const StudentDashboard = () => {
                     ratings={ratings}
                     onViewReviews={handleViewReviews}
                     onWriteReview={(t) => setReviewingTeacher(t)}
+                    onSuggestName={(t) => setSuggestTeacher(t)}
+                    isCR={isStudentCR}
                     canReview={tab === 'eligible'}
                   />
                 );
@@ -745,6 +875,50 @@ export const StudentDashboard = () => {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* Suggest Teacher Name Modal */}
+      {suggestTeacher && (
+        <SuggestTeacherModal
+          teacher={suggestTeacher}
+          isOpen={Boolean(suggestTeacher)}
+          onClose={() => setSuggestTeacher(null)}
+          isCR={isStudentCR}
+          studentBatch={studentBatch}
+          onSuccess={(msg) => {
+            setSuggestionToast(msg);
+            setTimeout(() => setSuggestionToast(null), 6000);
+          }}
+        />
+      )}
+
+      {/* Suggestion Toast Notification */}
+      {suggestionToast && (
+        <div style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          zIndex: 99999,
+          background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+          color: 'white',
+          padding: '14px 22px',
+          borderRadius: '12px',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
+          fontSize: '14px',
+          fontWeight: 600,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
+        }}>
+          <Sparkles size={18} />
+          <span>{suggestionToast}</span>
+          <button
+            onClick={() => setSuggestionToast(null)}
+            style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', marginLeft: '10px', fontSize: '18px' }}
+          >
+            ×
+          </button>
         </div>
       )}
     </div>

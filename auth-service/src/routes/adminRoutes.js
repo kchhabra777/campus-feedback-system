@@ -13,7 +13,11 @@ import {
   getCommunityTags,
   addCommunityTag,
   updateCommunityTag,
-  deleteCommunityTag
+  deleteCommunityTag,
+  toggleStudentCR,
+  getTeacherSuggestions,
+  approveTeacherSuggestion,
+  rejectTeacherSuggestion
 } from "../controllers/adminController.js";
 import { requireAuth } from "../middlewares/authMiddleware.js";
 import { requireRole } from "../middlewares/roleMiddleware.js";
@@ -29,6 +33,7 @@ router.delete("/tags/:id", deleteCommunityTag);
 
 router.get("/students", getStudents);
 router.put("/students/:id", updateStudent);
+router.patch("/students/:id/toggle-cr", toggleStudentCR);
 router.patch("/users/:id/ban", banUser);
 router.post("/register-teacher", registerTeacher);
 router.put("/teachers/:id", updateTeacher);
@@ -38,5 +43,9 @@ router.get("/teachers/:id/courses", getTeacherCourses);
 router.post("/teachers/:id/courses", addTeacherCourse);
 router.put("/courses/:courseId", updateTeacherCourse);
 router.delete("/courses/:courseId", deleteTeacherCourse);
+
+router.get("/teacher-suggestions", getTeacherSuggestions);
+router.post("/teacher-suggestions/:id/approve", approveTeacherSuggestion);
+router.post("/teacher-suggestions/:id/reject", rejectTeacherSuggestion);
 
 export default router;

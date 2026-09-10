@@ -1,4 +1,5 @@
-﻿* [Overview](index.md)
+* [Overview](index.md)
+* [Faculty Mentor & Evaluator: Dr. Anjula Mehto](faculty-advisor.md)
 * [Criteria for Project Selection](criteria-for-project-selection.md)
 * [System Architecture](system-architecture.md)
 * [AI Teacher Insights & Orbital Visualization](ai-insights-synthesis.md)

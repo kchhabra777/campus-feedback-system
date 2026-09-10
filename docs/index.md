@@ -8,6 +8,23 @@
 
 ---
 
+## 👩‍🏫 Faculty Mentor & Project Evaluator
+
+<div style="display: flex; align-items: center; gap: 20px; margin: 16px 0; padding: 18px 20px; background: rgba(245, 158, 11, 0.06); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 10px;">
+  <img src="assets/anjula-mehto.png" alt="Dr. Anjula Mehto" style="width: 80px; height: 95px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); flex-shrink: 0;" />
+  <div>
+    <h3 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #1e293b;"><a href="faculty-advisor.md">Dr. Anjula Mehto</a></h3>
+    <div style="font-size: 0.9rem; color: #b45309; font-weight: 600; margin-top: 2px;">Assistant Professor · Computer Science & Engineering Department (CSED)</div>
+    <div style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">
+      Thapar Institute of Engineering and Technology (TIET), Patiala<br>
+      <strong>Specialization:</strong> Wireless Sensor Networks, Internet of Things (IoT), Machine Learning<br>
+      <strong>Email:</strong> <a href="mailto:anjula.mehto@thapar.edu">anjula.mehto@thapar.edu</a> | <a href="faculty-advisor.md">View Full Academic & Research Profile →</a>
+    </div>
+  </div>
+</div>
+
+---
+
 ## 👥 Team Members
 
 | Name | Roll Number | Email | Role |

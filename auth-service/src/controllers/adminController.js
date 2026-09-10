@@ -1,4 +1,5 @@
 import prisma from "../lib/prisma.js";
+import { invalidateTeachersCache } from "./profileController.js";
 
 export const getStudents = async (req, res) => {
   try {
@@ -312,5 +313,116 @@ export const deleteCommunityTag = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to delete tag" });
+  }
+};
+
+export const toggleStudentCR = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const studentProfile = await prisma.studentProfile.findFirst({
+      where: {
+        OR: [{ id }, { userId: id }]
+      }
+    });
+
+    if (!studentProfile) {
+      return res.status(404).json({ error: "Student profile not found" });
+    }
+
+    const updated = await prisma.studentProfile.update({
+      where: { id: studentProfile.id },
+      data: { isCR: !studentProfile.isCR }
+    });
+
+    res.status(200).json({
+      message: `Student CR status set to ${updated.isCR}`,
+      profile: updated
+    });
+  } catch (error) {
+    console.error("Failed to toggle student CR:", error);
+    res.status(500).json({ error: "Failed to toggle CR status" });
+  }
+};
+
+export const getTeacherSuggestions = async (req, res) => {
+  try {
+    const suggestions = await prisma.teacherNameSuggestion.findMany({
+      include: {
+        teacher: {
+          include: {
+            offerings: true
+          }
+        }
+      },
+      orderBy: [
+        { isCR: "desc" },
+        { createdAt: "desc" }
+      ]
+    });
+
+    res.status(200).json({ suggestions });
+  } catch (error) {
+    console.error("Failed to fetch teacher suggestions:", error);
+    res.status(500).json({ error: "Failed to fetch suggestions" });
+  }
+};
+
+export const approveTeacherSuggestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const suggestion = await prisma.teacherNameSuggestion.findUnique({
+      where: { id },
+      include: { teacher: true }
+    });
+
+    if (!suggestion) {
+      return res.status(404).json({ error: "Suggestion not found" });
+    }
+
+    const updateData = {
+      fullName: suggestion.suggestedName
+    };
+    if (suggestion.suggestedDept) {
+      updateData.department = suggestion.suggestedDept;
+    }
+
+    const updatedTeacher = await prisma.teacherProfile.update({
+      where: { id: suggestion.teacherId },
+      data: updateData
+    });
+
+    const updatedSuggestion = await prisma.teacherNameSuggestion.update({
+      where: { id },
+      data: { status: "APPROVED" }
+    });
+
+    invalidateTeachersCache();
+
+    res.status(200).json({
+      message: "Suggestion approved and teacher name updated campus-wide",
+      teacher: updatedTeacher,
+      suggestion: updatedSuggestion
+    });
+  } catch (error) {
+    console.error("Failed to approve suggestion:", error);
+    res.status(500).json({ error: "Failed to approve suggestion" });
+  }
+};
+
+export const rejectTeacherSuggestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updated = await prisma.teacherNameSuggestion.update({
+      where: { id },
+      data: { status: "REJECTED" }
+    });
+
+    res.status(200).json({ message: "Suggestion rejected", suggestion: updated });
+  } catch (error) {
+    console.error("Failed to reject suggestion:", error);
+    res.status(500).json({ error: "Failed to reject suggestion" });
   }
 };

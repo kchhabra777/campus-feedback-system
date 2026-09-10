@@ -58,6 +58,7 @@ model StudentProfile {
   branch      String
   batch       String   // e.g. "3Q11", "2Q12"
   yearOfStudy Int
+  isCR        Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -75,6 +76,7 @@ model TeacherProfile {
 
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   offerings   CourseOffering[]
+  suggestions TeacherNameSuggestion[]
 }
 
 model CourseOffering {
@@ -183,4 +185,22 @@ model CommunityTag {
   type      String
   opposite  String?
   createdAt DateTime @default(now())
+}
+
+model TeacherNameSuggestion {
+  id             String         @id @default(uuid())
+  teacherId      String
+  suggestedName  String
+  suggestedDept  String?
+  notes          String?
+  studentId      String
+  studentRollNo  String?
+  studentEmail   String?
+  isCR           Boolean        @default(false)
+  batch          String?
+  status         String         @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  teacher        TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }

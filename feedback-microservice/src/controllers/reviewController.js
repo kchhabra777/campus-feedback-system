@@ -84,10 +84,28 @@ export const getReviews = async (req, res) => {
 
         const result = await getReviewsByReviewee(id, page, limit);
 
-        const requesterEmail = req.headers["x-user-email"] ? req.headers["x-user-email"].toLowerCase() : "";
-        let isAdmin = false;
-        
-        if (requesterEmail) {
+        let requesterEmail = req.headers["x-user-email"] ? req.headers["x-user-email"].toLowerCase() : "";
+        let requesterRole = req.headers["x-user-role"] ? req.headers["x-user-role"].toUpperCase() : "";
+
+        // Fallback: check Authorization Bearer token directly
+        if (!requesterEmail || !requesterRole) {
+            const authHeader = req.headers.authorization;
+            if (authHeader && authHeader.startsWith("Bearer ")) {
+                try {
+                    const token = authHeader.split(" ")[1];
+                    const parts = token.split('.');
+                    if (parts.length === 3) {
+                        const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf8'));
+                        if (payload.email) requesterEmail = payload.email.toLowerCase();
+                        if (payload.role) requesterRole = payload.role.toUpperCase();
+                    }
+                } catch (e) {}
+            }
+        }
+
+        let isAdmin = requesterRole === "ADMIN";
+
+        if (!isAdmin && requesterEmail) {
             const user = await prisma.user.findUnique({
                 where: { email: requesterEmail }
             });
@@ -102,15 +120,52 @@ export const getReviews = async (req, res) => {
             }
         }
 
-        // Anonymize for non-admins
-        const processedReviews = isAdmin ? result.reviews : result.reviews.map(review => ({
-            ...review,
-            reviewerName: "Anonymous Student",
-            reviewerEmail: null,
-            reviewerRollNo: null,
-            reviewerBatch: null,
-            reviewerBranch: null
-        }));
+        // Anonymize for non-admins, but populate student profile details for admins
+        let processedReviews;
+        if (isAdmin) {
+            processedReviews = await Promise.all(result.reviews.map(async (review) => {
+                let name = review.reviewerName;
+                let email = review.reviewerEmail;
+                let rollNo = review.reviewerRollNo;
+                let batch = review.reviewerBatch;
+                let branch = review.reviewerBranch;
+
+                if (!name || name === "Anonymous Student" || !rollNo) {
+                    if (review.reviewerId) {
+                        const student = await prisma.user.findUnique({
+                            where: { id: review.reviewerId },
+                            include: { studentProfile: true }
+                        }).catch(() => null);
+
+                        if (student) {
+                            name = student.studentProfile?.fullName || student.email.split('@')[0];
+                            email = student.email;
+                            rollNo = student.studentProfile?.rollNumber || rollNo;
+                            batch = student.studentProfile?.batch || batch;
+                            branch = student.studentProfile?.branch || branch;
+                        }
+                    }
+                }
+
+                return {
+                    ...review,
+                    reviewerName: name || "Verified Student",
+                    reviewerEmail: email,
+                    reviewerRollNo: rollNo,
+                    reviewerBatch: batch,
+                    reviewerBranch: branch
+                };
+            }));
+        } else {
+            processedReviews = result.reviews.map(review => ({
+                ...review,
+                reviewerName: "Anonymous Student",
+                reviewerEmail: null,
+                reviewerRollNo: null,
+                reviewerBatch: null,
+                reviewerBranch: null
+            }));
+        }
 
         return res.status(200).json({
             reviewee: {
@@ -136,22 +191,84 @@ export const getSingleReview = async (req, res) => {
         if (!review) {
             return res.status(404).json({ error: "Review not found" });
         }
-        const requesterEmail = req.headers["x-user-email"] ? req.headers["x-user-email"].toLowerCase() : "";
-        const localPart = requesterEmail.split("@")[0] || "";
-        const baseLocalPart = localPart.split("+")[0];
-        const aliasPart = localPart.includes("+") ? localPart.split("+")[1] : "";
-        
-        const adminEmails = ["doaa", "dosa", "admin"];
-        const isAdmin = requesterEmail && (adminEmails.includes(baseLocalPart) || adminEmails.includes(aliasPart));
+        let requesterEmail = req.headers["x-user-email"] ? req.headers["x-user-email"].toLowerCase() : "";
+        let requesterRole = req.headers["x-user-role"] ? req.headers["x-user-role"].toUpperCase() : "";
 
-        const processedReview = isAdmin ? review : {
-            ...review,
-            reviewerName: "Anonymous Student",
-            reviewerEmail: null,
-            reviewerRollNo: null,
-            reviewerBatch: null,
-            reviewerBranch: null
-        };
+        if (!requesterEmail || !requesterRole) {
+            const authHeader = req.headers.authorization;
+            if (authHeader && authHeader.startsWith("Bearer ")) {
+                try {
+                    const token = authHeader.split(" ")[1];
+                    const parts = token.split('.');
+                    if (parts.length === 3) {
+                        const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf8'));
+                        if (payload.email) requesterEmail = payload.email.toLowerCase();
+                        if (payload.role) requesterRole = payload.role.toUpperCase();
+                    }
+                } catch (e) {}
+            }
+        }
+
+        let isAdmin = requesterRole === "ADMIN";
+
+        if (!isAdmin && requesterEmail) {
+            const user = await prisma.user.findUnique({
+                where: { email: requesterEmail }
+            });
+            if (user && user.role === "ADMIN") {
+                isAdmin = true;
+            } else {
+                const localPart = requesterEmail.split("@")[0] || "";
+                const baseLocalPart = localPart.split("+")[0];
+                const aliasPart = localPart.includes("+") ? localPart.split("+")[1] : "";
+                const adminEmails = ["doaa", "dosa", "admin"];
+                isAdmin = adminEmails.includes(baseLocalPart) || adminEmails.includes(aliasPart);
+            }
+        }
+
+        let processedReview = review;
+        if (isAdmin) {
+            let name = review.reviewerName;
+            let email = review.reviewerEmail;
+            let rollNo = review.reviewerRollNo;
+            let batch = review.reviewerBatch;
+            let branch = review.reviewerBranch;
+
+            if (!name || name === "Anonymous Student" || !rollNo) {
+                if (review.reviewerId) {
+                    const student = await prisma.user.findUnique({
+                        where: { id: review.reviewerId },
+                        include: { studentProfile: true }
+                    }).catch(() => null);
+
+                    if (student) {
+                        name = student.studentProfile?.fullName || student.email.split('@')[0];
+                        email = student.email;
+                        rollNo = student.studentProfile?.rollNumber || rollNo;
+                        batch = student.studentProfile?.batch || batch;
+                        branch = student.studentProfile?.branch || branch;
+                    }
+                }
+            }
+
+            processedReview = {
+                ...review,
+                reviewerName: name || "Verified Student",
+                reviewerEmail: email,
+                reviewerRollNo: rollNo,
+                reviewerBatch: batch,
+                reviewerBranch: branch
+            };
+        } else {
+            processedReview = {
+                ...review,
+                reviewerName: "Anonymous Student",
+                reviewerEmail: null,
+                reviewerRollNo: null,
+                reviewerBatch: null,
+                reviewerBranch: null
+            };
+        }
 
         return res.status(200).json({ review: processedReview });
     } catch (error) {

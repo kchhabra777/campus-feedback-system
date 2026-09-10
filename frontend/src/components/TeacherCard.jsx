@@ -1,13 +1,19 @@
 import React from 'react';
 import { StarRating } from './StarRating';
-import { Award, BookOpen, Clock, TrendingUp, ChevronRight, Edit3 } from 'lucide-react';
+import { Award, BookOpen, Clock, TrendingUp, ChevronRight, Edit3, Crown, HelpCircle } from 'lucide-react';
 import { TiltCard } from './ui/tilt-card';
 
-export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, canReview = false }) => {
+export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, onSuggestName, canReview = false, isCR = false }) => {
   const rObj = ratings?.rating || ratings || {};
   const overallRating = Number(rObj.overallRating) || 0;
   const recentRating = Number(rObj.recentRating) || 0;
   const totalReviews = Number(rObj.totalReviews) || 0;
+
+  const isCodeName = Boolean(
+    teacher.fullName?.startsWith("Teacher (") ||
+    teacher.code === teacher.fullName ||
+    /^[A-Z0-9]{2,5}$/.test(teacher.fullName?.trim() || '')
+  );
 
   return (
     <TiltCard 
@@ -19,7 +25,12 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, ca
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px', marginBottom: '14px' }}>
         <img
-          src={teacher.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.fullName || teacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`}
+          src={
+            teacher.avatarUrl ||
+            (teacher.fullName?.toLowerCase().includes('anjula') || teacher.code?.toUpperCase() === 'AMH'
+              ? '/anjula-mehto.png'
+              : `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.fullName || teacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`)
+          }
           alt={teacher.fullName}
           style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '2px solid var(--border-light)' }}
           onError={(e) => {
@@ -42,6 +53,35 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, ca
               {teacher.designation || 'Faculty'} · {teacher.department}
             </span>
           </div>
+
+          {isCodeName && onSuggestName && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onSuggestName(teacher);
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                marginTop: '6px',
+                padding: '3px 8px',
+                fontSize: '11.5px',
+                fontWeight: 600,
+                borderRadius: '6px',
+                background: isCR ? 'rgba(245, 158, 11, 0.12)' : 'rgba(37, 99, 235, 0.08)',
+                color: isCR ? '#b45309' : '#2563eb',
+                border: isCR ? '1px solid rgba(245, 158, 11, 0.3)' : '1px solid rgba(37, 99, 235, 0.2)',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}
+              title={isCR ? "Identify this faculty member as Batch CR" : "Suggest this faculty member's full name"}
+            >
+              {isCR ? <Crown size={12} /> : <HelpCircle size={12} />}
+              <span>{isCR ? "CR: Identify Faculty" : "Know this prof? Suggest name"}</span>
+            </button>
+          )}
         </div>
       </div>
 

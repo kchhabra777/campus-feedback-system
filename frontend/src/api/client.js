@@ -62,6 +62,28 @@ async function getHeaders(extraHeaders = {}) {
   };
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
+    try {
+      const parts = token.split('.');
+      if (parts.length === 3) {
+        const base64Url = parts[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+          atob(base64)
+            .split('')
+            .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+            .join('')
+        );
+        const payload = JSON.parse(jsonPayload);
+        if (payload.email) headers["x-user-email"] = payload.email;
+        if (payload.role) headers["x-user-role"] = payload.role;
+        if (payload.userId || payload.sub) headers["x-user-id"] = payload.userId || payload.sub;
+      }
+    } catch (e) {}
+  }
+
+  const storedEmail = localStorage.getItem("campus_user_email");
+  if (storedEmail && !headers["x-user-email"]) {
+    headers["x-user-email"] = storedEmail;
   }
   return headers;
 }
@@ -239,5 +261,19 @@ export const api = {
   adminRegisterTeacher: (data) => request("/admin/register-teacher", {
     method: "POST",
     body: JSON.stringify(data)
+  }),
+  suggestTeacherName: (teacherId, data) => request(`/profiles/teachers/${teacherId}/suggest-name`, {
+    method: "POST",
+    body: JSON.stringify(data)
+  }),
+  toggleStudentCR: (studentId) => request(`/admin/students/${studentId}/toggle-cr`, {
+    method: "PATCH"
+  }),
+  getTeacherSuggestions: () => request("/admin/teacher-suggestions"),
+  approveTeacherSuggestion: (id) => request(`/admin/teacher-suggestions/${id}/approve`, {
+    method: "POST"
+  }),
+  rejectTeacherSuggestion: (id) => request(`/admin/teacher-suggestions/${id}/reject`, {
+    method: "POST"
   })
 };

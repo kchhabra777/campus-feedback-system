@@ -9,7 +9,8 @@ import { ReviewCard } from '../components/ReviewCard';
 import {
   Activity, TrendingDown, ArrowLeft, Download,
   Users, MessageSquare, Star, ChevronRight, Search, AlertTriangle,
-  UserPlus, UserX, Edit2, Trash2, CheckCircle2, ShieldBan, RefreshCw
+  UserPlus, UserX, Edit2, Trash2, CheckCircle2, ShieldBan, RefreshCw,
+  Crown, Check, X as XIcon
 } from 'lucide-react';
 
 /* ── tiny helpers ── */
@@ -227,13 +228,82 @@ export const AdminDashboard = () => {
     }
   };
 
+  // Faculty Name Suggestions
+  const [suggestions, setSuggestions] = useState([]);
+  const [suggestionsLoading, setSuggestionsLoading] = useState(false);
+  const [suggestionFilter, setSuggestionFilter] = useState('PENDING');
+  const [suggestionActionLoading, setSuggestionActionLoading] = useState(null);
+
+  const loadSuggestions = async (silent = false) => {
+    if (!silent) setSuggestionsLoading(true);
+    try {
+      const res = await api.getTeacherSuggestions();
+      setSuggestions(res.suggestions || []);
+    } catch (err) {
+      console.error("Failed to load suggestions:", err);
+    } finally {
+      if (!silent) setSuggestionsLoading(false);
+    }
+  };
+
+  const handleApproveSuggestion = async (id) => {
+    setSuggestionActionLoading(id);
+    try {
+      await api.approveTeacherSuggestion(id);
+      await Promise.all([
+        loadSuggestions(true),
+        loadData()
+      ]);
+    } catch (err) {
+      alert("Failed to approve suggestion: " + err.message);
+    } finally {
+      setSuggestionActionLoading(null);
+    }
+  };
+
+  const handleRejectSuggestion = async (id) => {
+    setSuggestionActionLoading(id);
+    try {
+      await api.rejectTeacherSuggestion(id);
+      await loadSuggestions(true);
+    } catch (err) {
+      alert("Failed to reject suggestion: " + err.message);
+    } finally {
+      setSuggestionActionLoading(null);
+    }
+  };
+
+  const handleToggleCR = async (studentUserId) => {
+    try {
+      const res = await api.toggleStudentCR(studentUserId);
+      setStudents(prev => prev.map(s => {
+        if (s.id === studentUserId) {
+          return {
+            ...s,
+            studentProfile: {
+              ...s.studentProfile,
+              isCR: res.profile?.isCR ?? !s.studentProfile?.isCR
+            }
+          };
+        }
+        return s;
+      }));
+    } catch (err) {
+      alert("Failed to toggle CR status: " + err.message);
+    }
+  };
+
+  const pendingSuggestionsCount = suggestions.filter(s => s.status === 'PENDING').length;
+
   useEffect(() => {
     loadData();
+    loadSuggestions(true);
   }, []);
 
   useEffect(() => {
     if (activeTab === 'moderation') loadFlags();
     if (activeTab === 'students') loadStudents();
+    if (activeTab === 'suggestions') loadSuggestions();
   }, [activeTab]);
 
   const openDossier = async (teacher, isSilentRefresh = false) => {
@@ -430,6 +500,19 @@ export const AdminDashboard = () => {
           Moderation
         </button>
 
+        <button className={`admin-nav-item ${activeTab === 'suggestions' ? 'active' : ''}`} onClick={() => { setActiveTab('suggestions'); setSelectedTeacher(null); }}>
+          <Sparkles size={18} />
+          <span style={{ flex: 1, textAlign: 'left' }}>Faculty Suggestions</span>
+          {pendingSuggestionsCount > 0 && (
+            <span style={{
+              fontSize: '11px', fontWeight: 700, padding: '1px 7px',
+              borderRadius: '99px', background: '#f59e0b', color: '#18181b'
+            }}>
+              {pendingSuggestionsCount}
+            </span>
+          )}
+        </button>
+
         <button className={`admin-nav-item ${activeTab === 'tags' ? 'active' : ''}`} onClick={() => { setActiveTab('tags'); setSelectedTeacher(null); }}>
           <Activity size={18} />
           Community Tags
@@ -444,6 +527,7 @@ export const AdminDashboard = () => {
           <h1 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '6px' }}>
             {activeTab === 'faculty' && "Faculty Leaderboard"}
             {activeTab === 'students' && "Manage Students"}
+            {activeTab === 'suggestions' && "Faculty Name Suggestions"}
             {activeTab === 'register' && "Register New Teacher"}
             {activeTab === 'moderation' && "Moderation Queue"}
             {activeTab === 'tags' && "Community Tags"}
@@ -451,6 +535,7 @@ export const AdminDashboard = () => {
           <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>
             {activeTab === 'faculty' && "View ratings, reviews, and remove faculty accounts."}
             {activeTab === 'students' && "Search and ban/unban student accounts."}
+            {activeTab === 'suggestions' && "Approve student & CR submitted faculty names. Approving updates the professor's name campus-wide."}
             {activeTab === 'register' && "Create an account for a faculty member. They will set their password via email OTP."}
             {activeTab === 'moderation' && "Review and resolve flagged content reported by students."}
             {activeTab === 'tags' && "Manage positive and constructive community tags."}
@@ -777,9 +862,10 @@ export const AdminDashboard = () => {
             </div>
 
             <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr auto', padding: '12px 20px', background: 'var(--bg-card-subtle)', borderBottom: '1px solid var(--border-light)', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-muted)', gap: '16px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr auto', padding: '12px 20px', background: 'var(--bg-card-subtle)', borderBottom: '1px solid var(--border-light)', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-muted)', gap: '16px' }}>
                 <span>Student</span>
                 <span>Roll Number</span>
+                <span>Batch CR Role</span>
                 <span>Status</span>
                 <span>Actions</span>
               </div>
@@ -788,27 +874,52 @@ export const AdminDashboard = () => {
               ) : filteredStudents.length === 0 ? (
                 <div style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>No students found.</div>
               ) : (
-                filteredStudents.map((student, idx) => (
-                  <div key={student.id} style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr auto', padding: '16px 20px', borderBottom: idx < filteredStudents.length - 1 ? '1px solid var(--border-light)' : 'none', alignItems: 'center', gap: '16px', background: student.isBanned ? 'rgba(239,68,68,0.05)' : 'transparent' }}>
-                    <div>
-                      <div style={{ fontWeight: 700, fontSize: '15px' }}>{student.studentProfile?.fullName || 'Incomplete Profile'}</div>
-                      <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{student.email}</div>
+                filteredStudents.map((student, idx) => {
+                  const isCR = !!student.studentProfile?.isCR;
+                  return (
+                    <div key={student.id} style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr auto', padding: '16px 20px', borderBottom: idx < filteredStudents.length - 1 ? '1px solid var(--border-light)' : 'none', alignItems: 'center', gap: '16px', background: student.isBanned ? 'rgba(239,68,68,0.05)' : 'transparent' }}>
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: '15px' }}>{student.studentProfile?.fullName || 'Incomplete Profile'}</div>
+                        <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{student.email}</div>
+                      </div>
+                      <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{student.studentProfile?.rollNumber || '—'}</div>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => handleToggleCR(student.id)}
+                          className="btn btn-sm"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            background: isCR ? '#fef3c7' : 'var(--bg-card-subtle)',
+                            color: isCR ? '#b45309' : 'var(--text-muted)',
+                            border: isCR ? '1px solid #fcd34d' : '1px solid var(--border-light)',
+                            fontWeight: 700,
+                            borderRadius: '16px',
+                            padding: '4px 10px',
+                            cursor: 'pointer'
+                          }}
+                          title={isCR ? "Revoke Class Representative Status" : "Designate as Class Representative"}
+                        >
+                          <span>{isCR ? '👑 Batch CR' : '☆ Make CR'}</span>
+                        </button>
+                      </div>
+                      <div>
+                        {student.isBanned ? (
+                          <span className="badge" style={{ background: '#fef2f2', color: '#b91c1c', border: '1px solid #fecaca' }}><ShieldBan size={12}/> Suspended</span>
+                        ) : (
+                          <span className="badge" style={{ background: '#f0fdf4', color: '#166534', border: '1px solid #bbf7d0' }}><CheckCircle2 size={12}/> Active</span>
+                        )}
+                      </div>
+                      <div>
+                        <button className="btn btn-secondary btn-sm" style={{ minWidth: '100px', borderColor: student.isBanned ? '#bbf7d0' : '#fecaca', color: student.isBanned ? '#166534' : '#b91c1c' }} onClick={() => handleBanToggle(student.id, student.isBanned)}>
+                          {student.isBanned ? 'Unban User' : 'Ban User'}
+                        </button>
+                      </div>
                     </div>
-                    <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{student.studentProfile?.rollNumber || '—'}</div>
-                    <div>
-                      {student.isBanned ? (
-                        <span className="badge" style={{ background: '#fef2f2', color: '#b91c1c', border: '1px solid #fecaca' }}><ShieldBan size={12}/> Suspended</span>
-                      ) : (
-                        <span className="badge" style={{ background: '#f0fdf4', color: '#166534', border: '1px solid #bbf7d0' }}><CheckCircle2 size={12}/> Active</span>
-                      )}
-                    </div>
-                    <div>
-                      <button className="btn btn-secondary btn-sm" style={{ minWidth: '100px', borderColor: student.isBanned ? '#bbf7d0' : '#fecaca', color: student.isBanned ? '#166534' : '#b91c1c' }} onClick={() => handleBanToggle(student.id, student.isBanned)}>
-                        {student.isBanned ? 'Unban User' : 'Ban User'}
-                      </button>
-                    </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>
@@ -995,6 +1106,149 @@ export const AdminDashboard = () => {
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Faculty Suggestions Tab ── */}
+        {activeTab === 'suggestions' && (
+          <div className="fade-in">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <div>
+                <h2 style={{ fontSize: '20px', fontWeight: 700, margin: 0 }}>Crowdsourced Faculty Suggestions</h2>
+                <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                  Review submissions from students and Batch CRs to identify unnamed faculty codes.
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <div style={{ display: 'inline-flex', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-light)', overflow: 'hidden', background: 'var(--bg-card)' }}>
+                  {['PENDING', 'APPROVED', 'REJECTED', 'ALL'].map(f => (
+                    <button
+                      key={f}
+                      onClick={() => setSuggestionFilter(f)}
+                      style={{
+                        padding: '6px 14px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        border: 'none',
+                        cursor: 'pointer',
+                        background: suggestionFilter === f ? 'var(--primary)' : 'transparent',
+                        color: suggestionFilter === f ? '#fff' : 'var(--text-secondary)'
+                      }}
+                    >
+                      {f}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => loadSuggestions()}
+                  disabled={suggestionsLoading}
+                  className="btn btn-secondary btn-sm"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <RefreshCw size={14} style={{ animation: suggestionsLoading ? 'spin 1s linear infinite' : 'none' }} />
+                  <span>Refresh</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.5fr 1.2fr 1fr auto', padding: '12px 20px', background: 'var(--bg-card-subtle)', borderBottom: '1px solid var(--border-light)', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-muted)', gap: '16px' }}>
+                <span>Current Initial / Code</span>
+                <span>Suggested Full Name</span>
+                <span>Submitted By</span>
+                <span>Status</span>
+                <span>Actions</span>
+              </div>
+
+              {suggestionsLoading ? (
+                <div style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>Loading suggestions…</div>
+              ) : suggestions.filter(s => suggestionFilter === 'ALL' || s.status === suggestionFilter).length === 0 ? (
+                <div style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                  No {suggestionFilter.toLowerCase()} faculty suggestions found.
+                </div>
+              ) : (
+                suggestions
+                  .filter(s => suggestionFilter === 'ALL' || s.status === suggestionFilter)
+                  .map((sug, idx, arr) => (
+                    <div
+                      key={sug.id}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1.2fr 1.5fr 1.2fr 1fr auto',
+                        padding: '16px 20px',
+                        borderBottom: idx < arr.length - 1 ? '1px solid var(--border-light)' : 'none',
+                        alignItems: 'center',
+                        gap: '16px',
+                        background: sug.isCRVerified ? 'rgba(245, 158, 11, 0.04)' : 'transparent'
+                      }}
+                    >
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: '15px' }}>{sug.teacher?.fullName || 'Code Profile'}</div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{sug.teacher?.department}</div>
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: '15px', color: 'var(--primary)' }}>{sug.suggestedName}</div>
+                        {sug.courseCode && (
+                          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Course: {sug.courseCode}</div>
+                        )}
+                        {sug.notes && (
+                          <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontStyle: 'italic', marginTop: '2px' }}>"{sug.notes}"</div>
+                        )}
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '13px', fontWeight: 600 }}>
+                          {sug.studentRollNo || 'Student'}
+                        </div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{sug.studentEmail}</div>
+                        {sug.isCRVerified && (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 700, color: '#b45309', background: '#fef3c7', padding: '2px 8px', borderRadius: '12px', marginTop: '4px' }}>
+                            👑 Verified CR
+                          </span>
+                        )}
+                      </div>
+                      <div>
+                        <span
+                          className="badge"
+                          style={{
+                            background: sug.status === 'APPROVED' ? '#f0fdf4' : sug.status === 'REJECTED' ? '#fef2f2' : '#fefce8',
+                            color: sug.status === 'APPROVED' ? '#166534' : sug.status === 'REJECTED' ? '#b91c1c' : '#854d0e',
+                            border: `1px solid ${sug.status === 'APPROVED' ? '#bbf7d0' : sug.status === 'REJECTED' ? '#fecaca' : '#fef08a'}`
+                          }}
+                        >
+                          {sug.status}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        {sug.status === 'PENDING' ? (
+                          <>
+                            <button
+                              type="button"
+                              onClick={() => handleApproveSuggestion(sug.id)}
+                              disabled={suggestionActionLoading === sug.id}
+                              className="btn btn-primary btn-sm"
+                              style={{ background: '#16a34a', borderColor: '#16a34a' }}
+                            >
+                              {suggestionActionLoading === sug.id ? 'Saving…' : 'Approve'}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleRejectSuggestion(sug.id)}
+                              disabled={suggestionActionLoading === sug.id}
+                              className="btn btn-secondary btn-sm"
+                              style={{ color: '#dc2626' }}
+                            >
+                              Reject
+                            </button>
+                          </>
+                        ) : (
+                          <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>—</span>
+                        )}
+                      </div>
+                    </div>
+                  ))
+              )}
             </div>
           </div>
         )}

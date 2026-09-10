@@ -38,6 +38,7 @@ model StudentProfile {
   branch      String
   batch       String
   yearOfStudy Int
+  isCR        Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   fullName    String?
@@ -53,6 +54,7 @@ model TeacherProfile {
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   offerings   CourseOffering[]
+  suggestions TeacherNameSuggestion[]
   user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -156,6 +158,24 @@ model CommunityTag {
   type      String
   opposite  String?
   createdAt DateTime @default(now())
+}
+
+model TeacherNameSuggestion {
+  id             String         @id @default(uuid())
+  teacherId      String
+  suggestedName  String
+  suggestedDept  String?
+  notes          String?
+  studentId      String
+  studentRollNo  String?
+  studentEmail   String?
+  isCR           Boolean        @default(false)
+  batch          String?
+  status         String         @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  teacher        TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }
 
 enum Role {

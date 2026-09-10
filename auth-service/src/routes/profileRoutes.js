@@ -3,7 +3,8 @@ import {
   onboardStudent,
   onboardTeacher,
   listTeachers,
-  getTeacherProfile
+  getTeacherProfile,
+  suggestTeacherName
 } from "../controllers/profileController.js";
 import { requireAuth } from "../middlewares/authMiddleware.js";
 import { requireRole } from "../middlewares/roleMiddleware.js";
@@ -14,5 +15,6 @@ router.post("/student", requireAuth, requireRole("STUDENT"), onboardStudent);
 router.post("/teacher", requireAuth, requireRole("TEACHER"), onboardTeacher);
 router.get("/teachers", listTeachers);
 router.get("/teachers/:id", getTeacherProfile);
+router.post("/teachers/:id/suggest-name", requireAuth, suggestTeacherName);
 
 export default router;

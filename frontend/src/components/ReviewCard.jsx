@@ -331,9 +331,13 @@ export const ReviewCard = ({ review, onUpdate }) => {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             {/* Student Name & Roll Number */}
-            <span className="badge badge-verified" style={{ fontSize: '13px', fontWeight: 700 }}>
+            <span className={`badge ${user?.role === 'ADMIN' ? 'badge-primary' : 'badge-verified'}`} style={{ fontSize: '13px', fontWeight: 700 }}>
               <User size={13} />
-              {review.reviewerName === 'Anonymous Student' 
+              {user?.role === 'ADMIN' ? (
+                review.reviewerName && review.reviewerName !== 'Anonymous Student'
+                  ? `${review.reviewerName} ${review.reviewerRollNo ? `(${review.reviewerRollNo})` : ''}`
+                  : (review.reviewerRollNo ? `Student (${review.reviewerRollNo})` : (review.reviewerEmail || 'Verified Student'))
+              ) : review.reviewerName === 'Anonymous Student' 
                 ? 'Anonymous Student' 
                 : `${review.reviewerName || 'Student'} (${review.reviewerRollNo || 'Verified'})`
               }
