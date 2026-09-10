@@ -5,14 +5,19 @@ import { Sparkles, Crown, X, CheckCircle2, AlertCircle, BookOpen } from 'lucide-
 export const SuggestTeacherModal = ({ teacher, isOpen, onClose, isCR = false, studentBatch = '', onSuccess }) => {
   if (!isOpen || !teacher) return null;
 
+  const teacherCourses = teacher.courses || teacher.offerings || [];
+  const primaryCourse = teacherCourses[0] || {};
+  const teacherId = teacher.userId || teacher.user?.id || teacher.id;
+
   const [fullName, setFullName] = useState('');
   const [department, setDepartment] = useState(teacher.department || 'CSED');
+  const [selectedCourseId, setSelectedCourseId] = useState(primaryCourse.id || '');
+  const [courseCode, setCourseCode] = useState(primaryCourse.courseCode || '');
+  const [courseName, setCourseName] = useState(primaryCourse.courseName || '');
+  const [courseLtp, setCourseLtp] = useState(primaryCourse.ltp || 'L');
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
-
-  const teacherCourses = teacher.courses || teacher.offerings || [];
-  const teacherId = teacher.userId || teacher.user?.id || teacher.id;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,14 +30,20 @@ export const SuggestTeacherModal = ({ teacher, isOpen, onClose, isCR = false, st
     setError(null);
 
     try {
-      const res = await api.suggestTeacherName(teacherId, {
+      const payload = {
         suggestedName: fullName.trim(),
         suggestedDept: department.trim(),
-        notes: notes.trim()
-      });
+        notes: notes.trim(),
+        suggestedCourseCode: courseCode.trim() || undefined,
+        suggestedCourseName: courseName.trim() || undefined,
+        suggestedLtp: courseLtp || undefined,
+        courseOfferingId: selectedCourseId || undefined
+      };
+
+      const res = await api.suggestTeacherName(teacherId, payload);
 
       if (onSuccess) {
-        onSuccess(res.message || "Thank you! Name submitted for verification.");
+        onSuccess(res.message || "Thank you! Submission received for verification.");
       }
       onClose();
     } catch (err) {
@@ -167,6 +178,98 @@ export const SuggestTeacherModal = ({ teacher, isOpen, onClose, isCR = false, st
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
             />
+          </div>
+
+          {/* Course Correction Block (Available for CR and students) */}
+          <div style={{
+            padding: '14px', borderRadius: 'var(--radius-sm)',
+            background: 'var(--bg-card-subtle)', border: '1px solid var(--border-light)'
+          }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, marginBottom: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <BookOpen size={14} color="var(--primary)" />
+                <span>Course & Subject Correction</span>
+              </span>
+              {isCR && (
+                <span className="badge" style={{ background: '#fef3c7', color: '#b45309', border: '1px solid #fcd34d', fontSize: '11px' }}>
+                  CR Editable
+                </span>
+              )}
+            </div>
+
+            {teacherCourses.length > 1 && (
+              <div style={{ marginBottom: '10px' }}>
+                <label style={{ display: 'block', fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                  Select Course Offering to Correct:
+                </label>
+                <select
+                  className="form-select"
+                  style={{ fontSize: '12.5px', padding: '6px 10px' }}
+                  value={selectedCourseId}
+                  onChange={(e) => {
+                    const cId = e.target.value;
+                    setSelectedCourseId(cId);
+                    const match = teacherCourses.find(c => c.id === cId);
+                    if (match) {
+                      setCourseCode(match.courseCode || '');
+                      setCourseName(match.courseName || '');
+                      setCourseLtp(match.ltp || 'L');
+                    }
+                  }}
+                >
+                  {teacherCourses.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.courseCode} ({c.batchTaught} - {c.ltp || 'L'})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '10px', marginBottom: '8px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                  Course Code
+                </label>
+                <input
+                  type="text"
+                  className="form-input"
+                  style={{ fontSize: '13px', padding: '7px 10px' }}
+                  placeholder="e.g. UCS553"
+                  value={courseCode}
+                  onChange={(e) => setCourseCode(e.target.value)}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                  Class Type (LTP)
+                </label>
+                <select
+                  className="form-select"
+                  style={{ fontSize: '13px', padding: '7px 10px' }}
+                  value={courseLtp}
+                  onChange={(e) => setCourseLtp(e.target.value)}
+                >
+                  <option value="L">Lecture (L)</option>
+                  <option value="P">Lab / Practical (P)</option>
+                  <option value="T">Tutorial (T)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                Course Title (Optional)
+              </label>
+              <input
+                type="text"
+                className="form-input"
+                style={{ fontSize: '12.5px', padding: '7px 10px' }}
+                placeholder="e.g. Design and Analysis of Algorithms"
+                value={courseName}
+                onChange={(e) => setCourseName(e.target.value)}
+              />
+            </div>
           </div>
 
           <div>

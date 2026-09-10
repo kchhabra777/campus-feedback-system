@@ -1283,8 +1283,16 @@ export const AdminDashboard = () => {
                       </div>
                       <div>
                         <div style={{ fontWeight: 700, fontSize: '15px', color: 'var(--primary)' }}>{sug.suggestedName}</div>
-                        {sug.courseCode && (
-                          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Course: {sug.courseCode}</div>
+                        {(sug.suggestedCourseCode || sug.courseCode) && (
+                          <div style={{ fontSize: '12.5px', color: 'var(--text-secondary)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{ fontWeight: 600 }}>Course:</span>
+                            <span className="badge badge-neutral" style={{ fontSize: '11px', padding: '1px 6px' }}>
+                              {sug.suggestedCourseCode || sug.courseCode} {sug.suggestedLtp ? `(${sug.suggestedLtp})` : ''}
+                            </span>
+                            {sug.suggestedCourseName && (
+                              <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>• {sug.suggestedCourseName}</span>
+                            )}
+                          </div>
                         )}
                         {sug.notes && (
                           <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontStyle: 'italic', marginTop: '2px' }}>"{sug.notes}"</div>
@@ -1295,9 +1303,9 @@ export const AdminDashboard = () => {
                           {sug.studentRollNo || 'Student'}
                         </div>
                         <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{sug.studentEmail}</div>
-                        {sug.isCRVerified && (
+                        {sug.isCR && (
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 700, color: '#b45309', background: '#fef3c7', padding: '2px 8px', borderRadius: '12px', marginTop: '4px' }}>
-                            👑 Verified CR
+                            👑 Verified CR ({sug.batch || 'Batch'})
                           </span>
                         )}
                       </div>

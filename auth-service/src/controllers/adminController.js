@@ -393,6 +393,22 @@ export const approveTeacherSuggestion = async (req, res) => {
       data: updateData
     });
 
+    // If suggestion includes course code / name / LTP correction, update course offering
+    if (suggestion.courseOfferingId && (suggestion.suggestedCourseCode || suggestion.suggestedLtp)) {
+      try {
+        await prisma.courseOffering.update({
+          where: { id: suggestion.courseOfferingId },
+          data: {
+            ...(suggestion.suggestedCourseCode ? { courseCode: suggestion.suggestedCourseCode } : {}),
+            ...(suggestion.suggestedCourseName ? { courseName: suggestion.suggestedCourseName } : {}),
+            ...(suggestion.suggestedLtp ? { ltp: suggestion.suggestedLtp } : {})
+          }
+        });
+      } catch (err) {
+        console.warn("Could not update course offering linked to suggestion:", err.message);
+      }
+    }
+
     const updatedSuggestion = await prisma.teacherNameSuggestion.update({
       where: { id },
       data: { status: "APPROVED" }
@@ -401,7 +417,7 @@ export const approveTeacherSuggestion = async (req, res) => {
     invalidateTeachersCache();
 
     res.status(200).json({
-      message: "Suggestion approved and teacher name updated campus-wide",
+      message: "Suggestion approved: Teacher and course details updated campus-wide",
       teacher: updatedTeacher,
       suggestion: updatedSuggestion
     });

@@ -93,7 +93,15 @@ export const getTeacherProfile = async (req, res) => {
 export const suggestTeacherName = async (req, res) => {
   try {
     const { id } = req.params; // teacherId (TeacherProfile id or userId)
-    const { suggestedName, suggestedDept, notes } = req.body;
+    const {
+      suggestedName,
+      suggestedDept,
+      suggestedCourseCode,
+      suggestedCourseName,
+      suggestedLtp,
+      courseOfferingId,
+      notes
+    } = req.body;
 
     if (!suggestedName || !suggestedName.trim()) {
       return res.status(400).json({ error: "Suggested full name is required" });
@@ -124,6 +132,10 @@ export const suggestTeacherName = async (req, res) => {
         teacherId: teacher.id,
         suggestedName: suggestedName.trim(),
         suggestedDept: suggestedDept?.trim() || null,
+        suggestedCourseCode: suggestedCourseCode ? suggestedCourseCode.trim().toUpperCase() : null,
+        suggestedCourseName: suggestedCourseName ? suggestedCourseName.trim() : null,
+        suggestedLtp: suggestedLtp ? suggestedLtp.trim().toUpperCase() : null,
+        courseOfferingId: courseOfferingId || null,
         notes: notes?.trim() || null,
         studentId: req.user.id,
         studentRollNo: student?.rollNumber || null,

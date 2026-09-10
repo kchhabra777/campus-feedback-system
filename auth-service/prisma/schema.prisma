@@ -164,17 +164,21 @@ model CommunityTag {
 model TeacherNameSuggestion {
   id             String         @id @default(uuid())
   teacherId      String
-  suggestedName  String
-  suggestedDept  String?
-  notes          String?
-  studentId      String
-  studentRollNo  String?
-  studentEmail   String?
-  isCR           Boolean        @default(false)
-  batch          String?
-  status         String         @default("PENDING") // PENDING, APPROVED, REJECTED
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  suggestedName       String
+  suggestedDept       String?
+  suggestedCourseCode String?
+  suggestedCourseName String?
+  suggestedLtp        String?        // L, T, P
+  courseOfferingId    String?
+  notes               String?
+  studentId           String
+  studentRollNo       String?
+  studentEmail        String?
+  isCR                Boolean        @default(false)
+  batch               String?
+  status              String         @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 
   teacher        TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }
