@@ -17,7 +17,10 @@ export const StudentOnboarding = () => {
   });
   const [branch, setBranch] = useState('COE');
   const [batch, setBatch] = useState(ALLOWED_BATCHES[0]); // default to 3Q11
+  const [yearOfStudy, setYearOfStudy] = useState(3);
   const [autoDetectedNotice, setAutoDetectedNotice] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleRollNumberChange = (val) => {
     const clean = val.replace(/\D/g, '');
