@@ -1,0 +1,1 @@
+const { PrismaClient } = require('@prisma/client'); const prisma = new PrismaClient(); async function check() { const t = await prisma.teacherProfile.findFirst({ where: { fullName: { contains: 'Shivani Sharma', mode: 'insensitive' } }, include: { suggestions: true } }); console.log(JSON.stringify(t, null, 2)); } check().catch(console.error).finally(() => prisma.$disconnect());

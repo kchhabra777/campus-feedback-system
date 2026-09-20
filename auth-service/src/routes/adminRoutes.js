@@ -19,7 +19,11 @@ import {
   approveTeacherSuggestion,
   rejectTeacherSuggestion,
   rolloverSemester,
-  getSemesterStats
+  getSemesterStats,
+  getBatchChangeRequests,
+  approveBatchChangeRequest,
+  rejectBatchChangeRequest,
+  getCampusAnalytics
 } from "../controllers/adminController.js";
 import { requireAuth } from "../middlewares/authMiddleware.js";
 import { requireRole } from "../middlewares/roleMiddleware.js";
@@ -28,6 +32,7 @@ const router = express.Router();
 
 router.use(requireAuth, requireRole("ADMIN"));
 
+router.get("/analytics", getCampusAnalytics);
 router.get("/semester-stats", getSemesterStats);
 router.post("/rollover-semester", rolloverSemester);
 
@@ -52,5 +57,9 @@ router.delete("/courses/:courseId", deleteTeacherCourse);
 router.get("/teacher-suggestions", getTeacherSuggestions);
 router.post("/teacher-suggestions/:id/approve", approveTeacherSuggestion);
 router.post("/teacher-suggestions/:id/reject", rejectTeacherSuggestion);
+
+router.get("/batch-requests", getBatchChangeRequests);
+router.post("/batch-requests/:id/approve", approveBatchChangeRequest);
+router.post("/batch-requests/:id/reject", rejectBatchChangeRequest);
 
 export default router;

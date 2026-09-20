@@ -22,6 +22,21 @@ export const AuthProvider = ({ children }) => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Listen for suspension events triggered by API responses across the app
+  useEffect(() => {
+    const handleSuspended = (e) => {
+      console.warn('[AuthContext] Received suspension notification:', e.detail);
+      setUser(prev => ({
+        ...(prev || {}),
+        isBanned: true,
+        email: prev?.email || localStorage.getItem('campus_user_email') || ''
+      }));
+      setAuthError('Your account has been suspended by an administrator.');
+    };
+    window.addEventListener('campus_user_suspended', handleSuspended);
+    return () => window.removeEventListener('campus_user_suspended', handleSuspended);
+  }, []);
+
   // Set the token provider: prefer backend-issued campus_token, fallback to Clerk JWT
   useEffect(() => {
     setTokenProvider(async () => {
@@ -95,14 +110,21 @@ export const AuthProvider = ({ children }) => {
           }
         } catch (err) {
           console.error("[AuthContext] syncUser – FAILED:", err.message);
-          setAuthError(err.message || "Failed to initialize university profile.");
+          const isSuspended = err.isBanned || err.message?.toLowerCase().includes("suspended") || err.message?.toLowerCase().includes("banned");
+          if (isSuspended) {
+            setUser({ email, isBanned: true, role: 'STUDENT' });
+            setAuthError("Your account has been suspended by an administrator.");
+          } else {
+            setAuthError(err.message || "Failed to initialize university profile.");
+            setUser(null);
+            if (clerk) {
+              try {
+                await clerk.signOut();
+              } catch (e) {}
+            }
+          }
           localStorage.removeItem('campus_token');
           localStorage.removeItem('campus_user_email');
-          if (clerk) {
-            try {
-              await clerk.signOut();
-            } catch (e) {}
-          }
         }
       } else if (!isSignedIn && isClerkLoaded) {
         // Fallback to local token check if exists
@@ -112,7 +134,12 @@ export const AuthProvider = ({ children }) => {
             const data = await api.getMe();
             setUser(data.user);
           } catch (e) {
-            logout();
+            if (e.isBanned || e.message?.toLowerCase().includes("suspended") || e.message?.toLowerCase().includes("banned")) {
+              const storedEmail = localStorage.getItem('campus_user_email');
+              setUser({ email: storedEmail, isBanned: true, role: 'STUDENT' });
+            } else {
+              logout();
+            }
           }
         } else {
           setUser(null);
@@ -127,11 +154,19 @@ export const AuthProvider = ({ children }) => {
   }, [isClerkLoaded, isSignedIn, clerkUser]);
 
   const login = async (email, password) => {
-    const data = await api.login({ email, password });
-    localStorage.setItem('campus_token', data.token);
-    setToken(data.token);
-    setUser(data.user);
-    return data.user;
+    try {
+      const data = await api.login({ email, password });
+      localStorage.setItem('campus_token', data.token);
+      setToken(data.token);
+      setUser(data.user);
+      return data.user;
+    } catch (err) {
+      if (err.isBanned || err.message?.toLowerCase().includes("suspended") || err.message?.toLowerCase().includes("banned")) {
+        setAuthError("Your account has been suspended by an administrator.");
+        setUser({ email, isBanned: true, role: 'STUDENT' });
+      }
+      throw err;
+    }
   };
 
   const signup = async (email, password, otp) => {
@@ -190,11 +225,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    localStorage.removeItem('campus_token');
-    localStorage.removeItem('campus_user_email');
-    setToken(null);
-    setUser(null);
-    setAuthError('');
     if (isSignedIn && clerk) {
       try {
         await clerk.signOut();
@@ -202,6 +232,11 @@ export const AuthProvider = ({ children }) => {
         console.warn("Clerk signout notice:", e);
       }
     }
+    localStorage.removeItem('campus_token');
+    localStorage.removeItem('campus_user_email');
+    setToken(null);
+    setUser(null);
+    setAuthError('');
   };
 
   return (

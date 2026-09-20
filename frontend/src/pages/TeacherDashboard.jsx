@@ -17,6 +17,7 @@ import {
   Trash2,
   Check
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export const TeacherDashboard = () => {
   const { user } = useAuth();
@@ -24,6 +25,9 @@ export const TeacherDashboard = () => {
   const [reviews, setReviews] = useState([]);
   const [offerings, setOfferings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [reviewsPage, setReviewsPage] = useState(1);
+  const [hasMoreReviews, setHasMoreReviews] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   // Add course offering modal
   const [showAddCourse, setShowAddCourse] = useState(false);
@@ -49,9 +53,10 @@ export const TeacherDashboard = () => {
     if (!user) return;
     if (!isSilentRefresh) setLoading(true);
     try {
+      setReviewsPage(1);
       const [ratingsData, reviewsData, offeringsData] = await Promise.all([
         api.getTeacherRatings(user.id).catch(() => null),
-        api.getTeacherReviews(user.id).catch(() => ({ reviews: [] })),
+        api.getTeacherReviews(user.id, 1).catch(() => ({ reviews: [], totalReviews: 0 })),
         api.getMyOfferings().catch(() => ({ offerings: [] }))
       ]);
 
@@ -64,11 +69,29 @@ export const TeacherDashboard = () => {
         totalReviews: Number(rObj.totalReviews) || revList.length
       });
       setReviews(revList);
+      setHasMoreReviews(revList.length < (reviewsData.totalReviews || 0));
       setOfferings(offeringsData.offerings || []);
     } catch (err) {
       console.error("Failed to load teacher data:", err);
     } finally {
       if (!isSilentRefresh) setLoading(false);
+    }
+  };
+
+  const loadMoreReviews = async () => {
+    if (loadingMore || !hasMoreReviews) return;
+    setLoadingMore(true);
+    try {
+      const nextPage = reviewsPage + 1;
+      const res = await api.getTeacherReviews(user.id, nextPage);
+      const newReviews = res.reviews || [];
+      setReviews(prev => [...prev, ...newReviews]);
+      setReviewsPage(nextPage);
+      setHasMoreReviews(reviews.length + newReviews.length < (res.totalReviews || 0));
+    } catch (err) {
+      toast.error("Failed to load more reviews");
+    } finally {
+      setLoadingMore(false);
     }
   };
 
@@ -151,9 +174,10 @@ export const TeacherDashboard = () => {
 
     try {
       await api.deleteCourseOffering(offeringId);
+      toast.success("Course offering deleted successfully.");
       fetchTeacherData();
     } catch (err) {
-      alert(err.message || "Failed to delete course offering.");
+      toast.error(err.message || "Failed to delete course offering.");
     }
   };
 
@@ -174,6 +198,11 @@ export const TeacherDashboard = () => {
             <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
               Department of {user?.teacherProfile?.department || 'Engineering'} • Thapar Institute of Engineering & Technology
             </div>
+            {user?.teacherProfile?.roomNumber && (
+              <div style={{ fontSize: '13.5px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                <span style={{ fontWeight: 600 }}>Room:</span> {user.teacherProfile.roomNumber}
+              </div>
+            )}
           </div>
 
           <button
@@ -309,13 +338,26 @@ export const TeacherDashboard = () => {
             </p>
           </div>
         ) : (
-          reviews.map((rev) => (
-            <ReviewCard
-              key={rev.reviewId}
-              review={rev}
-              onUpdate={() => fetchTeacherData(true)}
-            />
-          ))
+          <>
+            {reviews.map((rev) => (
+              <ReviewCard
+                key={rev.reviewId}
+                review={rev}
+                onUpdate={() => fetchTeacherData(true)}
+              />
+            ))}
+            {hasMoreReviews && (
+              <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                <button
+                  className="btn btn-secondary"
+                  onClick={loadMoreReviews}
+                  disabled={loadingMore}
+                >
+                  {loadingMore ? 'Loading...' : 'Load More Reviews'}
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
 

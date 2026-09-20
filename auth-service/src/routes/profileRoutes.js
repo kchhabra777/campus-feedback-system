@@ -4,14 +4,23 @@ import {
   onboardTeacher,
   listTeachers,
   getTeacherProfile,
-  suggestTeacherName
+  suggestTeacherName,
+  requestBatchChange,
+  getMyBatchRequests,
+  getCRBatchRequests,
+  getStudentLeaderboard
 } from "../controllers/profileController.js";
 import { requireAuth } from "../middlewares/authMiddleware.js";
 import { requireRole } from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 
+router.get("/students/leaderboard", getStudentLeaderboard);
 router.post("/student", requireAuth, requireRole("STUDENT"), onboardStudent);
+router.post("/student/request-batch-change", requireAuth, requireRole("STUDENT"), requestBatchChange);
+router.get("/student/batch-requests", requireAuth, requireRole("STUDENT"), getMyBatchRequests);
+router.get("/student/cr/batch-requests", requireAuth, requireRole("STUDENT"), getCRBatchRequests);
+
 router.post("/teacher", requireAuth, requireRole("TEACHER"), onboardTeacher);
 router.get("/teachers", listTeachers);
 router.get("/teachers/:id", getTeacherProfile);

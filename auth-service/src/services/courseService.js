@@ -125,7 +125,14 @@ export const invalidateOfferingsCache = () => {
 
 export const getEligibleTeachersForStudent = async ({ batch, branch }) => {
   const normalizedBatch = batch ? batch.trim().toUpperCase() : "";
-  const normalizedBranch = branch ? branch.trim().toUpperCase() : "";
+  let normalizedBranch = branch ? branch.trim().toUpperCase() : "";
+
+  // Hardcode branch mappings based on batch letter
+  if (normalizedBatch.includes('Q')) {
+    normalizedBranch = 'COPC';
+  } else if (normalizedBatch.includes('C') && !normalizedBatch.includes('COPC')) {
+    normalizedBranch = 'COE';
+  }
 
   // Use cached offerings if fresh (< 60s)
   const now = Date.now();
@@ -206,6 +213,10 @@ export const getEligibleTeachersForStudent = async ({ batch, branch }) => {
         fullName: off.teacher.fullName,
         department: off.teacher.department,
         designation: off.teacher.designation,
+        linkedIn: off.teacher.linkedIn,
+        thaparProfileUrl: off.teacher.thaparProfileUrl,
+        photoUrl: off.teacher.photoUrl,
+        roomNumber: off.teacher.roomNumber,
         courses: []
       });
     }
@@ -242,6 +253,13 @@ export const verifyStudentTeacherEligibility = async ({ studentUserId, teacherUs
     return { eligible: false, reason: "Teacher profile not found" };
   }
 
+  let effectiveBranch = student.branch;
+  if (student.batch.includes('Q')) {
+    effectiveBranch = 'COPC';
+  } else if (student.batch.includes('C') && !student.batch.includes('COPC')) {
+    effectiveBranch = 'COE';
+  }
+
   // Check if teacher has any offering matching student's batch
   const matchingOffering = teacher.offerings.find((off) => {
     const batches = off.batchTaught.split(",").map((b) => b.trim().toUpperCase());
@@ -257,7 +275,7 @@ export const verifyStudentTeacherEligibility = async ({ studentUserId, teacherUs
     }
 
     const branches = off.branchTaught.split(",").map((b) => b.trim().toUpperCase());
-    const branchMatches = off.branchTaught === "ALL" || branches.includes(student.branch) || off.branchTaught.includes(student.branch);
+    const branchMatches = off.branchTaught === "ALL" || branches.includes(effectiveBranch) || off.branchTaught.includes(effectiveBranch);
     const courseMatches = !courseCode || off.courseCode === courseCode.toUpperCase();
     return branchMatches && courseMatches;
   });
@@ -265,7 +283,7 @@ export const verifyStudentTeacherEligibility = async ({ studentUserId, teacherUs
   if (!matchingOffering && teacher.offerings.length > 0) {
     return {
       eligible: false,
-      reason: `Teacher is not registered as having taught batch ${student.batch} (${student.branch})`
+      reason: `Teacher is not registered as having taught batch ${student.batch} (${effectiveBranch})`
     };
   }
 

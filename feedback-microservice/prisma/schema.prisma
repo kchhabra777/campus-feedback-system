@@ -6,24 +6,6 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role {
-  STUDENT
-  TEACHER
-  ADMIN
-}
-
-enum VoteType {
-  UP
-  DOWN
-}
-
-enum FlagStatus {
-  PENDING
-  REVIEWED
-  DISMISSED
-  REMOVED
-}
-
 model User {
   id                String          @id @default(uuid())
   email             String          @unique
@@ -32,10 +14,9 @@ model User {
   detectedBatch     String?
   isEmailVerified   Boolean         @default(false)
   isProfileComplete Boolean         @default(false)
-  isBanned          Boolean         @default(false)
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
-
+  isBanned          Boolean         @default(false)
   studentProfile    StudentProfile?
   teacherProfile    TeacherProfile?
 }
@@ -53,30 +34,33 @@ model OtpVerification {
 model StudentProfile {
   id          String   @id @default(uuid())
   userId      String   @unique
-  fullName    String?  // e.g. "Robin Singh"
   rollNumber  String   @unique
   branch      String
-  batch       String   // e.g. "3Q11", "2Q12"
+  batch       String
   yearOfStudy Int
   isCR        Boolean  @default(false)
+  xp          Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
+  fullName    String?
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model TeacherProfile {
-  id          String            @id @default(uuid())
-  userId      String            @unique
+  id          String           @id @default(uuid())
+  userId      String           @unique
   fullName    String
   department  String
   designation String
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-
-  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roomNumber  String?
+  linkedIn    String?
+  photoUrl    String?
+  thaparProfileUrl String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
   offerings   CourseOffering[]
   suggestions TeacherNameSuggestion[]
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model CourseOffering {
@@ -84,38 +68,37 @@ model CourseOffering {
   teacherId    String
   courseCode   String
   courseName   String
-  batchTaught  String         // e.g. "3Q11", "2Q12"
+  batchTaught  String
   branchTaught String
-  academicYear      String
-  ltp               String?        @default("L") // L, T, P
-  isCurrentSemester Boolean        @default(true)
-  createdAt         DateTime       @default(now())
-
+  academicYear String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now()) @updatedAt
+  ltp          String         @default("L")
+  isArchived   Boolean        @default(false)
   teacher      TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }
 
 model Review {
-  reviewId        Int          @id @default(autoincrement())
-  reviewerId      String
-  reviewerName    String?      // Student Full Name
-  reviewerEmail   String?      // Student @thapar.edu Email
-  reviewerRollNo  String?      // 10-digit roll number
-  reviewerBatch   String?      // e.g. "3Q11"
-  reviewerBranch  String?      // e.g. "COE"
-  revieweeId      String
-  courseCode      String?
-  courseName      String?
-  rating          Int
-  reviewText      String
-  context         String?
-  tags            String[]     @default([])
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
-  isFlagged       Boolean      @default(false)
-
-  votes           ReviewVote[]
-  flags           ReviewFlag[]
-  replies         ReviewReply[]
+  reviewId       Int           @id @default(autoincrement())
+  reviewerId     String
+  revieweeId     String
+  rating         Int
+  reviewText     String
+  context        String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  isFlagged      Boolean       @default(false)
+  courseCode     String?
+  courseName     String?
+  reviewerBatch  String?
+  reviewerBranch String?
+  reviewerRollNo String?
+  reviewerEmail  String?
+  reviewerName   String?
+  tags           String[]      @default([])
+  flags          ReviewFlag[]
+  replies        ReviewReply[]
+  votes          ReviewVote[]
 }
 
 model ReviewVote {
@@ -124,7 +107,6 @@ model ReviewVote {
   userId    String
   voteType  VoteType
   createdAt DateTime @default(now())
-
   review    Review   @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
 
   @@unique([reviewId, userId])
@@ -137,49 +119,46 @@ model ReviewFlag {
   reason     String
   status     FlagStatus @default(PENDING)
   createdAt  DateTime   @default(now())
-
   review     Review     @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
 }
 
 model ReviewReply {
-  replyId        Int          @id @default(autoincrement())
-  reviewId       Int
-  parentReplyId  Int?
-  
-  authorId       String
-  authorRole     Role
-  authorName     String
-  authorBadge    String?
-  replyText      String
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-
-  review         Review       @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
-  parentReply    ReviewReply? @relation("ThreadedReplies", fields: [parentReplyId], references: [replyId], onDelete: Cascade)
-  childReplies   ReviewReply[] @relation("ThreadedReplies")
-  votes          ReplyVote[]
+  replyId       Int           @id @default(autoincrement())
+  reviewId      Int
+  authorId      String
+  authorRole    Role
+  authorName    String
+  authorBadge   String?
+  replyText     String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  parentReplyId Int?
+  votes         ReplyVote[]
+  parentReply   ReviewReply?  @relation("ThreadedReplies", fields: [parentReplyId], references: [replyId], onDelete: Cascade)
+  childReplies  ReviewReply[] @relation("ThreadedReplies")
+  review        Review        @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
 }
 
 model ReplyVote {
-  voteId    Int      @id @default(autoincrement())
+  voteId    Int         @id @default(autoincrement())
   replyId   Int
   userId    String
   voteType  VoteType
-  createdAt DateTime @default(now())
-
+  createdAt DateTime    @default(now())
   reply     ReviewReply @relation(fields: [replyId], references: [replyId], onDelete: Cascade)
 
   @@unique([replyId, userId])
 }
 
 model ProfileRating {
-  ratingId       Int      @id @default(autoincrement())
-  userId         String   @unique
-  overallRating  Float
-  recentRating   Float
-  totalReviews   Int
-  calculatedAt   DateTime @default(now())
+  ratingId      Int      @id @default(autoincrement())
+  userId        String   @unique
+  overallRating Float
+  totalReviews  Int
+  calculatedAt  DateTime @default(now())
+  recentRating  Float
 }
+
 model CommunityTag {
   id        Int      @id @default(autoincrement())
   name      String   @unique
@@ -189,14 +168,20 @@ model CommunityTag {
 }
 
 model TeacherNameSuggestion {
-  id             String         @id @default(uuid())
-  teacherId      String
-  suggestedName       String
+  id                  String         @id @default(uuid())
+  teacherId           String?
+  suggestedName       String?
   suggestedDept       String?
   suggestedCourseCode String?
   suggestedCourseName String?
   suggestedLtp        String?        // L, T, P
+  suggestedBatchTaught String?
+  suggestedBranchTaught String?
   courseOfferingId    String?
+  suggestedRoomNo     String?
+  suggestedLinkedIn   String?
+  suggestedPhotoUrl   String?
+  suggestedThaparProfileUrl String?
   notes               String?
   studentId           String
   studentRollNo       String?
@@ -205,7 +190,41 @@ model TeacherNameSuggestion {
   batch               String?
   status              String         @default("PENDING") // PENDING, APPROVED, REJECTED
   createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
+  teacher             TeacherProfile? @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+}
 
-  teacher        TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+model BatchChangeRequest {
+  id             String   @id @default(uuid())
+  studentId      String
+  studentRollNo  String
+  studentName    String?
+  currentBatch   String
+  requestedBatch String
+  currentBranch  String?
+  requestedBranch String?
+  reason         String?
+  crId           String?
+  crEmail        String?
+  status         String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+enum VoteType {
+  UP
+  DOWN
+}
+
+enum FlagStatus {
+  PENDING
+  REVIEWED
+  DISMISSED
+  REMOVED
 }

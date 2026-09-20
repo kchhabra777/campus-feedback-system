@@ -4,6 +4,7 @@ import { StarRating } from './StarRating';
 import { ThumbsUp, ThumbsDown, MessageSquare, Flag, Send, User, Mail, Award, Tag } from 'lucide-react';
 import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'sonner';
 
 export const ReviewCard = ({ review, onUpdate }) => {
   const { user } = useAuth();
@@ -108,7 +109,7 @@ export const ReviewCard = ({ review, onUpdate }) => {
     try {
       await api.flagReview(review.reviewId, reason, user.id);
       setFlagged(true);
-      alert("Review has been reported to administrators for moderation.");
+      toast.success("Review has been reported to administrators for moderation.");
     } catch (err) {
       console.error("Flag failed:", err);
     }
@@ -150,7 +151,7 @@ export const ReviewCard = ({ review, onUpdate }) => {
       setReplyingTo(null);
       if (onUpdate) onUpdate();
     } catch (err) {
-      alert(err.message || "Failed to post reply");
+      toast.error(err.message || "Failed to post reply");
     } finally {
       setIsSubmittingReply(false);
     }
@@ -314,10 +315,13 @@ export const ReviewCard = ({ review, onUpdate }) => {
   const formatDate = (dateString) => {
     try {
       const d = new Date(dateString);
-      return d.toLocaleDateString('en-IN', {
+      return d.toLocaleString('en-IN', {
         day: 'numeric',
         month: 'short',
-        year: 'numeric'
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
       });
     } catch {
       return '';

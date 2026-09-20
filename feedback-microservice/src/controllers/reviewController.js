@@ -44,6 +44,18 @@ export const createReview = async (req, res) => {
             });
         }
 
+        // Check if reviewer is banned
+        const reviewerUser = await prisma.user.findUnique({
+            where: { id: reviewer.userId },
+            select: { isBanned: true }
+        });
+        if (reviewerUser && reviewerUser.isBanned) {
+            return res.status(403).json({
+                error: "Your account has been suspended by an administrator. You cannot submit feedback.",
+                isBanned: true
+            });
+        }
+
         const review = await createReviewService({
             reviewerId: reviewer.userId,
             reviewerName: reviewer.name || reviewer.fullName || null,

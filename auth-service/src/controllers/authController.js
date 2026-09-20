@@ -70,7 +70,8 @@ export const login = async (req, res) => {
     const result = await loginUser({ email, password });
     return res.status(200).json(result);
   } catch (error) {
-    return res.status(401).json({ error: error.message });
+    const statusCode = error.status || 401;
+    return res.status(statusCode).json({ error: error.message, isBanned: !!error.isBanned });
   }
 };
 
@@ -96,6 +97,19 @@ export const syncClerkUser = async (req, res) => {
       where: { email: roleInfo.email },
       include: { studentProfile: true, teacherProfile: true }
     });
+
+    if (user && user.isBanned) {
+      return res.status(403).json({
+        error: "Your account has been suspended by an administrator.",
+        isBanned: true,
+        user: {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+          isBanned: true
+        }
+      });
+    }
 
     if (!user) {
       user = await prisma.user.create({

@@ -37,6 +37,15 @@ export const saveStudentProfile = async ({
     throw new Error("This roll number is already registered by another student.");
   }
 
+  // Prevent students from directly modifying their batch once set
+  const existingProfile = await prisma.studentProfile.findUnique({
+    where: { userId }
+  });
+
+  if (existingProfile && existingProfile.batch && existingProfile.batch !== batch.trim().toUpperCase()) {
+    throw new Error("Batch cannot be changed directly after profile setup. Please submit a Batch Change Request to be verified by your CR and approved by an Admin.");
+  }
+
   const profile = await prisma.studentProfile.upsert({
     where: { userId },
     update: {
@@ -140,10 +149,13 @@ export const getAllTeachers = async () => {
   });
 };
 
-export const getTeacherById = async (teacherUserId) => {
+export const getTeacherById = async (idOrUserId) => {
   return await prisma.teacherProfile.findFirst({
     where: {
-      userId: teacherUserId
+      OR: [
+        { id: idOrUserId },
+        { userId: idOrUserId }
+      ]
     },
     include: {
       user: {

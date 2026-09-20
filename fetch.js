@@ -1,0 +1,1 @@
+fetch('http://localhost:8000/profiles/teachers').then(r => r.json()).then(data => { const t = data.teachers.find(x => x.fullName.includes('Shivani Sharma')); console.log(JSON.stringify(t, null, 2)); }).catch(console.error);

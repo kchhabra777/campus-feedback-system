@@ -21,23 +21,53 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, on
       tiltLimit={7} 
       scale={1.025} 
       spotlight={true} 
-      style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}
+      onClick={() => onViewReviews && onViewReviews(teacher)}
+      role="button"
+      tabIndex={0}
+      aria-label={`View reviews for ${teacher.fullName || 'teacher'}`}
+      onKeyDown={(e) => {
+        if ((e.key === 'Enter' || e.key === ' ') && e.target === e.currentTarget) {
+          e.preventDefault();
+          onViewReviews && onViewReviews(teacher);
+        }
+      }}
+      style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        height: '100%', 
+        position: 'relative',
+        cursor: 'pointer'
+      }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px', marginBottom: '14px' }}>
-        <img
-          src={
-            teacher.avatarUrl ||
-            (teacher.fullName?.toLowerCase().includes('anjula') || teacher.code?.toUpperCase() === 'AMH'
-              ? '/anjula-mehto.png'
-              : `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.fullName || teacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`)
-          }
-          alt={teacher.fullName}
-          style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '2px solid var(--border-light)' }}
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.fullName || teacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`;
-          }}
-        />
+        <div style={{
+          width: '96px',
+          height: '96px',
+          borderRadius: '50%',
+          padding: '3px',
+          background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%)',
+          boxShadow: '0 8px 24px rgba(139, 92, 246, 0.3)',
+          flexShrink: 0
+        }}>
+          <img
+            src={
+              teacher.photoUrl ||
+              `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.fullName || teacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`
+            }
+            alt={teacher.fullName}
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              borderRadius: '50%', 
+              objectFit: 'cover',
+              border: '3px solid var(--bg-card)'
+            }}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.fullName || teacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`;
+            }}
+          />
+        </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <span>{teacher.fullName}</span>
@@ -53,8 +83,13 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, on
               {teacher.designation || 'Faculty'} · {teacher.department}
             </span>
           </div>
+          {teacher.roomNumber && (
+            <div style={{ fontSize: '12.5px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
+               <span style={{ fontWeight: 600 }}>Room:</span> {teacher.roomNumber}
+            </div>
+          )}
 
-          {isCodeName && onSuggestName && (
+          {onSuggestName && (
             <button
               type="button"
               onClick={(e) => {
@@ -76,10 +111,15 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, on
                 cursor: 'pointer',
                 transition: 'all 0.15s ease'
               }}
-              title={isCR ? "Identify this faculty member as Batch CR" : "Suggest this faculty member's full name"}
+              title={isCodeName ? "Suggest this faculty member's full name" : "Add missing courses or info to this verified faculty member"}
             >
-              {isCR ? <Crown size={12} /> : <HelpCircle size={12} />}
-              <span>{isCR ? "CR: Identify Faculty" : "Know this prof? Suggest name"}</span>
+              {isCR ? <Crown size={12} /> : (isCodeName ? <HelpCircle size={12} /> : <Edit3 size={12} />)}
+              <span>
+                {isCodeName 
+                  ? (isCR ? "CR: Identify Faculty" : "Know this prof? Suggest name")
+                  : "Add Info / Course"
+                }
+              </span>
             </button>
           )}
         </div>
@@ -118,35 +158,54 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, on
         Based on {totalReviews} {totalReviews === 1 ? 'student review' : 'student reviews'}
       </div>
 
-      {/* Courses & Batches Taught */}
+      {/* Courses Taught — grouped by course code and LTP, showing batches */}
       <div style={{ flex: 1, marginBottom: '16px' }}>
         <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
           <BookOpen size={12} />
           <span>Courses Taught:</span>
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-          {teacher.courses && teacher.courses.length > 0 ? (
-            teacher.courses.map((c, i) => (
-              <span key={i} className="badge badge-neutral" style={{ fontSize: '11.5px' }}>
-                {c.courseCode} ({c.batchTaught} - {c.ltp || 'L'})
+          {(() => {
+            const raw = (teacher.courses?.length > 0 ? teacher.courses : teacher.offerings) || [];
+            if (raw.length === 0) {
+              return <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>No courses registered yet</span>;
+            }
+            
+            // Group by courseCode+ltp and aggregate batches
+            const courseMap = {};
+            raw.forEach(c => {
+              const key = `${c.courseCode}-${c.ltp || 'L'}`;
+              if (!courseMap[key]) {
+                courseMap[key] = { courseCode: c.courseCode, ltp: c.ltp, batches: new Set() };
+              }
+              if (c.batchTaught) courseMap[key].batches.add(c.batchTaught);
+            });
+            
+            const ltpLabel = { L: 'Lecture', T: 'Tutorial', P: 'Lab' };
+            const grouped = Object.values(courseMap);
+            
+            return grouped.map((c, i) => (
+              <span key={i} className="badge badge-neutral" style={{ fontSize: '11.5px', lineHeight: '1.4' }}>
+                {c.courseCode} · {ltpLabel[c.ltp] || c.ltp || 'Lecture'}
+                {c.batches.size > 0 && (
+                  <span style={{ opacity: 0.8, marginLeft: '4px' }}>
+                    ({Array.from(c.batches).join(', ')})
+                  </span>
+                )}
               </span>
-            ))
-          ) : teacher.offerings && teacher.offerings.length > 0 ? (
-            teacher.offerings.map((c, i) => (
-              <span key={i} className="badge badge-neutral" style={{ fontSize: '11.5px' }}>
-                {c.courseCode} ({c.batchTaught} - {c.ltp || 'L'})
-              </span>
-            ))
-          ) : (
-            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>No courses registered yet</span>
-          )}
+            ));
+          })()}
         </div>
       </div>
 
       {/* Actions */}
       <div style={{ display: 'flex', gap: '8px', marginTop: 'auto', position: 'relative', zIndex: 20 }}>
         <button
-          onClick={() => onViewReviews(teacher)}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onViewReviews && onViewReviews(teacher);
+          }}
           className="btn btn-secondary btn-sm"
           style={{ flex: 1 }}
         >
@@ -156,7 +215,11 @@ export const TeacherCard = ({ teacher, ratings, onViewReviews, onWriteReview, on
 
         {canReview && (
           <button
-            onClick={() => onWriteReview(teacher)}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onWriteReview && onWriteReview(teacher);
+            }}
             className="btn btn-primary btn-sm"
             style={{ flex: 1 }}
           >

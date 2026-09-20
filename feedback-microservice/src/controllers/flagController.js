@@ -2,6 +2,7 @@ import {
   createFlag as createFlagService,
   getAllFlags as getAllFlagsService
 } from "../services/flagService.js";
+import prisma from "../lib/prisma.js";
 
 export const flagReview = async (req, res) => {
   try {
@@ -11,6 +12,17 @@ export const flagReview = async (req, res) => {
     const reporterId = user?.userId || req.headers["x-user-id"];
     if (!reporterId) {
       return res.status(400).json({ error: "Reporter user ID is required" });
+    }
+
+    const reporterUser = await prisma.user.findUnique({
+      where: { id: reporterId },
+      select: { isBanned: true }
+    });
+    if (reporterUser && reporterUser.isBanned) {
+      return res.status(403).json({
+        error: "Your account has been suspended by an administrator.",
+        isBanned: true
+      });
     }
 
     const flag = await createFlagService({

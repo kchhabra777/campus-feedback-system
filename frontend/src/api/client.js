@@ -105,8 +105,16 @@ async function request(endpoint, options = {}) {
       localStorage.removeItem("campus_token");
       localStorage.removeItem("campus_user_email");
     }
+    if (response.status === 403 && data.isBanned) {
+      try {
+        window.dispatchEvent(new CustomEvent("campus_user_suspended", { detail: data }));
+      } catch (e) {}
+    }
     const errorMsg = data.error || data.message || `Request failed with status ${response.status}`;
-    throw new Error(errorMsg);
+    const error = new Error(errorMsg);
+    error.status = response.status;
+    error.isBanned = !!data.isBanned;
+    throw error;
   }
 
   return data;
@@ -201,6 +209,7 @@ export const api = {
   getTeacherAISummary: (teacherId) => request(`/reviews/teachers/${teacherId}/ai-summary`),
   getTeacherRatings: (teacherId) => request(`/ratings/${teacherId}`),
   getRatingsSummary: () => request("/ratings/batch/summary"),
+  getStudentLeaderboard: () => request("/profiles/students/leaderboard"),
   voteReview: (reviewId, voteType, userId) => request(`/reviews/${reviewId}/vote`, {
     method: "POST",
     body: JSON.stringify({ user: { userId }, vote: { type: voteType } })
@@ -233,6 +242,13 @@ export const api = {
   updateStudent: (userId, data) => request(`/admin/students/${userId}`, {
     method: "PUT",
     body: JSON.stringify(data)
+  }),
+  getBatchRequests: () => request("/admin/batch-requests"),
+  approveBatchRequest: (id) => request(`/admin/batch-requests/${id}/approve`, {
+    method: "POST"
+  }),
+  rejectBatchRequest: (id) => request(`/admin/batch-requests/${id}/reject`, {
+    method: "POST"
   }),
   updateTeacher: (userId, data) => request(`/admin/teachers/${userId}`, {
     method: "PUT",
@@ -278,6 +294,41 @@ export const api = {
   }),
   getSemesterStats: () => request("/admin/semester-stats"),
   rolloverSemester: (data) => request("/admin/rollover-semester", {
+    method: "POST",
+    body: JSON.stringify(data)
+  }),
+
+  // Student & CR Batch Change Requests
+  requestBatchChange: (data) => request("/profiles/student/request-batch-change", {
+    method: "POST",
+    body: JSON.stringify(data)
+  }),
+  getMyBatchRequests: () => request("/profiles/student/batch-requests"),
+  getCRBatchRequests: () => request("/profiles/student/cr/batch-requests"),
+
+  // Admin Batch Change Management
+  getAdminBatchRequests: () => request("/admin/batch-requests"),
+  approveAdminBatchRequest: (id) => request(`/admin/batch-requests/${id}/approve`, {
+    method: "POST"
+  }),
+  rejectAdminBatchRequest: (id, reason) => request(`/admin/batch-requests/${id}/reject`, {
+    method: "POST",
+    body: JSON.stringify({ reason })
+  }),
+
+  // Campus Analytics (Phase 1.1)
+  getCampusAnalytics: (department = 'ALL') => request(`/admin/analytics?department=${encodeURIComponent(department)}`),
+
+  // Peer Support
+  getSupportPosts: () => request("/support/posts"),
+  createSupportPost: (data) => request("/support/posts", {
+    method: "POST",
+    body: JSON.stringify(data)
+  }),
+  upvoteSupportPost: (postId) => request(`/support/posts/${postId}/upvote`, {
+    method: "POST"
+  }),
+  addSupportComment: (postId, data) => request(`/support/posts/${postId}/comments`, {
     method: "POST",
     body: JSON.stringify(data)
   })

@@ -10,6 +10,7 @@ export function TiltCard({
   className,
   style,
   children,
+  ...props
 }) {
   const cardRef = useRef(null);
   const [transform, setTransform] = useState(
@@ -64,6 +65,7 @@ export function TiltCard({
         zIndex: isHovered ? 20 : 1,
         ...style,
       }}
+      {...props}
     >
       {children}
       {spotlight && (

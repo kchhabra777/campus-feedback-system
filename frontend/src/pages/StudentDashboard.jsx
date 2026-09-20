@@ -18,11 +18,16 @@ import {
   Info,
   Crown,
   ExternalLink,
-  Share2
+  Share2,
+  Edit3,
+  User,
+  Trophy,
+  HeartHandshake
 } from 'lucide-react';
 import { Sparkles } from 'lucide-react';
 import { updatePageSEO, buildTeacherSchema } from '../utils/seo';
 import { SuggestTeacherModal } from '../components/SuggestTeacherModal';
+import { ThaparProfileLink } from '../components/ThaparProfileLink';
 import { TeacherAIInsights } from '../components/TeacherAIInsights';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
 import CloudLoader from '../components/ui/quantum-cloud-loader';
@@ -32,11 +37,16 @@ import BorderBeam from '../components/ui/border-beam';
 import AnimatedTabs from '../components/ui/animated-tabs';
 import NumberTicker from '../components/ui/number-ticker';
 import CommandMenu from '../components/ui/command-menu';
+import { ShareProfileModal } from '../components/ShareProfileModal';
+import { MobileNav } from '../components/MobileNav';
+import { PeerSupportFeed } from '../components/PeerSupportFeed';
+import { toast } from 'sonner';
 
 
 export const StudentDashboard = () => {
   const { user, onboardStudent } = useAuth();
   const [tab, setTab] = useState('eligible'); // 'eligible' | 'all'
+  const [mobileTab, setMobileTab] = useState('directory'); // 'directory' | 'feed' | 'leaderboard' | 'profile'
   const [eligibleTeachers, setEligibleTeachers] = useState([]);
   const [allTeachers, setAllTeachers] = useState([]);
   const [teacherRatingsMap, setTeacherRatingsMap] = useState({});
@@ -49,6 +59,9 @@ export const StudentDashboard = () => {
   const [selectedTeacherRatings, setSelectedTeacherRatings] = useState(null);
   const [selectedTeacherTags, setSelectedTeacherTags] = useState(null);
   const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [reviewsPage, setReviewsPage] = useState(1);
+  const [hasMoreReviews, setHasMoreReviews] = useState(false);
+  const [loadingMoreReviews, setLoadingMoreReviews] = useState(false);
   const [reviewSort, setReviewSort] = useState('recent');
   const [isAIInsightsOpen, setIsAIInsightsOpen] = useState(false);
   const [isCmdMenuOpen, setIsCmdMenuOpen] = useState(false);
@@ -60,11 +73,21 @@ export const StudentDashboard = () => {
   const [suggestTeacher, setSuggestTeacher] = useState(null);
   const [suggestionToast, setSuggestionToast] = useState(null);
 
+  // Share teacher modal
+  const [sharingTeacher, setSharingTeacher] = useState(null);
+
   // Change batch modal
   const studentBatch = user?.studentProfile?.batch || user?.detectedBatch || '3Q11';
   const rawBranch = user?.studentProfile?.branch || 'COE';
   const branchMatch = rawBranch.match(/\(([^)]+)\)/);
-  const studentBranch = branchMatch ? branchMatch[1] : rawBranch;
+  let studentBranch = branchMatch ? branchMatch[1] : rawBranch;
+
+  // Hardcode branch mappings based on batch letter for display
+  if (studentBatch.includes('Q')) {
+    studentBranch = 'COPC';
+  } else if (studentBatch.includes('C') && !studentBatch.includes('COPC')) {
+    studentBranch = 'COE';
+  }
   const studentRollNo = user?.studentProfile?.rollNumber || '';
 
   const isStudentCR = Boolean(user?.studentProfile?.isCR);
@@ -77,31 +100,56 @@ export const StudentDashboard = () => {
   );
 
   const [isChangeBatchOpen, setIsChangeBatchOpen] = useState(false);
-  const [newBatchInput, setNewBatchInput] = useState(studentBatch);
+  const [newBatchInput, setNewBatchInput] = useState('');
   const [newBranchInput, setNewBranchInput] = useState(studentBranch);
+  const [changeReason, setChangeReason] = useState('');
+  const [crEmailInput, setCrEmailInput] = useState('');
+  const [targetRollNoInput, setTargetRollNoInput] = useState('');
+  const [myBatchRequests, setMyBatchRequests] = useState([]);
   const [updatingBatch, setUpdatingBatch] = useState(false);
   const [batchUpdateMsg, setBatchUpdateMsg] = useState('');
+  
+  const [leaderboard, setLeaderboard] = useState([]);
+
+  const fetchLeaderboard = async () => {
+    try {
+      const res = await api.getStudentLeaderboard();
+      setLeaderboard(res.leaderboard || []);
+    } catch (e) {
+      console.error("Failed to fetch leaderboard:", e);
+    }
+  };
+
+  const fetchMyBatchRequests = async () => {
+    try {
+      const res = await api.getMyBatchRequests();
+      setMyBatchRequests(res.requests || []);
+    } catch (e) {
+      console.error("Failed to fetch batch requests:", e);
+    }
+  };
 
   const handleUpdateBatchSubmit = async (e) => {
     e.preventDefault();
     if (!newBatchInput) return;
     setUpdatingBatch(true);
+    setBatchUpdateMsg('');
     try {
-      await onboardStudent({
-        fullName: user?.studentProfile?.fullName || '',
-        rollNumber: studentRollNo,
-        branch: newBranchInput,
-        batch: newBatchInput,
-        yearOfStudy: user?.studentProfile?.yearOfStudy || (newBatchInput.startsWith('4') ? 4 : newBatchInput.startsWith('3') ? 3 : newBatchInput.startsWith('2') ? 2 : 1)
+      const res = await api.requestBatchChange({
+        requestedBatch: newBatchInput,
+        requestedBranch: newBranchInput,
+        reason: changeReason,
+        crEmail: crEmailInput,
+        targetRollNo: isStudentCR ? targetRollNoInput : undefined
       });
-      setBatchUpdateMsg('✨ Batch successfully updated! Refreshing teachers...');
+      setBatchUpdateMsg('✅ ' + (res.message || 'Batch change request submitted for Admin verification!'));
+      fetchMyBatchRequests();
       setTimeout(() => {
         setIsChangeBatchOpen(false);
         setBatchUpdateMsg('');
-        fetchDashboardData();
-      }, 700);
+      }, 1800);
     } catch (err) {
-      alert(err.message || 'Failed to update batch');
+      toast.error(err.message || 'Failed to submit batch change request');
     } finally {
       setUpdatingBatch(false);
     }
@@ -147,6 +195,8 @@ export const StudentDashboard = () => {
 
   useEffect(() => {
     fetchDashboardData();
+    fetchMyBatchRequests();
+    fetchLeaderboard();
   }, [user, user?.studentProfile?.batch]);
 
   // Global Command+K / Ctrl+K shortcut for quick search & actions
@@ -163,23 +213,29 @@ export const StudentDashboard = () => {
 
   const handleViewReviews = async (teacher, isSilentRefresh = false) => {
     setSelectedTeacher(teacher);
-    if (!isSilentRefresh) setReviewsLoading(true);
+    if (!isSilentRefresh) {
+      setReviewsLoading(true);
+      setSelectedTeacherTags(null);
+      setReviewsPage(1);
+    }
     const teacherId = teacher.userId || teacher.user?.id || teacher.id;
     try {
       const [reviewsRes, ratingRes, tagsRes] = await Promise.all([
-        api.getTeacherReviews(teacherId),
+        api.getTeacherReviews(teacherId, 1).catch(() => ({ reviews: [], totalReviews: 0 })),
         api.getTeacherRatings(teacherId).catch(() => null),
-        api.getTeacherTagStats(teacherId).catch(() => null)
+        api.getTeacherTagStats(teacherId).catch(() => ({ stats: [], totalReviewsWithTags: 0, sufficientData: false, needed: 5 }))
       ]);
       const rObj = ratingRes?.rating || ratingRes || {};
       const reviewsList = reviewsRes.reviews || [];
       setSelectedTeacherReviews(reviewsList);
+      setHasMoreReviews(reviewsList.length < (reviewsRes.totalReviews || 0));
       const newRatings = {
         overallRating: Number(rObj.overallRating) || 0,
         recentRating: Number(rObj.recentRating) || 0,
         totalReviews: Number(rObj.totalReviews) || reviewsList.length
       };
       setSelectedTeacherRatings(newRatings);
+      setSelectedTeacherTags(tagsRes || { stats: [], totalReviewsWithTags: 0, sufficientData: false, needed: 5 });
 
       // Dynamically update SEO and Rich Results Schema
       updatePageSEO({
@@ -190,8 +246,27 @@ export const StudentDashboard = () => {
       });
     } catch (err) {
       console.error("Fetch reviews error:", err);
+      setSelectedTeacherTags({ stats: [], totalReviewsWithTags: 0, sufficientData: false, needed: 5 });
     } finally {
       if (!isSilentRefresh) setReviewsLoading(false);
+    }
+  };
+
+  const loadMoreReviews = async () => {
+    if (loadingMoreReviews || !hasMoreReviews || !selectedTeacher) return;
+    setLoadingMoreReviews(true);
+    try {
+      const teacherId = selectedTeacher.userId || selectedTeacher.user?.id || selectedTeacher.id;
+      const nextPage = reviewsPage + 1;
+      const res = await api.getTeacherReviews(teacherId, nextPage);
+      const newReviews = res.reviews || [];
+      setSelectedTeacherReviews(prev => [...prev, ...newReviews]);
+      setReviewsPage(nextPage);
+      setHasMoreReviews(selectedTeacherReviews.length + newReviews.length < (res.totalReviews || 0));
+    } catch (err) {
+      toast.error("Failed to load more reviews");
+    } finally {
+      setLoadingMoreReviews(false);
     }
   };
 
@@ -245,23 +320,158 @@ export const StudentDashboard = () => {
                 }}
                 className="btn btn-secondary btn-sm"
                 style={{ padding: '2px 8px', fontSize: '11.5px', height: '24px' }}
-                title="Change batch if your tutorial/lab was reshuffled"
+                title="Request a batch change if your tutorial/lab was reshuffled"
               >
-                Change Batch
+                Request Batch Change
               </button>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <span className="badge badge-neutral" style={{ padding: '8px 14px', fontSize: '13px' }}>
-              <NumberTicker value={eligibleTeachers.length} decimalPlaces={0} /> Eligible Teachers Taught You
-            </span>
-          </div>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <span className="badge" style={{ background: '#fdf4ff', color: '#a21caf', border: '1px solid #fbcfe8', padding: '8px 14px', fontSize: '13px' }}>
+                <Sparkles size={14} style={{ marginRight: '6px' }} />
+                {user?.studentProfile?.xp || 0} XP
+              </span>
+              <span className="badge badge-neutral" style={{ padding: '8px 14px', fontSize: '13px' }}>
+                <NumberTicker value={eligibleTeachers.length} decimalPlaces={0} /> Eligible Teachers Taught You
+              </span>
+            </div>
         </div>
       </div>
 
-      {/* If viewing a specific teacher's reviews */}
-      {selectedTeacher ? (
+      {myBatchRequests.filter(req => req.status === 'PENDING').length > 0 && (
+        <div style={{ marginBottom: '24px' }}>
+          {myBatchRequests.filter(req => req.status === 'PENDING').map(req => (
+            <div key={req.id} style={{
+              padding: '12px 16px',
+              borderRadius: '8px',
+              background: 'rgba(245, 158, 11, 0.1)',
+              border: '1px solid rgba(245, 158, 11, 0.3)',
+              color: '#d97706',
+              fontSize: '13px',
+              fontWeight: 500,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '8px'
+            }}>
+              <div>
+                <strong>Batch Change Request:</strong> Requested {req.requestedBatch} ({req.requestedBranch}). Awaiting Admin Approval.
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: 700, padding: '2px 6px', background: 'rgba(255,255,255,0.2)', borderRadius: '4px' }}>
+                {req.status}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Desktop Tabs (Hidden on mobile) */}
+      <div className="desktop-tabs" style={{ 
+        display: 'flex', 
+        gap: '12px', 
+        marginBottom: '24px',
+        borderBottom: '1px solid var(--border-light)',
+        paddingBottom: '12px'
+      }}>
+        <button 
+          onClick={() => setMobileTab('directory')}
+          className={`btn ${mobileTab === 'directory' ? 'btn-primary' : 'btn-secondary'}`}
+        >
+          <Search size={16} /> Faculty
+        </button>
+        <button 
+          onClick={() => setMobileTab('feed')}
+          className={`btn ${mobileTab === 'feed' ? 'btn-primary' : 'btn-secondary'}`}
+        >
+          <HeartHandshake size={16} /> Peer Support
+        </button>
+        <button 
+          onClick={() => setMobileTab('leaderboard')}
+          className={`btn ${mobileTab === 'leaderboard' ? 'btn-primary' : 'btn-secondary'}`}
+        >
+          <Award size={16} /> Top Helpers
+        </button>
+        <button 
+          onClick={() => setMobileTab('profile')}
+          className={`btn ${mobileTab === 'profile' ? 'btn-primary' : 'btn-secondary'}`}
+        >
+          <User size={16} /> My Profile
+        </button>
+      </div>
+
+      {/* View switching based on Mobile Tab */}
+      {mobileTab === 'feed' ? (
+        <PeerSupportFeed />
+      ) : mobileTab === 'leaderboard' ? (
+        <div className="card" style={{ padding: 0, overflow: 'hidden', marginTop: '24px' }}>
+          <div style={{ padding: '20px', borderBottom: '1px solid var(--border-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-card-subtle)' }}>
+            <div>
+              <h3 style={{ fontSize: '18px', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Award color="#eab308" /> Top Helpers Leaderboard
+              </h3>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0 0 0' }}>
+                Recognizing students providing academic guidance and detailed feedback.
+              </p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span className="badge" style={{ background: '#fdf4ff', color: '#a21caf', border: '1px solid #fbcfe8' }}>
+                Your XP: {user?.studentProfile?.xp || 0}
+              </span>
+            </div>
+          </div>
+          
+          {leaderboard.length === 0 ? (
+            <div style={{ padding: '60px 20px', textAlign: 'center', color: 'var(--text-muted)' }}>
+              No helpers yet. Be the first to earn XP by reviewing courses or helping in the feed!
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: '16px', padding: '16px 20px', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', borderBottom: '1px solid var(--border-light)' }}>
+              <span style={{ width: '30px', textAlign: 'center' }}>Rank</span>
+              <span>Student</span>
+              <span style={{ minWidth: '80px', textAlign: 'right' }}>XP</span>
+            </div>
+          )}
+          
+          {leaderboard.map((student, idx) => (
+            <div key={student.id} style={{ 
+              display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: '16px', 
+              padding: '16px 20px', alignItems: 'center',
+              background: student.id === user?.studentProfile?.id ? 'var(--bg-card-subtle)' : 'transparent',
+              borderBottom: idx < leaderboard.length - 1 ? '1px solid var(--border-light)' : 'none'
+            }}>
+              <div style={{ width: '30px', textAlign: 'center', fontSize: '16px', fontWeight: 800, color: idx < 3 ? '#eab308' : 'var(--text-secondary)' }}>
+                #{idx + 1}
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '15px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {student.fullName || student.rollNumber}
+                  {student.isCR && <span className="badge" style={{ background: '#fef3c7', color: '#b45309', border: '1px solid #fcd34d', fontSize: '10px', padding: '2px 6px' }}>CR</span>}
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                  Batch: {student.batch} ({(student.batch?.includes('Q') ? 'COPC' : (student.batch?.includes('C') && !student.batch?.includes('COPC')) ? 'COE' : student.branch)})
+                </div>
+              </div>
+              <div style={{ fontWeight: 800, fontSize: '16px', color: '#a21caf', textAlign: 'right', minWidth: '80px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px' }}>
+                {student.isCR && (
+                  <Crown size={16} strokeWidth={2.5} style={{ color: '#b45309' }} title="Class Representative" />
+                )}
+                <div>
+                  {student.xp} <span style={{ fontSize: '12px', fontWeight: 600 }}>XP</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : mobileTab === 'profile' ? (
+        <div className="card" style={{ padding: '60px 20px', textAlign: 'center', marginTop: '24px' }}>
+          <User size={48} style={{ margin: '0 auto 16px', color: 'var(--text-secondary)', opacity: 0.8 }} />
+          <h2 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '8px' }}>Your Profile</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>
+            View your written reviews and update your batch details.
+          </p>
+        </div>
+      ) : selectedTeacher ? (
         <div>
           <button
             onClick={() => setSelectedTeacher(null)}
@@ -276,20 +486,34 @@ export const StudentDashboard = () => {
           <div className="card" style={{ marginBottom: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                <img
-                  src={
-                    selectedTeacher.avatarUrl ||
-                    (selectedTeacher.fullName?.toLowerCase().includes('anjula') || selectedTeacher.code?.toUpperCase() === 'AMH'
-                      ? '/anjula-mehto.png'
-                      : `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedTeacher.fullName || selectedTeacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`)
-                  }
-                  alt={selectedTeacher.fullName}
-                  style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '2px solid var(--border-light)' }}
-                  onError={(e) => {
+                <div style={{
+                  width: '160px',
+                  height: '160px',
+                  borderRadius: '50%',
+                  padding: '4px',
+                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%)',
+                  boxShadow: '0 12px 32px rgba(139, 92, 246, 0.4)',
+                  flexShrink: 0
+                }}>
+                  <img
+                    src={
+                      selectedTeacher.photoUrl ||
+                      `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedTeacher.fullName || selectedTeacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`
+                    }
+                    alt={selectedTeacher.fullName}
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      borderRadius: '50%', 
+                      objectFit: 'cover',
+                      border: '4px solid var(--bg-card)'
+                    }}
+                    onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedTeacher.fullName || selectedTeacher.code || 'Faculty')}&background=2563eb&color=fff&bold=true`;
                   }}
                 />
+                </div>
                 <div>
                   <h2 style={{ fontSize: '24px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                     <span>{selectedTeacher.fullName}</span>
@@ -302,56 +526,69 @@ export const StudentDashboard = () => {
                   <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '4px' }}>
                     {selectedTeacher.designation} • {selectedTeacher.department}
                   </div>
+                  {selectedTeacher.roomNumber && (
+                    <div style={{ fontSize: '13.5px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                      <span style={{ fontWeight: 600 }}>Room:</span> {selectedTeacher.roomNumber}
+                    </div>
+                  )}
                   
-                  {/* Courses Tags */}
-                  {selectedTeacher.courses && selectedTeacher.courses.length > 0 && (
-                    <div style={{ marginTop: '10px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                      {selectedTeacher.courses.map((course, idx) => (
-                        <span key={idx} className="badge badge-neutral" style={{ fontSize: '11px', padding: '4px 8px', background: 'var(--bg-card-hover)', border: '1px solid var(--border-light)', color: 'var(--text-primary)' }}>
-                          {course.courseCode} ({course.batchTaught})
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  {/* Courses Tags — grouped by course and LTP, showing batches */}
+                  {(() => {
+                    const coursesList = (selectedTeacher.courses?.length > 0 ? selectedTeacher.courses : selectedTeacher.offerings) || [];
+                    if (coursesList.length === 0) return null;
+                    
+                    const courseMap = {};
+                    coursesList.forEach(c => {
+                      const key = `${c.courseCode}-${c.ltp || 'L'}`;
+                      if (!courseMap[key]) {
+                        courseMap[key] = { courseCode: c.courseCode, ltp: c.ltp, batches: new Set() };
+                      }
+                      if (c.batchTaught) courseMap[key].batches.add(c.batchTaught);
+                    });
+                    
+                    const ltpLabel = { L: 'Lecture', T: 'Tutorial', P: 'Lab' };
+                    const grouped = Object.values(courseMap);
+                    
+                    return (
+                      <div style={{ marginTop: '10px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                        {grouped.map((c, idx) => (
+                          <span key={idx} className="badge badge-neutral" style={{ fontSize: '11px', padding: '4px 8px', background: 'var(--bg-card-hover)', border: '1px solid var(--border-light)', color: 'var(--text-primary)', lineHeight: '1.4' }}>
+                            {c.courseCode} · {ltpLabel[c.ltp] || c.ltp || 'Lecture'}
+                            {c.batches.size > 0 && (
+                              <span style={{ opacity: 0.8, marginLeft: '4px' }}>
+                                ({Array.from(c.batches).join(', ')})
+                              </span>
+                            )}
+                          </span>
+                        ))}
+                      </div>
+                    );
+                  })()}
 
-                  {/* Special Academic & Research Details for Dr. Anjula Mehto */}
-                  {(selectedTeacher.fullName?.toLowerCase().includes('anjula') || selectedTeacher.code?.toUpperCase() === 'AMH') && (
-                    <div style={{ marginTop: '12px', padding: '12px 14px', background: 'var(--bg-card-subtle)', borderRadius: '8px', border: '1px solid var(--border-light)', maxWidth: '750px' }}>
-                      <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>
-                        Specialization: <span style={{ fontWeight: 500, color: 'var(--text-secondary)' }}>Wireless Sensor Networks (WSNs), Internet of Things (IoT), Machine Learning</span>
-                      </div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '8px' }}>
-                        <strong>Education:</strong> Ph.D. (ABV-IIITM Gwalior, 2021) • M.Tech (MANIT Bhopal) • B.E. (UIT-RGPV Bhopal)
-                      </div>
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                        <a 
-                          href="mailto:anjula.mehto@thapar.edu" 
-                          className="badge badge-neutral"
-                          style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 8px', fontSize: '11.5px', color: 'var(--primary)' }}
-                        >
-                          ✉️ anjula.mehto@thapar.edu
-                        </a>
-                        <a 
-                          href="https://scholar.google.com/citations?user=kAS_U9YAAAAJ&hl=en&oi=ao" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="badge badge-neutral"
-                          style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 8px', fontSize: '11.5px', color: '#2563eb' }}
-                        >
-                          <ExternalLink size={12} /> Google Scholar (h-index / Citations)
-                        </a>
-                        <a 
-                          href="https://www.linkedin.com/in/dr-anjula-mehto-29b64396/" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="badge badge-neutral"
-                          style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 8px', fontSize: '11.5px', color: '#0077b5' }}
-                        >
-                          <ExternalLink size={12} /> LinkedIn Profile
-                        </a>
-                      </div>
-                    </div>
-                  )}
+                  <div style={{ marginTop: '12px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    <ThaparProfileLink teacher={selectedTeacher} />
+                    {selectedTeacher.linkedIn && (
+                      <a
+                        href={selectedTeacher.linkedIn.startsWith('http') ? selectedTeacher.linkedIn : `https://${selectedTeacher.linkedIn}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="badge badge-neutral"
+                        style={{
+                          textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px',
+                          padding: '4px 10px', fontSize: '11px', fontWeight: 600, color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.3)'
+                        }}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                          <rect x="2" y="9" width="4" height="12"></rect>
+                          <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                        LinkedIn Profile
+                      </a>
+                    )}
+                  </div>
+
+
                 </div>
               </div>
 
@@ -359,22 +596,49 @@ export const StudentDashboard = () => {
                 <button
                   onClick={() => {
                     const publicUrl = `${window.location.origin}/teacher/${encodeURIComponent(selectedTeacher.id || selectedTeacher.userId)}`;
-                    navigator.clipboard.writeText(publicUrl);
-                    alert(`Public Profile Link copied to clipboard!\n${publicUrl}\nYou can share this in your batch WhatsApp group or Reddit.`);
+                    try {
+                      navigator.clipboard.writeText(publicUrl);
+                      toast.success('Public profile link copied to clipboard!', {
+                        description: 'Share it with your batchmates or use the quick channels.'
+                      });
+                    } catch (e) {
+                      // Handled by modal copy
+                    }
+                    setSharingTeacher(selectedTeacher);
                   }}
                   className="btn btn-secondary"
-                  title="Copy shareable link for batch WhatsApp groups & Reddit"
+                  title="Share profile to batch WhatsApp groups, Reddit, or copy link"
                 >
                   <Share2 size={16} />
                   <span>Share Profile</span>
                 </button>
                 <button
-                  onClick={() => setReviewingTeacher(selectedTeacher)}
-                  className="btn btn-primary"
+                  onClick={() => setSuggestTeacher(selectedTeacher)}
+                  className="btn btn-secondary"
+                  title="Add missing courses or info to this faculty member"
                 >
-                  <MessageSquarePlus size={16} />
-                  <span>Write Feedback Review</span>
+                  <Edit3 size={16} />
+                  <span>Add Info / Course</span>
                 </button>
+                {eligibleTeachers.some(t => (t.id || t.userId) === (selectedTeacher.id || selectedTeacher.userId)) ? (
+                  <button
+                    onClick={() => setReviewingTeacher(selectedTeacher)}
+                    className="btn btn-primary"
+                  >
+                    <MessageSquarePlus size={16} />
+                    <span>Write Feedback Review</span>
+                  </button>
+                ) : (
+                  <button
+                    disabled
+                    className="btn btn-secondary"
+                    title="You can only write reviews for teachers who taught your batch/section."
+                    style={{ opacity: 0.6, cursor: 'not-allowed' }}
+                  >
+                    <MessageSquarePlus size={16} />
+                    <span>Not Eligible to Review</span>
+                  </button>
+                )}
                 <button 
                   onClick={() => setIsAIInsightsOpen(true)}
                   style={{ 
@@ -446,11 +710,20 @@ export const StudentDashboard = () => {
               </p>
             )}
             
-            {!selectedTeacherTags ? (
-              <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Loading tag statistics...</div>
+            {reviewsLoading || !selectedTeacherTags ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '14px', padding: '12px 0' }}>
+                <div style={{ width: '16px', height: '16px', border: '2px solid var(--border-light)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                <span>Loading tag statistics...</span>
+              </div>
             ) : !selectedTeacherTags.sufficientData ? (
               <div style={{ color: 'var(--text-muted)', fontSize: '14px', fontStyle: 'italic', marginTop: '12px' }}>
-                {selectedTeacherTags.needed} more reviews needed to unlock insights for this teacher.
+                {selectedTeacherTags.needed > 0
+                  ? `${selectedTeacherTags.needed} more review${selectedTeacherTags.needed > 1 ? 's' : ''} needed to unlock tag insights for this teacher.`
+                  : 'No student tags submitted for this teacher yet.'}
+              </div>
+            ) : selectedTeacherTags.stats?.length === 0 ? (
+              <div style={{ color: 'var(--text-muted)', fontSize: '14px', fontStyle: 'italic', marginTop: '12px' }}>
+                No community tags recorded for this faculty member yet.
               </div>
             ) : (
               <div style={{ width: '100%', height: 280 }}>
@@ -536,21 +809,45 @@ export const StudentDashboard = () => {
               <p style={{ color: 'var(--text-secondary)', marginBottom: '14px' }}>
                 No reviews posted for this teacher yet. Be the first student who was taught by this faculty member to share your experience!
               </p>
-              <button
-                onClick={() => setReviewingTeacher(selectedTeacher)}
-                className="btn btn-primary btn-sm"
-              >
-                Write First Review
-              </button>
+              {eligibleTeachers.some(t => (t.id || t.userId) === (selectedTeacher.id || selectedTeacher.userId)) ? (
+                <button
+                  onClick={() => setReviewingTeacher(selectedTeacher)}
+                  className="btn btn-primary btn-sm"
+                >
+                  Write First Review
+                </button>
+              ) : (
+                <button
+                  disabled
+                  className="btn btn-secondary btn-sm"
+                  title="You can only write reviews for teachers who taught your batch/section."
+                  style={{ opacity: 0.6, cursor: 'not-allowed' }}
+                >
+                  Not Eligible to Review
+                </button>
+              )}
             </div>
           ) : (
-            sortedReviews.map((rev) => (
-              <ReviewCard
-                key={rev.reviewId}
-                review={rev}
-                onUpdate={handleReviewSubmitted}
-              />
-            ))
+            <>
+              {sortedReviews.map((rev) => (
+                <ReviewCard
+                  key={rev.reviewId}
+                  review={rev}
+                  onUpdate={handleReviewSubmitted}
+                />
+              ))}
+              {hasMoreReviews && (
+                <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={loadMoreReviews}
+                    disabled={loadingMoreReviews}
+                  >
+                    {loadingMoreReviews ? 'Loading...' : 'Load More Reviews'}
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       ) : (
@@ -584,8 +881,8 @@ export const StudentDashboard = () => {
             </Marquee>
           </div>
 
-          {/* CR Portal Banner if student is CR */}
-          {isStudentCR && (
+          {/* CR Portal Banner if student is CR and there are unverified faculty */}
+          {isStudentCR && unverifiedBatchFaculty.length > 0 && (
             <div className="card" style={{
               marginBottom: '20px',
               padding: '18px 22px',
@@ -615,39 +912,35 @@ export const StudentDashboard = () => {
                   </span>
                 </div>
                 <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '6px 0 12px 0' }}>
-                  {unverifiedBatchFaculty.length > 0
-                    ? `You have ${unverifiedBatchFaculty.length} faculty teaching batch ${studentBatch} who currently only have timetable initials/codes. Verify their full names below so your batchmates can review them!`
-                    : `Awesome job! All faculty teaching batch ${studentBatch} have verified names.`}
+                  You have {unverifiedBatchFaculty.length} faculty teaching batch {studentBatch} who currently only have timetable initials/codes. Verify their full names below so your batchmates can review them!
                 </p>
 
-                {unverifiedBatchFaculty.length > 0 && (
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                    {unverifiedBatchFaculty.map(t => (
-                      <button
-                        key={t.id || t.userId}
-                        type="button"
-                        onClick={() => setSuggestTeacher(t)}
-                        className="btn btn-sm"
-                        style={{
-                          background: 'var(--bg-card)',
-                          border: '1px solid rgba(245, 158, 11, 0.4)',
-                          color: 'var(--text-primary)',
-                          fontSize: '12px',
-                          fontWeight: 600,
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          padding: '5px 10px',
-                          borderRadius: '8px',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        <span>Identify: <strong>{t.fullName}</strong></span>
-                        <span style={{ color: '#d97706', fontSize: '11px' }}>→ Fill</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  {unverifiedBatchFaculty.map(t => (
+                    <button
+                      key={t.id || t.userId}
+                      type="button"
+                      onClick={() => setSuggestTeacher(t)}
+                      className="btn btn-sm"
+                      style={{
+                        background: 'var(--bg-card)',
+                        border: '1px solid rgba(245, 158, 11, 0.4)',
+                        color: 'var(--text-primary)',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '5px 10px',
+                        borderRadius: '8px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <span>Identify: <strong>{t.fullName}</strong></span>
+                      <span style={{ color: '#d97706', fontSize: '11px' }}>→ Fill</span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -815,10 +1108,10 @@ export const StudentDashboard = () => {
         }}>
           <div className="card" style={{ maxWidth: '440px', width: '100%', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)' }}>
             <h3 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '8px' }}>
-              Update Batch / Section
+              Request Batch / Section Change
             </h3>
             <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '16px', lineHeight: '1.4' }}>
-              If your tutorial or lab subgroup was reshuffled, or your branch changed, update it here. Your dashboard and eligible teachers will refresh immediately.
+              If your tutorial or lab subgroup was reshuffled, or your branch changed, submit a request here. An admin will review it and update your batch.
             </p>
 
             <form onSubmit={handleUpdateBatchSubmit}>
@@ -909,7 +1202,7 @@ export const StudentDashboard = () => {
                   disabled={updatingBatch}
                   className="btn btn-primary btn-sm"
                 >
-                  {updatingBatch ? 'Updating...' : 'Save & Refresh Teachers'}
+                  {updatingBatch ? 'Submitting...' : 'Submit Request'}
                 </button>
               </div>
             </form>
@@ -929,6 +1222,15 @@ export const StudentDashboard = () => {
             setSuggestionToast(msg);
             setTimeout(() => setSuggestionToast(null), 6000);
           }}
+        />
+      )}
+
+      {/* Share Professor Profile Modal */}
+      {sharingTeacher && (
+        <ShareProfileModal
+          teacher={sharingTeacher}
+          isOpen={Boolean(sharingTeacher)}
+          onClose={() => setSharingTeacher(null)}
         />
       )}
 
@@ -960,6 +1262,8 @@ export const StudentDashboard = () => {
           </button>
         </div>
       )}
+
+      <MobileNav activeTab={mobileTab} setActiveTab={setMobileTab} />
     </div>
   );
 };

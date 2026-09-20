@@ -40,6 +40,12 @@ export const registerUser = async ({ email, password, otp }) => {
   let user;
 
   if (existingUser) {
+    if (existingUser.isBanned) {
+      const err = new Error("Your account has been suspended by an administrator.");
+      err.status = 403;
+      err.isBanned = true;
+      throw err;
+    }
     if (existingUser.passwordHash === "PENDING") {
       // This is a pre-registered teacher account by an admin! Complete their registration.
       user = await prisma.user.update({
@@ -79,7 +85,8 @@ export const registerUser = async ({ email, password, otp }) => {
       email: user.email,
       role: user.role,
       detectedBatch: user.detectedBatch,
-      isProfileComplete: user.isProfileComplete
+      isProfileComplete: user.isProfileComplete,
+      isBanned: user.isBanned
     }
   };
 };
@@ -106,6 +113,13 @@ export const loginUser = async ({ email, password }) => {
     throw new Error("No account found with this email address.");
   }
 
+  if (user.isBanned) {
+    const err = new Error("Your account has been suspended by an administrator.");
+    err.status = 403;
+    err.isBanned = true;
+    throw err;
+  }
+
   const isMatch = await bcrypt.compare(password, user.passwordHash);
   if (!isMatch) {
     throw new Error("Invalid email or password.");
@@ -126,6 +140,7 @@ export const loginUser = async ({ email, password }) => {
       role: user.role,
       detectedBatch: user.detectedBatch,
       isProfileComplete: user.isProfileComplete,
+      isBanned: user.isBanned,
       studentProfile: user.studentProfile,
       teacherProfile: user.teacherProfile
     }
@@ -141,6 +156,7 @@ export const getUserById = async (userId) => {
       role: true,
       detectedBatch: true,
       isProfileComplete: true,
+      isBanned: true,
       createdAt: true,
       studentProfile: true,
       teacherProfile: {

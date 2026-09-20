@@ -1,4 +1,7 @@
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
+import { 
+  ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell,
+  LineChart, Line, CartesianGrid, Legend, PieChart, Pie, AreaChart, Area
+} from 'recharts';
 import { Tag, Sparkles } from 'lucide-react';
 import { TeacherAIInsights } from '../components/TeacherAIInsights';
 import React, { useState, useEffect } from 'react';
@@ -7,10 +10,11 @@ import { useAuth } from '../context/AuthContext';
 import { StarRating } from '../components/StarRating';
 import { ReviewCard } from '../components/ReviewCard';
 import {
-  Activity, TrendingDown, ArrowLeft, Download,
+  Activity, TrendingDown, TrendingUp, ArrowLeft, Download,
   Users, MessageSquare, Star, ChevronRight, Search, AlertTriangle,
   UserPlus, UserX, Edit2, Trash2, CheckCircle2, ShieldBan, RefreshCw,
-  Crown, Check, X as XIcon, Calendar, Upload, Layers
+  Crown, Check, X as XIcon, Calendar, Upload, Layers, BarChart3,
+  Award, ShieldAlert, FileText, ArrowUpRight, Flame, ThumbsUp, HelpCircle
 } from 'lucide-react';
 
 /* ── tiny helpers ── */
@@ -63,7 +67,24 @@ const StatCard = ({ icon: Icon, label, value, sub, accent }) => (
 export const AdminDashboard = () => {
   const { user } = useAuth();
 
-  const [activeTab, setActiveTab] = useState('faculty'); // faculty, students, register
+  const [activeTab, setActiveTab] = useState('analytics'); // analytics, faculty, students, register...
+
+  // Phase 1.1: Campus Analytics State
+  const [analyticsData, setAnalyticsData] = useState(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
+  const [selectedDeptFilter, setSelectedDeptFilter] = useState('ALL');
+
+  const loadAnalytics = async (dept = 'ALL') => {
+    setAnalyticsLoading(true);
+    try {
+      const res = await api.getCampusAnalytics(dept);
+      setAnalyticsData(res);
+    } catch (err) {
+      console.error("Failed to load campus analytics:", err);
+    } finally {
+      setAnalyticsLoading(false);
+    }
+  };
 
   // Data
   const [teachers, setTeachers] = useState([]);
@@ -92,6 +113,9 @@ export const AdminDashboard = () => {
   });
   const [reviewSort, setReviewSort] = useState('recent');
   const [reviewLoading, setReviewLoading] = useState(false);
+  const [reviewsPage, setReviewsPage] = useState(1);
+  const [hasMoreReviews, setHasMoreReviews] = useState(false);
+  const [loadingMoreReviews, setLoadingMoreReviews] = useState(false);
 
   // Moderation
   
@@ -383,32 +407,95 @@ export const AdminDashboard = () => {
   useEffect(() => {
     loadData();
     loadSuggestions(true);
+    loadAnalytics('ALL');
   }, []);
 
+  const [batchRequests, setBatchRequests] = useState([]);
+  const [batchRequestsLoading, setBatchRequestsLoading] = useState(false);
+
+  const loadBatchRequests = async (silent = false) => {
+    if (!silent) setBatchRequestsLoading(true);
+    try {
+      const res = await api.getBatchRequests();
+      setBatchRequests(res.requests || []);
+    } catch (err) {
+      console.error("Failed to load batch requests:", err);
+    } finally {
+      if (!silent) setBatchRequestsLoading(false);
+    }
+  };
+
+  const handleApproveBatchRequest = async (id) => {
+    try {
+      await api.approveBatchRequest(id);
+      loadBatchRequests(true);
+      loadStudents(true);
+    } catch (err) {
+      alert("Error approving request: " + err.message);
+    }
+  };
+
+  const handleRejectBatchRequest = async (id) => {
+    try {
+      await api.rejectBatchRequest(id);
+      loadBatchRequests(true);
+    } catch (err) {
+      alert("Error rejecting request: " + err.message);
+    }
+  };
+
   useEffect(() => {
+    if (activeTab === 'analytics') loadAnalytics(selectedDeptFilter);
     if (activeTab === 'moderation') loadFlags();
     if (activeTab === 'students') loadStudents();
     if (activeTab === 'suggestions') loadSuggestions();
     if (activeTab === 'semester') loadSemesterStats();
-  }, [activeTab]);
+    if (activeTab === 'batch-requests') loadBatchRequests();
+  }, [activeTab, selectedDeptFilter]);
 
   const openDossier = async (teacher, isSilentRefresh = false) => {
     setSelectedTeacher(teacher);
-    if (!isSilentRefresh) setReviewLoading(true);
+    if (!isSilentRefresh) {
+      setReviewLoading(true);
+      setSelectedTeacherTags(null);
+      setReviewsPage(1);
+    }
     const id = teacher.userId || teacher.user?.id || teacher.id;
     try {
       const [rRes, ratRes, courseRes, tagsRes] = await Promise.all([
-        api.getTeacherReviews(id),
+        api.getTeacherReviews(id, 1).catch(() => ({ reviews: [], totalReviews: 0 })),
         api.getTeacherRatings(id).catch(() => null),
         api.getAdminTeacherCourses(id).catch(() => ({ courses: [] })),
-        api.getTeacherTagStats(id).catch(() => ({ stats: [], totalReviewsWithTags: 0 }))
+        api.getTeacherTagStats(id).catch(() => ({ stats: [], totalReviewsWithTags: 0, sufficientData: false, needed: 5 }))
       ]);
       setTeacherReviews(rRes.reviews || []);
+      setHasMoreReviews((rRes.reviews || []).length < (rRes.totalReviews || 0));
       setTeacherRatings(ratRes || { overallRating: 0, recentRating: 0, totalReviews: 0 });
       setTeacherCourses(courseRes.courses || []);
-      setSelectedTeacherTags(tagsRes);
+      setSelectedTeacherTags(tagsRes || { stats: [], totalReviewsWithTags: 0, sufficientData: false, needed: 5 });
+    } catch (err) {
+      console.error("openDossier error:", err);
+      setSelectedTeacherTags({ stats: [], totalReviewsWithTags: 0, sufficientData: false, needed: 5 });
     } finally {
       if (!isSilentRefresh) setReviewLoading(false);
+    }
+  };
+
+  const loadMoreReviews = async () => {
+    if (loadingMoreReviews || !hasMoreReviews || !selectedTeacher) return;
+    setLoadingMoreReviews(true);
+    try {
+      const id = selectedTeacher.userId || selectedTeacher.user?.id || selectedTeacher.id;
+      const nextPage = reviewsPage + 1;
+      const res = await api.getTeacherReviews(id, nextPage);
+      const newReviews = res.reviews || [];
+      setTeacherReviews(prev => [...prev, ...newReviews]);
+      setReviewsPage(nextPage);
+      setHasMoreReviews(teacherReviews.length + newReviews.length < (res.totalReviews || 0));
+    } catch (err) {
+      console.error("Failed to load more reviews:", err);
+    } finally {
+      setLoadingMoreReviews(false);
     }
   };
 
@@ -480,7 +567,7 @@ export const AdminDashboard = () => {
       await api.banUser(userId, !currentStatus);
       setStudents(prev => prev.map(s => s.id === userId ? { ...s, isBanned: !currentStatus } : s));
     } catch (err) {
-      alert("Failed to update ban status");
+      alert("Failed to update ban status: " + (err.message || "Unknown error"));
     }
   };
 
@@ -564,6 +651,14 @@ export const AdminDashboard = () => {
         <div style={{ marginBottom: '24px', paddingLeft: '14px' }}>
           <h2 style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)' }}>Admin Panel</h2>
         </div>
+
+        <button className={`admin-nav-item ${activeTab === 'analytics' ? 'active' : ''}`} onClick={() => { setActiveTab('analytics'); setSelectedTeacher(null); }}>
+          <BarChart3 size={18} />
+          <span>Analytics & Insights</span>
+          <span style={{ fontSize: '10px', fontWeight: 800, padding: '2px 6px', borderRadius: '4px', background: 'var(--primary)', color: '#fff', marginLeft: 'auto' }}>
+            NAAC
+          </span>
+        </button>
         
         <button className={`admin-nav-item ${activeTab === 'faculty' ? 'active' : ''}`} onClick={() => { setActiveTab('faculty'); setSelectedTeacher(null); setSearchQuery(''); setFacultyPage(1); }}>
           <Users size={18} />
@@ -575,6 +670,11 @@ export const AdminDashboard = () => {
           Manage Students
         </button>
         
+        <button className={`admin-nav-item ${activeTab === 'batch-requests' ? 'active' : ''}`} onClick={() => { setActiveTab('batch-requests'); setSelectedTeacher(null); }}>
+          <FileText size={18} />
+          Batch Requests
+        </button>
+
         <button className={`admin-nav-item ${activeTab === 'register' ? 'active' : ''}`} onClick={() => { setActiveTab('register'); setSelectedTeacher(null); }}>
           <UserPlus size={18} />
           Register Teacher
@@ -616,6 +716,7 @@ export const AdminDashboard = () => {
         {/* ── Page Header ── */}
         <div style={{ marginBottom: '32px' }}>
           <h1 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '6px' }}>
+            {activeTab === 'analytics' && "Campus Analytics & Academic Insights"}
             {activeTab === 'faculty' && "Faculty Leaderboard"}
             {activeTab === 'students' && "Manage Students"}
             {activeTab === 'suggestions' && "Faculty Name Suggestions"}
@@ -625,6 +726,7 @@ export const AdminDashboard = () => {
             {activeTab === 'semester' && "Semester Lifecycle & Timetable Rollover"}
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>
+            {activeTab === 'analytics' && "Comprehensive pedagogical metrics, department benchmarking, NPS sentiment, and NAAC Student Satisfaction data."}
             {activeTab === 'faculty' && "View ratings, reviews, and remove faculty accounts."}
             {activeTab === 'students' && "Search and ban/unban student accounts."}
             {activeTab === 'suggestions' && "Approve student & CR submitted faculty names. Approving updates the professor's name campus-wide."}
@@ -634,6 +736,410 @@ export const AdminDashboard = () => {
             {activeTab === 'semester' && "Manage 6-month semester transitions. Archive previous allocations and bulk import new courses & batches."}
           </p>
         </div>
+
+        {/* ── Phase 1.1: Campus Analytics Tab ── */}
+        {activeTab === 'analytics' && (
+          <div className="fade-in">
+            {/* Header controls: Department Filter + Refresh */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Filter Department:
+                </span>
+                <select 
+                  className="form-input" 
+                  style={{ width: '240px', height: '40px', fontSize: '13.5px', fontWeight: 600 }}
+                  value={selectedDeptFilter}
+                  onChange={(e) => {
+                    setSelectedDeptFilter(e.target.value);
+                    loadAnalytics(e.target.value);
+                  }}
+                >
+                  <option value="ALL">All Campus Departments</option>
+                  <option value="CSED">Computer Science & Engg (CSED)</option>
+                  <option value="Engineering Department">Core Engineering</option>
+                  <option value="COE">COE Department</option>
+                </select>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <button 
+                  onClick={() => loadAnalytics(selectedDeptFilter)}
+                  className="btn btn-secondary btn-sm"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                  disabled={analyticsLoading}
+                >
+                  <RefreshCw size={14} style={{ animation: analyticsLoading ? 'spin 0.8s linear infinite' : 'none' }} />
+                  Refresh Analytics
+                </button>
+
+                <button 
+                  onClick={() => window.print()}
+                  className="btn btn-primary btn-sm"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--primary)', borderColor: 'var(--primary)' }}
+                >
+                  <Download size={14} />
+                  Print / Export NAAC Report
+                </button>
+              </div>
+            </div>
+
+            {analyticsLoading && !analyticsData ? (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '80px 20px', gap: '12px' }}>
+                <div style={{ width: '36px', height: '36px', border: '3px solid var(--border-light)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                <span style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Synthesizing campus analytics...</span>
+              </div>
+            ) : analyticsData ? (
+              <div>
+                {/* ── 4 Key Institutional KPI Stat Cards ── */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '16px', marginBottom: '28px' }}>
+                  <StatCard 
+                    icon={Star} 
+                    label="Campus Avg Rating" 
+                    value={analyticsData.metrics.campusAvgRating > 0 ? analyticsData.metrics.campusAvgRating.toFixed(2) : "—"} 
+                    sub="Time-decay weighted score" 
+                    accent="#f59e0b" 
+                  />
+                  <StatCard 
+                    icon={Users} 
+                    label="Student Response Rate" 
+                    value={`${analyticsData.metrics.responseRate}%`} 
+                    sub="Active reviewers vs enrolled" 
+                    accent="#22c55e" 
+                  />
+                  <StatCard 
+                    icon={Award} 
+                    label="Campus NPS Score" 
+                    value={`${analyticsData.metrics.npsScore > 0 ? '+' : ''}${analyticsData.metrics.npsScore}`} 
+                    sub={`${analyticsData.metrics.promotersPercentage}% Promoters / ${analyticsData.metrics.detractorsPercentage}% Detractors`} 
+                    accent="#8b5cf6" 
+                  />
+                  <StatCard 
+                    icon={ShieldAlert} 
+                    label="Intervention Alerts" 
+                    value={analyticsData.metrics.atRiskCount} 
+                    sub="Faculty below 3.0 threshold" 
+                    accent="#ef4444" 
+                  />
+                </div>
+
+                {/* ── Visual Charts Row 1: Trends & Rating Distribution ── */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))', gap: '20px', marginBottom: '28px' }}>
+                  {/* Rating Trend Chart */}
+                  <div className="card" style={{ padding: '24px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                      <div>
+                        <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                          📈 Pedagogical Rating Trend
+                        </h3>
+                        <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>
+                          Campus-wide monthly evaluation averages across courses
+                        </p>
+                      </div>
+                      <span className="badge" style={{ fontSize: '12px', background: 'var(--primary-subtle)', color: 'var(--primary)', border: '1px solid var(--primary-border)' }}>
+                        Last 6 Months
+                      </span>
+                    </div>
+
+                    <div style={{ width: '100%', height: 260 }}>
+                      <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart data={analyticsData.monthlyTrends} margin={{ top: 10, right: 20, left: -20, bottom: 0 }}>
+                          <defs>
+                            <linearGradient id="colorRating" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#ef4444" stopOpacity={0.4}/>
+                              <stop offset="95%" stopColor="#ef4444" stopOpacity={0.0}/>
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" stroke="var(--border-light)" opacity={0.5} />
+                          <XAxis dataKey="month" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                          <YAxis domain={[1, 5]} tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                          <Tooltip 
+                            contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-light)', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+                            formatter={(val) => [`${val} ★`, 'Avg Score']}
+                          />
+                          <Area type="monotone" dataKey="avgRating" stroke="#ef4444" strokeWidth={3} fillOpacity={1} fill="url(#colorRating)" />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+
+                  {/* Rating Breakdown Bar */}
+                  <div className="card" style={{ padding: '24px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                      <div>
+                        <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                          📊 Rating Score Distribution
+                        </h3>
+                        <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>
+                          Percentage breakdown across {analyticsData.metrics.totalReviews} student reviews
+                        </p>
+                      </div>
+                      <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-secondary)' }}>
+                        Total: {analyticsData.metrics.totalReviews}
+                      </span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '12px' }}>
+                      {analyticsData.ratingDistribution.map(item => (
+                        <div key={item.stars} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                          <span style={{ fontSize: '13px', fontWeight: 700, minWidth: '65px', color: 'var(--text-primary)' }}>
+                            {item.stars}
+                          </span>
+                          <div style={{ flex: 1, height: '10px', borderRadius: '99px', background: 'var(--border-light)', overflow: 'hidden' }}>
+                            <div style={{
+                              height: '100%',
+                              width: `${item.percentage}%`,
+                              background: item.color,
+                              borderRadius: '99px',
+                              transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                            }} />
+                          </div>
+                          <span style={{ fontSize: '12.5px', fontWeight: 700, minWidth: '40px', textAlign: 'right', color: 'var(--text-secondary)' }}>
+                            {item.percentage}%
+                          </span>
+                          <span style={{ fontSize: '12px', color: 'var(--text-muted)', minWidth: '50px', textAlign: 'right' }}>
+                            ({item.count})
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--border-light)', fontSize: '12.5px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#22c55e', fontWeight: 700 }}>
+                        <span>Promoters (4-5★):</span>
+                        <span>{analyticsData.metrics.promotersPercentage}%</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#eab308', fontWeight: 700 }}>
+                        <span>Passives (3★):</span>
+                        <span>{analyticsData.metrics.passivesPercentage}%</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ef4444', fontWeight: 700 }}>
+                        <span>Detractors (1-2★):</span>
+                        <span>{analyticsData.metrics.detractorsPercentage}%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── Visual Charts Row 2: Department Comparisons & Top Community Tags ── */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))', gap: '20px', marginBottom: '28px' }}>
+                  {/* Department Comparison Bar Chart */}
+                  <div className="card" style={{ padding: '24px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                      <div>
+                        <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                          🏛️ Department Quality Benchmarks
+                        </h3>
+                        <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>
+                          Comparative student satisfaction by academic division
+                        </p>
+                      </div>
+                    </div>
+
+                    <div style={{ width: '100%', height: 260 }}>
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={analyticsData.departmentComparisons} margin={{ top: 10, right: 20, left: -10, bottom: 25 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="var(--border-light)" opacity={0.5} vertical={false} />
+                          <XAxis 
+                            dataKey="department" 
+                            tick={{ fill: 'var(--text-secondary)', fontSize: 11, fontWeight: 500 }} 
+                            axisLine={false} 
+                            tickLine={false}
+                            interval={0}
+                            angle={-10}
+                            textAnchor="end"
+                          />
+                          <YAxis domain={[0, 5]} tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                          <Tooltip 
+                            contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-light)', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+                            formatter={(val, name) => [`${val} ★`, 'Avg Department Score']}
+                          />
+                          <Bar dataKey="avgRating" radius={[6, 6, 0, 0]} barSize={34}>
+                            {analyticsData.departmentComparisons.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.avgRating >= 4 ? '#22c55e' : entry.avgRating >= 3.5 ? '#3b82f6' : '#f59e0b'} />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+
+                  {/* Top Community Tags Frequency */}
+                  <div className="card" style={{ padding: '24px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                      <div>
+                        <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                          🏷️ Qualitative Campus Themes
+                        </h3>
+                        <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>
+                          Most frequently submitted student feedback tags
+                        </p>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '10px' }}>
+                      {analyticsData.topTags.map(tag => {
+                        const isPositive = !['Tough Grader', 'Heavy Workload', 'Confusing Lectures', 'Boring Lectures', 'Rarely Available'].includes(tag.name);
+                        return (
+                          <div 
+                            key={tag.name} 
+                            style={{
+                              padding: '12px 14px',
+                              borderRadius: '8px',
+                              border: isPositive ? '1px solid #bbf7d0' : '1px solid #fed7aa',
+                              background: isPositive ? 'rgba(34, 197, 94, 0.05)' : 'rgba(249, 115, 22, 0.05)',
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center'
+                            }}
+                          >
+                            <div>
+                              <div style={{ fontSize: '13.5px', fontWeight: 700, color: isPositive ? '#166534' : '#9a3412' }}>
+                                #{tag.name}
+                              </div>
+                              <div style={{ fontSize: '11.5px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                                {tag.percentage}% of reviews
+                              </div>
+                            </div>
+                            <span style={{ fontSize: '14px', fontWeight: 800, color: isPositive ? '#16a34a' : '#ea580c' }}>
+                              {tag.count}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── Section: Review Activity Calendar Heatmap & Action Items ── */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))', gap: '20px', marginBottom: '28px' }}>
+                  {/* Activity Heatmap */}
+                  <div className="card" style={{ padding: '24px' }}>
+                    <div style={{ marginBottom: '16px' }}>
+                      <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                        🗓️ Review Submission Velocity
+                      </h3>
+                      <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>
+                        Daily student submission activity over the last 28 days
+                      </p>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '14px' }}>
+                      {analyticsData.weeklyHeatmap.map((cell, idx) => {
+                        const bgColors = [
+                          'var(--bg-card-subtle)',
+                          '#fed7aa',
+                          '#fb923c',
+                          '#ea580c'
+                        ];
+                        return (
+                          <div 
+                            key={cell.date}
+                            style={{
+                              width: '28px',
+                              height: '28px',
+                              borderRadius: '4px',
+                              backgroundColor: bgColors[cell.level],
+                              border: '1px solid var(--border-light)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '10px',
+                              fontWeight: 700,
+                              color: cell.level > 1 ? '#fff' : 'var(--text-muted)',
+                              cursor: 'pointer'
+                            }}
+                            title={`${cell.date} (${cell.day}): ${cell.count} reviews submitted`}
+                          >
+                            {cell.count > 0 ? cell.count : ''}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '14px', fontSize: '11.5px', color: 'var(--text-muted)' }}>
+                      <span>Less</span>
+                      <div style={{ width: '12px', height: '12px', borderRadius: '2px', backgroundColor: 'var(--bg-card-subtle)', border: '1px solid var(--border-light)' }} />
+                      <div style={{ width: '12px', height: '12px', borderRadius: '2px', backgroundColor: '#fed7aa' }} />
+                      <div style={{ width: '12px', height: '12px', borderRadius: '2px', backgroundColor: '#fb923c' }} />
+                      <div style={{ width: '12px', height: '12px', borderRadius: '2px', backgroundColor: '#ea580c' }} />
+                      <span>More Activity</span>
+                    </div>
+                  </div>
+
+                  {/* Quality Assurance Action Alert Feed */}
+                  <div className="card" style={{ padding: '24px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                      <div>
+                        <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                          ⚠️ Pedagogical Action Alerts
+                        </h3>
+                        <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>
+                          Prioritized faculty support and commendation list
+                        </p>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      {analyticsData.atRiskFaculty.slice(0, 3).map(f => (
+                        <div 
+                          key={f.id} 
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            padding: '10px 14px',
+                            background: '#fef2f2',
+                            border: '1px solid #fecaca',
+                            borderRadius: '8px'
+                          }}
+                        >
+                          <div>
+                            <div style={{ fontSize: '13.5px', fontWeight: 700, color: '#991b1b' }}>
+                              🔴 Review Needed: {f.fullName}
+                            </div>
+                            <div style={{ fontSize: '12px', color: '#b91c1c' }}>
+                              {f.department} · {f.totalReviews} reviews
+                            </div>
+                          </div>
+                          <span style={{ fontSize: '14px', fontWeight: 800, color: '#ef4444' }}>
+                            {f.overallRating.toFixed(1)} ★
+                          </span>
+                        </div>
+                      ))}
+
+                      {analyticsData.topFaculty.slice(0, 2).map(f => (
+                        <div 
+                          key={f.id} 
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            padding: '10px 14px',
+                            background: '#f0fdf4',
+                            border: '1px solid #bbf7d0',
+                            borderRadius: '8px'
+                          }}
+                        >
+                          <div>
+                            <div style={{ fontSize: '13.5px', fontWeight: 700, color: '#166534' }}>
+                              ⭐ Commendation: {f.fullName}
+                            </div>
+                            <div style={{ fontSize: '12px', color: '#15803d' }}>
+                              {f.department} · Outstanding Student Feedback
+                            </div>
+                          </div>
+                          <span style={{ fontSize: '14px', fontWeight: 800, color: '#16a34a' }}>
+                            {f.overallRating.toFixed(1)} ★
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        )}
 
         {/* ── Faculty Tab ── */}
         {activeTab === 'faculty' && !selectedTeacher && (
@@ -858,11 +1364,20 @@ export const AdminDashboard = () => {
               </p>
             )}
             
-            {!selectedTeacherTags ? (
-              <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Loading tag statistics...</div>
+            {reviewLoading || !selectedTeacherTags ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '14px', padding: '12px 0' }}>
+                <div style={{ width: '16px', height: '16px', border: '2px solid var(--border-light)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                <span>Loading tag statistics...</span>
+              </div>
             ) : !selectedTeacherTags.sufficientData ? (
               <div style={{ color: 'var(--text-muted)', fontSize: '14px', fontStyle: 'italic', marginTop: '12px' }}>
-                {selectedTeacherTags.needed} more reviews needed to unlock insights for this teacher.
+                {selectedTeacherTags.needed > 0
+                  ? `${selectedTeacherTags.needed} more review${selectedTeacherTags.needed > 1 ? 's' : ''} needed to unlock tag insights for this teacher.`
+                  : 'No student tags submitted for this teacher yet.'}
+              </div>
+            ) : selectedTeacherTags.stats?.length === 0 ? (
+              <div style={{ color: 'var(--text-muted)', fontSize: '14px', fontStyle: 'italic', marginTop: '12px' }}>
+                No community tags recorded for this faculty member yet.
               </div>
             ) : (
               <div style={{ width: '100%', height: 280 }}>
@@ -926,7 +1441,20 @@ export const AdminDashboard = () => {
             ) : sortedReviews.length === 0 ? (
               <div className="card" style={{ textAlign: 'center', padding: '60px', color: 'var(--text-muted)' }}>No reviews submitted yet.</div>
             ) : (
-              sortedReviews.map(rev => <ReviewCard key={rev.reviewId} review={rev} onUpdate={() => openDossier(selectedTeacher, true)} />)
+              <>
+                {sortedReviews.map(rev => <ReviewCard key={rev.reviewId} review={rev} onUpdate={() => openDossier(selectedTeacher, true)} />)}
+                {hasMoreReviews && (
+                  <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={loadMoreReviews}
+                      disabled={loadingMoreReviews}
+                    >
+                      {loadingMoreReviews ? 'Loading...' : 'Load More Reviews'}
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}
@@ -1015,6 +1543,87 @@ export const AdminDashboard = () => {
                 })
               )}
             </div>
+          </div>
+        )}
+
+        {/* ── Batch Requests Tab ── */}
+        {activeTab === 'batch-requests' && (
+          <div className="fade-in">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 800 }}>Student Batch Change Requests</h2>
+              <button
+                onClick={() => loadBatchRequests()}
+                disabled={batchRequestsLoading}
+                className="btn btn-secondary btn-sm"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+              >
+                <RefreshCw size={14} style={{ animation: batchRequestsLoading ? 'spin 1s linear infinite' : 'none' }} />
+                <span>{batchRequestsLoading ? 'Refreshing…' : 'Refresh List'}</span>
+              </button>
+            </div>
+
+            {batchRequestsLoading ? (
+              <div style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>Loading batch requests…</div>
+            ) : batchRequests.length === 0 ? (
+              <div style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>No batch change requests found.</div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {batchRequests.map(req => (
+                  <div key={req.id} className="card" style={{ padding: '20px', borderLeft: req.status === 'PENDING' ? '4px solid #f59e0b' : (req.status === 'APPROVED' ? '4px solid #10b981' : '4px solid #ef4444') }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px' }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                          <span style={{ 
+                            padding: '4px 10px', fontSize: '12px', fontWeight: 700, borderRadius: '16px',
+                            background: req.status === 'PENDING' ? '#fef3c7' : (req.status === 'APPROVED' ? '#d1fae5' : '#fee2e2'),
+                            color: req.status === 'PENDING' ? '#d97706' : (req.status === 'APPROVED' ? '#059669' : '#b91c1c')
+                          }}>
+                            {req.status}
+                          </span>
+                          <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                            Submitted {new Date(req.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                        
+                        <div style={{ marginBottom: '12px' }}>
+                          <div style={{ fontSize: '15px', fontWeight: 700 }}>
+                            {req.studentName || req.studentRollNo || 'Student'}
+                            <span style={{ fontWeight: 400, color: 'var(--text-muted)', marginLeft: '8px' }}>
+                              (Roll: {req.studentRollNo || 'N/A'})
+                            </span>
+                          </div>
+                          <div style={{ fontSize: '14px', marginTop: '4px' }}>
+                            <strong>Requested:</strong> Batch {req.requestedBatch} {req.requestedBranch ? `(${req.requestedBranch})` : ''}
+                          </div>
+                        </div>
+
+                        {req.reason && (
+                          <div style={{ background: 'var(--bg-default)', padding: '12px', borderRadius: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+                            <strong>Reason:</strong> {req.reason}
+                          </div>
+                        )}
+                        {req.crEmail && (
+                          <div style={{ fontSize: '13px', marginTop: '8px', color: 'var(--text-muted)' }}>
+                            <strong>Verified by CR:</strong> {req.crEmail}
+                          </div>
+                        )}
+                      </div>
+
+                      {req.status === 'PENDING' && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '140px' }}>
+                          <button onClick={() => handleApproveBatchRequest(req.id)} className="btn btn-primary btn-sm" style={{ backgroundColor: '#10b981', borderColor: '#10b981' }}>
+                            <CheckCircle2 size={14} style={{ marginRight: '6px' }} /> Approve
+                          </button>
+                          <button onClick={() => handleRejectBatchRequest(req.id)} className="btn btn-secondary btn-sm" style={{ color: '#ef4444', borderColor: '#fecaca' }}>
+                            <XIcon size={14} style={{ marginRight: '6px' }} /> Reject
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -1124,6 +1733,25 @@ export const AdminDashboard = () => {
                           <button onClick={() => handleResolveFlag(flag.flagId, 'delete_review')} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', backgroundColor: '#ef4444', borderColor: '#ef4444' }}>
                             <Trash2 size={16} style={{ marginRight: '6px' }} /> Delete Review
                           </button>
+                          {flag.review.reviewerId && (
+                            <button
+                              onClick={async () => {
+                                if (window.confirm(`Are you sure you want to ban ${flag.review.reviewerName || 'this student'}?`)) {
+                                  try {
+                                    await api.banUser(flag.review.reviewerId, true);
+                                    alert("Reviewer has been banned.");
+                                    loadStudents();
+                                  } catch (err) {
+                                    alert("Failed to ban student: " + (err.message || "Unknown error"));
+                                  }
+                                }
+                              }}
+                              className="btn btn-sm"
+                              style={{ width: '100%', justifyContent: 'center', backgroundColor: '#fee2e2', color: '#b91c1c', border: '1px solid #fecaca', fontWeight: 600, padding: '6px 12px' }}
+                            >
+                              <ShieldBan size={14} style={{ marginRight: '6px' }} /> Ban Reviewer
+                            </button>
+                          )}
                         </div>
                       )}
                     </div>
@@ -1281,10 +1909,19 @@ export const AdminDashboard = () => {
                         <div style={{ fontWeight: 700, fontSize: '15px' }}>{sug.teacher?.fullName || 'Code Profile'}</div>
                         <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{sug.teacher?.department}</div>
                       </div>
-                      <div>
-                        <div style={{ fontWeight: 700, fontSize: '15px', color: 'var(--primary)' }}>{sug.suggestedName}</div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        {sug.suggestedName && (
+                          <div style={{ fontWeight: 700, fontSize: '15px', color: 'var(--primary)' }}>
+                            {sug.suggestedName}
+                          </div>
+                        )}
+                        {sug.suggestedDept && (
+                          <div style={{ fontSize: '12.5px', color: 'var(--text-secondary)' }}>
+                            <span style={{ fontWeight: 600 }}>Dept:</span> {sug.suggestedDept}
+                          </div>
+                        )}
                         {(sug.suggestedCourseCode || sug.courseCode) && (
-                          <div style={{ fontSize: '12.5px', color: 'var(--text-secondary)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ fontSize: '12.5px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <span style={{ fontWeight: 600 }}>Course:</span>
                             <span className="badge badge-neutral" style={{ fontSize: '11px', padding: '1px 6px' }}>
                               {sug.suggestedCourseCode || sug.courseCode} {sug.suggestedLtp ? `(${sug.suggestedLtp})` : ''}
@@ -1294,13 +1931,45 @@ export const AdminDashboard = () => {
                             )}
                           </div>
                         )}
+                        {(sug.suggestedBatchTaught || sug.suggestedBranchTaught) && (
+                          <div style={{ fontSize: '12.5px', color: 'var(--text-secondary)' }}>
+                            <span style={{ fontWeight: 600 }}>Batch:</span> {sug.suggestedBatchTaught || 'Any'} {sug.suggestedBranchTaught ? `(${sug.suggestedBranchTaught})` : ''}
+                          </div>
+                        )}
+                        {sug.suggestedRoomNo && (
+                          <div style={{ fontSize: '12.5px', color: 'var(--text-secondary)' }}>
+                            <span style={{ fontWeight: 600 }}>Room:</span> {sug.suggestedRoomNo}
+                          </div>
+                        )}
+                        {sug.suggestedThaparProfileUrl && (
+                          <div style={{ fontSize: '12.5px' }}>
+                            <a href={sug.suggestedThaparProfileUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>
+                              Thapar Profile Link
+                            </a>
+                          </div>
+                        )}
+                        {sug.suggestedLinkedIn && (
+                          <div style={{ fontSize: '12.5px' }}>
+                            <a href={sug.suggestedLinkedIn} target="_blank" rel="noreferrer" style={{ color: '#0a66c2', textDecoration: 'underline' }}>
+                              LinkedIn Link
+                            </a>
+                          </div>
+                        )}
+                        {sug.suggestedPhotoUrl && (
+                          <div style={{ marginTop: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontSize: '12.5px', fontWeight: 600, color: 'var(--text-secondary)' }}>Photo:</span>
+                            <img src={sug.suggestedPhotoUrl} alt="Suggested Profile" style={{ width: '32px', height: '32px', borderRadius: '4px', objectFit: 'cover', border: '1px solid var(--border-light)' }} />
+                          </div>
+                        )}
                         {sug.notes && (
-                          <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontStyle: 'italic', marginTop: '2px' }}>"{sug.notes}"</div>
+                          <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontStyle: 'italic', marginTop: '2px', padding: '4px 8px', background: 'var(--bg-subtle)', borderRadius: '4px' }}>
+                            Notes: "{sug.notes}"
+                          </div>
                         )}
                       </div>
                       <div>
                         <div style={{ fontSize: '13px', fontWeight: 600 }}>
-                          {sug.studentRollNo || 'Student'}
+                          {sug.studentName || 'Student'} ({sug.studentRollNo || 'N/A'})
                         </div>
                         <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{sug.studentEmail}</div>
                         {sug.isCR && (

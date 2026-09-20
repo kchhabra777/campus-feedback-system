@@ -29,6 +29,17 @@ export const createReply = async (req, res) => {
             return res.status(400).json({ error: "Reply text is required" });
         }
 
+        const authorUser = await prisma.user.findUnique({
+            where: { id: authorId },
+            select: { isBanned: true }
+        });
+        if (authorUser && authorUser.isBanned) {
+            return res.status(403).json({
+                error: "Your account has been suspended by an administrator. You cannot post replies.",
+                isBanned: true
+            });
+        }
+
         const reply = await createReplyService({
             reviewId: Number(id),
             authorId,
@@ -57,6 +68,17 @@ export const voteOnReply = async (req, res) => {
 
         if (!vote || !["UP", "DOWN"].includes(vote.type)) {
             return res.status(400).json({ error: "Vote type must be UP or DOWN" });
+        }
+
+        const voterUser = await prisma.user.findUnique({
+            where: { id: user.userId },
+            select: { isBanned: true }
+        });
+        if (voterUser && voterUser.isBanned) {
+            return res.status(403).json({
+                error: "Your account has been suspended by an administrator. You cannot vote.",
+                isBanned: true
+            });
         }
 
         const numReplyId = Number(replyId);

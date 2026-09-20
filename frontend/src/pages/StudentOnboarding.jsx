@@ -16,7 +16,7 @@ export const StudentOnboarding = () => {
     return saved || '';
   });
   const [branch, setBranch] = useState('COE');
-  const [batch, setBatch] = useState(ALLOWED_BATCHES[0]); // default to 3Q11
+  const [batch, setBatch] = useState('');
   const [yearOfStudy, setYearOfStudy] = useState(3);
   const [autoDetectedNotice, setAutoDetectedNotice] = useState('');
   const [error, setError] = useState('');
@@ -91,10 +91,9 @@ export const StudentOnboarding = () => {
         ? (serial % 2 === 0 ? `1B1${sub}` : `1A1${sub}`)
         : `${year}${letter}1${sub}`;
 
-      setBatch(autoBatch);
       setBranch(detectedBranch);
       setYearOfStudy(year);
-      setAutoDetectedNotice(`✨ Automatically designated to Batch ${autoBatch} (${branchName}, Year ${year}) from your roll number.`);
+      setAutoDetectedNotice(`✨ Automatically detected Branch: ${branchName} (Year ${year}) from your roll number.`);
     } else {
       setAutoDetectedNotice('');
     }
@@ -102,10 +101,19 @@ export const StudentOnboarding = () => {
 
   const handleBatchChange = (newBatch) => {
     setBatch(newBatch);
-    if (newBatch.startsWith('4')) setYearOfStudy(4);
-    else if (newBatch.startsWith('3')) setYearOfStudy(3);
-    else if (newBatch.startsWith('2')) setYearOfStudy(2);
-    else if (newBatch.startsWith('1')) setYearOfStudy(1);
+    const upperBatch = newBatch.toUpperCase();
+    if (upperBatch.startsWith('4')) setYearOfStudy(4);
+    else if (upperBatch.startsWith('3')) setYearOfStudy(3);
+    else if (upperBatch.startsWith('2')) setYearOfStudy(2);
+    else if (upperBatch.startsWith('1')) setYearOfStudy(1);
+
+    if (upperBatch.includes('Q')) {
+      setBranch('COPC');
+      setAutoDetectedNotice('✨ Automatically mapped Branch to COPC based on batch Q.');
+    } else if (upperBatch.includes('C')) {
+      setBranch('COE');
+      setAutoDetectedNotice('✨ Automatically mapped Branch to COE based on batch C.');
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -300,7 +308,7 @@ export const StudentOnboarding = () => {
               <option value="4Q11" />
             </datalist>
             <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>
-              Auto-designated from your roll number, or enter your tutorial/practical subgroup.
+              Enter your specific tutorial/practical subgroup (e.g., 3Q11, 4C23).
             </span>
           </div>
 

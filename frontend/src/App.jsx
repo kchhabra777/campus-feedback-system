@@ -12,9 +12,10 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { Navbar } from './components/Navbar';
 import { Roadmap } from './pages/Roadmap';
 import { PublicTeacherProfile } from './pages/PublicTeacherProfile';
+import { AccountSuspended } from './components/AccountSuspended';
 
 export function App() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const [currentView, setCurrentView] = useState('home');
 
   // Handle public teacher profiles (e.g. /teacher/123 or /teacher/dr-anjula-mehto)
@@ -88,6 +89,11 @@ export function App() {
   // Not logged in
   if (!user) {
     return <AuthPage />;
+  }
+
+  // Account suspended / banned by administration
+  if (user.isBanned) {
+    return <AccountSuspended user={user} onLogout={logout} />;
   }
 
   // Logged in but profile not complete

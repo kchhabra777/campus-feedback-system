@@ -18,6 +18,17 @@ export const voteReview = async (req, res) => {
             });
         }
 
+        const voter = await prisma.user.findUnique({
+            where: { id: user.userId },
+            select: { isBanned: true }
+        });
+        if (voter && voter.isBanned) {
+            return res.status(403).json({
+                error: "Your account has been suspended by an administrator. You cannot vote.",
+                isBanned: true
+            });
+        }
+
         const reviewId = Number(id);
 
         const result = await voteReviewService({

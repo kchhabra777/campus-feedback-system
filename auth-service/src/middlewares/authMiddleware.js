@@ -53,6 +53,13 @@ export const requireAuth = async (req, res, next) => {
       }
 
       if (user) {
+        if (user.isBanned) {
+          console.log(`[AUTH]   🚫 Access Denied: User ${user.email} (${user.id}) is suspended.`);
+          return res.status(403).json({
+            error: "Your account has been suspended by an administrator.",
+            isBanned: true
+          });
+        }
         console.log(`[AUTH]   ✅ Strategy 1 OK – user=${user.id}, role=${user.role}, email=${user.email}`);
         req.user = user;
         return next();
@@ -85,6 +92,13 @@ export const requireAuth = async (req, res, next) => {
         });
 
         if (user) {
+          if (user.isBanned) {
+            console.log(`[AUTH]   🚫 Access Denied: User ${user.email} (${user.id}) is suspended.`);
+            return res.status(403).json({
+              error: "Your account has been suspended by an administrator.",
+              isBanned: true
+            });
+          }
           console.log(`[AUTH]   ✅ Strategy 2 OK – user=${user.id}, role=${user.role}`);
           req.user = user;
           return next();
@@ -147,6 +161,13 @@ export const requireAuth = async (req, res, next) => {
         }
 
         if (user) {
+          if (user.isBanned) {
+            console.log(`[AUTH]   🚫 Access Denied: User ${user.email} (${user.id}) is suspended.`);
+            return res.status(403).json({
+              error: "Your account has been suspended by an administrator.",
+              isBanned: true
+            });
+          }
           console.log(`[AUTH]   ✅ Strategy 3 OK – user=${user.id}, role=${user.role}`);
           req.user = user;
           return next();
@@ -161,6 +182,6 @@ export const requireAuth = async (req, res, next) => {
     return res.status(401).json({ error: "Invalid or expired session token." });
   } catch (error) {
     console.error(`[AUTH]   ❌ Unexpected error in requireAuth:`, error.message);
-    return res.status(401).json({ error: "Invalid or expired session token." });
+    return res.status(500).json({ error: "Internal Server Error during authentication." });
   }
 };
