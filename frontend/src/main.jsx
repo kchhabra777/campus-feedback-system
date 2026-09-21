@@ -5,6 +5,7 @@ import App from './App.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { ErrorBoundary } from './components/ErrorBoundary.jsx';
 import { Toaster } from 'sonner';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import './index.css';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || 'pk_test_bWFueS1saW9uZmlzaC03NDE3LmNsZXJrLmFjY291bnRzLmRldiQ';
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <AuthProvider>
           <App />
           <Toaster theme="dark" richColors closeButton position="bottom-right" />
+          <SpeedInsights />
         </AuthProvider>
       </ClerkProvider>
     </ErrorBoundary>
